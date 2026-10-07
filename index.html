@@ -974,6 +974,7 @@ function renderProjSheet(){
   const onBoard=Object.entries(S.days).flatMap(([d,v])=>v.cards.filter(c=>c.proj===p.id).map(c=>({d,c})));
   $("#sheet").innerHTML=`
   <div class="closebar"><h2>${p.emoji||"◈"} ${esc(p.title)}</h2><button class="done" id="sDone">Tamam</button></div>
+  <button class="ghostbtn" id="pEdit" style="margin-top:4px">✎ Adı ve açıklamayı düzenle</button>
   <div class="row"><div class="seg" id="pSt">${Object.entries(STATUS).map(([k,v])=>`<button data-s="${k}" aria-pressed="${p.status===k}">${v}</button>`).join("")}</div></div>
   <p class="psum">${esc(p.summary||"")}</p>
   ${p.why?`<p class="hint">${esc(p.why)}</p>`:""}
@@ -991,6 +992,15 @@ function renderProjSheet(){
   ${onBoard.length?`<div class="row"><div class="l">Panodaki kartları</div><p class="hint" style="margin:0">${onBoard.map(({d,c})=>`${isDone(c)?"✓ ":""}${esc(c.title||"Adsız")} <small>(${d.slice(5)})</small>`).join("<br>")}</p></div>`:""}`;
   const sh=$("#sheet");
   $("#sDone").onclick=closeSheet;
+  $("#pEdit").onclick=()=>{ const d=$("#dlg"), b=$("#dbx");
+    b.innerHTML=`<p>Projeyi düzenle</p>
+      <div class="row"><label class="l" for="eE">Simge ve ad</label><div style="display:flex;gap:6px"><input class="in" id="eE" style="width:56px;text-align:center" value="${esc(p.emoji||"")}"><input class="in" id="eT" value="${esc(p.title)}"></div></div>
+      <div class="row"><label class="l" for="eS">Kısa ad (haritada)</label><input class="in" id="eS" value="${esc(p.short||"")}"></div>
+      <div class="row"><label class="l" for="eD">Açıklama</label><textarea class="in" id="eD" rows="4">${esc(p.summary||"")}</textarea></div>
+      <div class="acts"><button id="dNo">Vazgeç</button><button class="ok" id="dOk">Kaydet</button></div>`;
+    d.classList.add("open"); const close=()=>{d.classList.remove("open"); b.innerHTML="";};
+    $("#dNo").onclick=close;
+    $("#dOk").onclick=()=>{ const t=$("#eT").value.trim(); if(t) p.title=t; p.emoji=$("#eE").value.trim(); p.short=$("#eS").value.trim()||undefined; p.summary=$("#eD").value.trim(); close(); save(); renderProjSheet(); }; };
   sh.querySelectorAll("#pSt [data-s]").forEach(b=>b.onclick=async()=>{
     const s=b.dataset.s;
     if(s==="simdi"&&p.status!=="simdi"&&projects().filter(x=>x.status==="simdi"&&!x.always).length>=3){
