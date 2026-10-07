@@ -970,7 +970,7 @@ function mapSVG(){
 function openProj(id){ openId="P:"+id; renderProjSheet(); $("#scrim").classList.add("open"); $("#sheet").classList.add("open"); $("#sheet").scrollTop=0; }
 function renderProjSheet(){
   const p=proj(openId.slice(2)); if(!p){ closeSheet(); return; }
-  const linksIn=projects().filter(o=>o.id!==p.id&&(o.links||[]).some(l=>l.to===p.id)).map(o=>({o,l:o.links.find(l=>l.to===p.id)}));
+  const linksIn=projects().filter(o=>o.id!==p.id&&(o.links||[]).some(l=>l.to===p.id)&&!(p.links||[]).some(l=>l.to===o.id)).map(o=>({o,l:o.links.find(l=>l.to===p.id)}));
   const onBoard=Object.entries(S.days).flatMap(([d,v])=>v.cards.filter(c=>c.proj===p.id).map(c=>({d,c})));
   $("#sheet").innerHTML=`
   <div class="closebar"><h2>${p.emoji||"◈"} ${esc(p.title)}</h2><button class="done" id="sDone">Tamam</button></div>
