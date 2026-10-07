@@ -1054,6 +1054,8 @@ renderAll();
 /* ---------- Google Drive sync ---------- */
 const CFG="gunakisi-cfg";
 let cfg={}; try{cfg=JSON.parse(localStorage.getItem(CFG)||"{}");}catch(e){}
+const DEFAULT_CLIENT_ID="522793938494-51dfsh4vns7up1d1ko336is1blln03dg.apps.googleusercontent.com";
+if(!cfg.clientId) cfg.clientId=DEFAULT_CLIENT_ID;
 const saveCfg=()=>{try{localStorage.setItem(CFG,JSON.stringify(cfg));}catch(e){}};
 const FILE="post-it-pano.json", SCOPE="https://www.googleapis.com/auth/drive.file";
 let token=null, tokenExp=0, fileId=cfg.fileId||null, gisP=null;
