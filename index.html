@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Post-it</title>
 <meta name="theme-color" content="#2A2540">
 <link rel="manifest" href="manifest.json">
@@ -270,6 +270,19 @@ svg.links path.with{stroke:var(--flame);stroke-width:13;stroke-linecap:round;str
 @media (prefers-reduced-motion:reduce){.card.linkable{animation:none;box-shadow:0 0 0 3px var(--flame)}}
 .ghostbtn{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 12px;font-weight:600;width:100%;margin-top:8px;text-align:left}
 .card.moved{opacity:.42;filter:grayscale(.5)}
+html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
+.boardwrap{touch-action:pan-x pan-y}
+.zoomctl{position:fixed;left:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 18px -8px rgba(0,0,0,.4)}
+.zoomctl button{border:0;background:none;width:38px;height:40px;font-size:20px;font-weight:700;color:var(--ink)}
+.zoomctl span{min-width:42px;text-align:center;font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--muted)}
+.steps-l .st .sub{border:1px dashed var(--muted);background:none;border-radius:8px;padding:5px 8px;font-size:12px;white-space:nowrap;color:var(--ink)}
+.steps-l .st .del{border:0;background:none;color:var(--muted);font-size:14px;padding:4px}
+.steps-l .st.child{border-style:dashed}
+.steps-l .st .lvl{font-size:12px;color:var(--muted);margin-right:-2px}
+.node .mm{border:0;background:var(--paper2);border-radius:8px;padding:2px 9px;font-size:16px;line-height:1.2;color:var(--ink)}
+.menu{display:flex;flex-direction:column;gap:6px}
+.menu button{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 12px;text-align:left;font-weight:600}
+.menu button small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
 </style>
 </head>
 <body>
@@ -299,6 +312,7 @@ svg.links path.with{stroke:var(--flame);stroke-width:13;stroke-linecap:round;str
 <main class="projs" id="projs"></main>
 <main class="sum" id="sum"></main>
 
+<div class="zoomctl" id="zoomctl"><button id="zOut" aria-label="Uzaklaştır">−</button><span id="zLbl">100%</span><button id="zIn" aria-label="Yakınlaştır">+</button></div>
 <div class="fab" id="fab">
   <button class="a" id="addIs">+ İş</button>
   <button class="b" id="addOlay">+ Olay</button>
@@ -480,8 +494,9 @@ function chipDrag(ch){
 /* ---------- free spot for new cards ---------- */
 function freeSpots(n,nearX,nearY){
   const W=176,H=150, taken=day().cards.map(c=>[c.x,c.y]);
-  const w=$("#wrap"), sx=nearX!=null?nearX:(w&&w.style.display!=="none"?w.scrollLeft:0)+14, sy=nearY!=null?nearY:(w&&w.style.display!=="none"?w.scrollTop:0)+14;
-  const cols=Math.max(1,Math.floor(((w&&w.clientWidth)||390)/(W+10)));
+  const w=$("#wrap"), vis=w&&w.style.display!=="none";
+  const sx=nearX!=null?nearX:(vis?w.scrollLeft/Z:0)+14, sy=nearY!=null?nearY:(vis?w.scrollTop/Z:0)+14;
+  const cols=Math.max(1,Math.floor((((w&&w.clientWidth)||390)/Z)/(W+10)));
   const out=[];
   for(let i=0;out.length<n&&i<400;i++){
     const x=Math.min(1220,sx+(i%cols)*(W+10)), y=Math.min(1450,sy+Math.floor(i/cols)*(H+10));
@@ -505,7 +520,7 @@ function cardHTML(k,now){
   return `<div class="${cls.join(" ")}" data-id="${k.id}" tabindex="0" role="button" aria-label="${esc(k.title||"Adsız")} kartını aç"
     style="left:${k.x}px;top:${k.y}px;transform:rotate(${k.rot||0}deg)">
     ${k.outcome?`<span class="out" aria-hidden="true">${OUT[k.outcome]}</span>`:""}
-    <div class="kind">${k.carried?"→ ertesi güne taşındı · ":""}${k.kind==="is"?"İş":"Olay"}${k.est?` · tahmin ${k.est} dk`:""}${k.from?" · ↻ taşındı":""}${k.proj&&proj(k.proj)?`<span class="pj">${proj(k.proj).emoji||"◈"} ${esc(proj(k.proj).short||proj(k.proj).title)}</span>`:""}</div>
+    <div class="kind">${k.kind==="is"?"İş":"Olay"}${k.est?` · tahmin ${k.est} dk`:""}${k.from?" · ↻ taşındı":""}${k.proj&&proj(k.proj)?`<span class="pj">${proj(k.proj).emoji||"◈"} ${esc(proj(k.proj).short||proj(k.proj).title)}</span>`:""}</div>
     <h3>${esc(k.title||"Adsız")}</h3>
     <div class="t">${k.kind==="is"?`<span>eşik <b data-t="e" data-id="${k.id}">${fmt(e)}</b></span>`:""}<span>süre <b data-t="s" data-id="${k.id}">${fmt(s)}</b></span></div>
     ${conds?`<div class="cs">${conds}</div>`:""}
@@ -513,7 +528,7 @@ function cardHTML(k,now){
   </div>`;
 }
 function renderBoard(){
-  const b=$("#board"), now=Date.now(), cards=day().cards;
+  const b=$("#board"), now=Date.now(), cards=day().cards.filter(k=>!k.carried);
   b.querySelectorAll(".card,.empty").forEach(n=>n.remove());
   if(!cards.length){
     b.insertAdjacentHTML("beforeend",`<div class="empty"><p><b>Bu gün henüz boş.</b></p>
@@ -561,7 +576,8 @@ function cardDrag(el){
       const dx=ev.clientX-sx, dy=ev.clientY-sy;
       if(!moved && Math.hypot(dx,dy)>6){ moved=true; el.classList.add("drag"); }
       if(moved){
-        k.x=Math.max(0,Math.min(1400-el.offsetWidth,ox+dx)); k.y=Math.max(0,Math.min(1600-el.offsetHeight,oy+dy));
+        if(pinching){ moved=false; el.classList.remove("drag"); return; }
+        k.x=Math.max(0,Math.min(1400-el.offsetWidth,ox+dx/Z)); k.y=Math.max(0,Math.min(1600-el.offsetHeight,oy+dy/Z));
         el.style.left=k.x+"px"; el.style.top=k.y+"px"; drawLinks();
       }
     };
@@ -802,14 +818,14 @@ function renderSteps(){
   const keys=ready.filter(k=>unlocks(k)>=2);
   const groups=withGroups();
   const loose=cards.filter(k=>!(k.needs||[]).length && !needed.has(k.id) && !isDone(k));
-  const node=(k,seen)=>{
+  const node=(k,seen,parent)=>{
     if(seen.has(k.id)) return "";
     const s2=new Set(seen); s2.add(k.id);
     const kids=(k.needs||[]).map(byId).filter(Boolean);
     const first=isReady(k)&&kids.length===0;
     return `<li><div class="node${isDone(k)?" done":""}"><button class="ck" data-ck="${k.id}" aria-pressed="${isDone(k)}" aria-label="Tamamlandı">${isDone(k)?"✓":""}</button>
-      <button class="nm" data-op="${k.id}">${esc(k.title||"Adsız")}</button>${first?'<span class="first">ilk adım</span>':""}</div>
-      ${kids.length?`<ul>${kids.map(c=>node(c,s2)).join("")}</ul>`:""}</li>`;
+      <button class="nm" data-op="${k.id}">${esc(k.title||"Adsız")}</button>${first?'<span class="first">ilk adım</span>':""}<button class="mm" data-mm="${k.id}" data-par="${parent||""}" aria-label="Zinciri düzenle">⋯</button></div>
+      ${kids.length?`<ul>${kids.map(c=>node(c,s2,k.id)).join("")}</ul>`:""}</li>`;
   };
   $("#steps").innerHTML=`
   ${keys.length?`<section class="keys"><h2>Kilit taşlar</h2><p class="sub">Şu an yapılabilen ve en çok işin önünü açan adımlar. Gücünü önce buraya harca.</p>
@@ -829,6 +845,7 @@ function renderSteps(){
   <section><div class="howto"><p><b>Tek soru:</b> “Bunu yapmak için önce ne lazım?”</p>
     <p>Bıyık almak → ağda lazım → ağda için dışarı çıkmak lazım → dışarı çıkmak için giyinmek lazım… Cevap “hiçbir şey, şimdi kalkıp yapabilirim” olduğunda, ilk adımı buldun.</p></div></section>`;
   $("#steps").querySelectorAll("[data-op]").forEach(b=>b.onclick=()=>openSheet(b.dataset.op));
+  $("#steps").querySelectorAll("[data-mm]").forEach(b=>b.onclick=()=>nodeMenu(b.dataset.mm,b.dataset.par||null));
   $("#steps").querySelectorAll("[data-ck]").forEach(b=>b.onclick=()=>{ const k=byId(b.dataset.ck); if(!k) return;
     if(isDone(k)){ k.doneMark=false; k.endAt=null; k.manualSure=k.manualSure; } else k.doneMark=true; save(); renderSteps(); });
 }
@@ -902,7 +919,11 @@ function stepDone(st){
   if(st.card){ const d=S.days[st.card.day]; const c=d&&d.cards.find(x=>x.id===st.card.id); if(c&&isDone(c)) return true; }
   return false;
 }
-function nextStep(p){ return (p.steps||[]).find(s=>!stepDone(s)); }
+function firstOpen(arr){ for(const s of arr||[]){ if(stepDone(s)) continue; return firstOpen(s.sub)||s; } return null; }
+function nextStep(p){ return firstOpen(p.steps); }
+function allSteps(arr){ return (arr||[]).flatMap(s=>[s,...allSteps(s.sub)]); }
+function stepAt(p,path){ let arr=p.steps, s=null; String(path).split(".").forEach(i=>{ s=arr[+i]; arr=s.sub=s.sub||[]; }); return s; }
+function stepParentArr(p,path){ const parts=String(path).split("."); parts.pop(); return parts.length?stepAt(p,parts.join(".")).sub:p.steps; }
 function weekday(){ return new Date(cur+"T12:00:00").getDay(); }
 function linkLabel(k){ return {needs:"önce bu lazım",feeds:"besler",with:"birlikte"}[k]||k; }
 
@@ -911,13 +932,13 @@ function renderProjects(){
   const ps=projects();
   const todays=ps.filter(p=>(p.days||[]).includes(wd));
   const groups={}; ps.forEach(p=>{(groups[p.status]=groups[p.status]||[]).push(p);});
-  const card=p=>{ const n=nextStep(p); const ok=(p.steps||[]).filter(stepDone).length;
+  const card=p=>{ const n=nextStep(p); const al=allSteps(p.steps), ok=al.filter(stepDone).length;
     return `<button class="pc" data-p="${p.id}" style="--pc:${p.color}">
       <span class="pe">${p.emoji||"◈"}</span>
       <span class="pb"><b>${esc(p.title)}</b><small>${esc(p.summary||"")}</small>
       ${n?`<span class="pn">▶ ${esc(n.t)}</span>`:(p.steps||[]).length?`<span class="pn">✓ adımlar bitti</span>`:""}
       ${(p.links||[]).length?`<span class="pl">${p.links.slice(0,3).map(l=>{const o=proj(l.to);return o?`${o.emoji||""} ${esc(o.title)}`:""}).filter(Boolean).join(" · ")}</span>`:""}</span>
-      ${(p.steps||[]).length?`<span class="pk">${ok}/${p.steps.length}</span>`:""}</button>`; };
+      ${al.length?`<span class="pk">${ok}/${al.length}</span>`:""}</button>`; };
   $("#projs").innerHTML=`
   <section><h2>${GUN[wd]} teması</h2>
     ${th?`<p class="sub">${esc(th.items.join(" · "))}</p>`:'<p class="sub">Bu gün için tema yok.</p>'}
@@ -957,11 +978,9 @@ function renderProjSheet(){
   <p class="psum">${esc(p.summary||"")}</p>
   ${p.why?`<p class="hint">${esc(p.why)}</p>`:""}
   <div class="row"><div class="l">Adımlar</div>
-    <div class="steps-l">${(p.steps||[]).map((s,i)=>{const d=stepDone(s); const onToday=!!(s.card&&s.card.day===cur&&!d&&cardOf(s));
-      return `<div class="st${d?" dn":""}"><button class="ck" data-sk="${i}" aria-pressed="${d}" aria-label="Tamamlandı">${d?"✓":""}</button>
-      <span>${esc(s.t)}</span>${d?"":onToday?'<em>panoda</em>':`<button class="take" data-take="${i}">Bugüne al</button>`}</div>`;}).join("")}</div>
+    <div class="steps-l">${stepsHTML(p.steps,"",0)}</div>
     <div class="addstep"><input class="in" id="pNew" placeholder="Yeni adım"><button id="pAdd">Ekle</button></div>
-    <p class="hint">Bir adım hâlâ büyük geliyorsa ona “önce ne lazım?” diye sor, cevabı üstüne yeni adım olarak ekle.</p></div>
+    <p class="hint">Bir adım büyük geliyorsa yanındaki “önce?”ye bas: alt adım olarak altına eklenir. “Bugüne al” adımı, bitmemiş alt adımlarıyla birlikte zincir halinde panoya koyar.</p></div>
   ${(p.links||[]).length||linksIn.length?`<div class="row"><div class="l">Bağlantılar</div><div class="lnk">
     ${(p.links||[]).map(l=>{const o=proj(l.to); return o?`<button data-go="${o.id}"><b>${o.emoji||""} ${esc(o.title)}</b><small>${linkLabel(l.kind)}${l.note?": "+esc(l.note):""}</small></button>`:"";}).join("")}
     ${linksIn.map(({o,l})=>`<button data-go="${o.id}"><b>${o.emoji||""} ${esc(o.title)}</b><small>bunu ${linkLabel(l.kind)}${l.note?": "+esc(l.note):""}</small></button>`).join("")}
@@ -977,22 +996,45 @@ function renderProjSheet(){
     if(s==="simdi"&&p.status!=="simdi"&&projects().filter(x=>x.status==="simdi"&&!x.always).length>=3){
       if(!(await sure("Zaten 3 proje “Şimdi”de. Yine de eklensin mi?"))) return; }
     p.status=s; save(); renderProjSheet(); });
-  sh.querySelectorAll("[data-sk]").forEach(b=>b.onclick=()=>{ const s=p.steps[+b.dataset.sk]; const d=stepDone(s);
+  sh.querySelectorAll("[data-sk]").forEach(b=>b.onclick=()=>{ const s=stepAt(p,b.dataset.sk); const d=stepDone(s);
     s.done=!d; if(d&&s.card){ const dd=S.days[s.card.day]; const c=dd&&dd.cards.find(x=>x.id===s.card.id); if(c){c.doneMark=false;c.endAt=null;} }
     else if(!d&&s.card){ const dd=S.days[s.card.day]; const c=dd&&dd.cards.find(x=>x.id===s.card.id); if(c) c.doneMark=true; }
     save(); renderProjSheet(); });
-  sh.querySelectorAll("[data-take]").forEach(b=>b.onclick=()=>{ takeStep(p,+b.dataset.take); renderProjSheet(); toast("Panoya eklendi"); });
+  sh.querySelectorAll("[data-take]").forEach(b=>b.onclick=()=>{ takeStep(p,b.dataset.take); renderProjSheet(); toast("Panoya eklendi"); });
+  sh.querySelectorAll("[data-sub]").forEach(b=>b.onclick=async()=>{ const s=stepAt(p,b.dataset.sub);
+    const t=await ask(`“${s.t}” için önce ne lazım?`,"","ör. Malzemeleri say"); if(!t||!t.trim()) return;
+    s.sub=s.sub||[]; s.sub.push({t:t.trim()}); save(); renderProjSheet(); });
+  sh.querySelectorAll("[data-sdel]").forEach(b=>b.onclick=async()=>{ const path=b.dataset.sdel, s=stepAt(p,path);
+    if(!(await sure(`“${s.t}”${(s.sub||[]).length?" ve alt adımları":""} silinsin mi?`))) return;
+    const arr=stepParentArr(p,path); arr.splice(+path.split(".").pop(),1); save(); renderProjSheet(); });
   const add=()=>{ const v=$("#pNew").value.trim(); if(!v) return; p.steps=p.steps||[]; p.steps.push({t:v}); save(); renderProjSheet(); setTimeout(()=>{const f=$("#pNew"); f&&f.focus();},30); };
   $("#pAdd").onclick=add; $("#pNew").onkeydown=e=>{ if(e.key==="Enter") add(); };
   sh.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ openId="P:"+b.dataset.go; renderProjSheet(); sh.scrollTop=0; });
 }
-function takeStep(p,i){
-  const s=p.steps[i], cards=day().cards, w=$("#wrap");
-  let prev=null, sp;
-  for(let j=i-1;j>=0;j--){ const ps=p.steps[j]; if(ps.card&&ps.card.day===cur&&!stepDone(ps)){ prev=cards.find(c=>c.id===ps.card.id); break; } }
-  const k={id:uid(),kind:"is",title:s.t,est:s.est||"",x:(sp=prev?freeSpots(1,Math.min(1220,prev.x+186),prev.y)[0]:freeSpots(1)[0])[0],
-    y:sp[1],rot:+(Math.random()*4-2).toFixed(1),cond:[],causes:[],needs:prev?[prev.id]:[],with:[],proj:p.id,createdAt:Date.now()};
-  cards.push(k); s.card={day:cur,id:k.id}; s.done=false; save();
+function stepsHTML(arr,prefix,depth){
+  return (arr||[]).map((s,i)=>{ const path=prefix?prefix+"."+i:String(i); const d=stepDone(s);
+    const onToday=!!(s.card&&s.card.day===cur&&!d&&cardOf(s));
+    return `<div class="st${d?" dn":""}${depth?" child":""}" style="margin-left:${depth*18}px">${depth?'<span class="lvl">↳</span>':""}
+      <button class="ck" data-sk="${path}" aria-pressed="${d}" aria-label="Tamamlandı">${d?"✓":""}</button>
+      <span>${esc(s.t)}</span>${d?"":`<button class="sub" data-sub="${path}">önce?</button>`}${d?"":onToday?'<em>panoda</em>':`<button class="take" data-take="${path}">Bugüne al</button>`}
+      <button class="del" data-sdel="${path}" aria-label="Adımı sil">✕</button></div>${stepsHTML(s.sub,path,depth+1)}`; }).join("");
+}
+function takeStep(p,path){
+  path=String(path); const s=stepAt(p,path), cards=day().cards;
+  const make=(st,near)=>{
+    if(stepDone(st)) return null;
+    if(st.card&&st.card.day===cur&&cardOf(st)) return st.card.id;
+    const [x,y]=freeSpots(1,near?Math.max(0,near.x-186):null,near?near.y:null)[0];
+    const k={id:uid(),kind:"is",title:st.t,est:st.est||"",x,y,rot:+(Math.random()*4-2).toFixed(1),cond:[],causes:[],needs:[],with:[],proj:p.id,createdAt:Date.now()};
+    cards.push(k); st.card={day:cur,id:k.id}; st.done=false;
+    k.needs=(st.sub||[]).map(x=>make(x,k)).filter(Boolean);
+    return k.id;
+  };
+  const id=make(s,null);
+  // keep sibling order: an earlier open sibling already on today's board comes first
+  const parts=path.split("."), i=+parts.pop(), sibs=stepParentArr(p,path);
+  for(let j=i-1;j>=0;j--){ const ps=sibs[j]; if(ps.card&&ps.card.day===cur&&!stepDone(ps)&&cardOf(ps)){ const k=byId(id); if(k&&!k.needs.includes(ps.card.id)) k.needs.push(ps.card.id); break; } }
+  save();
 }
 
 /* ---------- link on board & undo carry ---------- */
@@ -1032,11 +1074,66 @@ function uncarry(k){
   save(); closeSheet(); toast("Geri gönderildi");
 }
 
+/* ---------- board zoom (pinch + buttons) ---------- */
+let Z=1, pinching=false;
+try{ Z=Math.min(1.6,Math.max(0.4,+localStorage.getItem("postit-zoom")||1)); }catch(e){}
+function setZoom(nz,fx,fy){
+  const w=$("#wrap"), b=$("#board"); nz=Math.min(1.6,Math.max(0.4,nz));
+  const r=w.getBoundingClientRect(); const mx=fx!=null?fx-r.left:w.clientWidth/2, my=fy!=null?fy-r.top:w.clientHeight/2;
+  const cx=(w.scrollLeft+mx)/Z, cy=(w.scrollTop+my)/Z;
+  Z=nz; b.style.zoom=Z; w.scrollLeft=cx*Z-mx; w.scrollTop=cy*Z-my;
+  $("#zLbl").textContent=Math.round(Z*100)+"%";
+  try{ localStorage.setItem("postit-zoom",String(Z)); }catch(e){}
+}
+(()=>{
+  const w=$("#wrap"); let d0=0, z0=1;
+  const dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+  w.addEventListener("touchstart",e=>{ if(e.touches.length===2){ pinching=true; d0=dist(e.touches); z0=Z; e.preventDefault(); } },{passive:false,capture:true});
+  w.addEventListener("touchmove",e=>{ if(pinching&&e.touches.length===2){ e.preventDefault();
+    setZoom(z0*dist(e.touches)/d0,(e.touches[0].clientX+e.touches[1].clientX)/2,(e.touches[0].clientY+e.touches[1].clientY)/2); } },{passive:false,capture:true});
+  w.addEventListener("touchend",e=>{ if(e.touches.length<2&&pinching){ setTimeout(()=>{pinching=false;},60); save&&0; } },{capture:true});
+  ["gesturestart","gesturechange"].forEach(ev=>document.addEventListener(ev,e=>e.preventDefault(),{passive:false}));
+  w.addEventListener("wheel",e=>{ if(e.ctrlKey){ e.preventDefault(); setZoom(Z*(e.deltaY<0?1.08:0.92),e.clientX,e.clientY); } },{passive:false});
+  $("#zIn").onclick=()=>setZoom(Z+0.1); $("#zOut").onclick=()=>setZoom(Z-0.1);
+  $("#board").style.zoom=Z; $("#zLbl").textContent=Math.round(Z*100)+"%";
+})();
+
+/* ---------- chain editing menu ---------- */
+function newCardNear(title,near){
+  const [x,y]=freeSpots(1,near?Math.max(0,near.x-186):null,near?near.y:null)[0];
+  const n={id:uid(),kind:"is",title,est:"",x,y,rot:+(Math.random()*4-2).toFixed(1),cond:[],causes:[],needs:[],with:[],proj:near&&near.proj,createdAt:Date.now()};
+  day().cards.push(n); return n;
+}
+function nodeMenu(id,parentId){
+  const k=byId(id), par=parentId&&byId(parentId); if(!k) return;
+  const d=$("#dlg"), b=$("#dbx");
+  b.innerHTML=`<p>${esc(k.title||"Adsız")}</p><div class="menu">
+    <button data-m="before">Önüne adım ekle<small>Bunun için önce başka bir şey lazımmış</small></button>
+    ${par?`<button data-m="between">Araya adım ekle<small>“${esc(par.title||"")}” ile bunun arasına</small></button>
+    <button data-m="cut">Bağı kopar<small>“${esc(par.title||"")}” için aslında bu lazım değilmiş</small></button>`:""}
+    <button data-m="open">Kartı aç</button></div>
+    <div class="acts"><button id="dNo">Kapat</button></div>`;
+  d.classList.add("open");
+  const close=()=>{ d.classList.remove("open"); b.innerHTML=""; };
+  $("#dNo").onclick=close; d.onclick=e=>{ if(e.target===d) close(); };
+  b.querySelectorAll("[data-m]").forEach(x=>x.onclick=async()=>{
+    const m=x.dataset.m; close();
+    if(m==="open"){ openSheet(id); return; }
+    if(m==="cut"){ par.needs=(par.needs||[]).filter(n=>n!==id); save(); renderSteps(); toast("Bağ koptu"); return; }
+    const t=await ask(m==="before"?`“${k.title||"Bu"}” için önce ne lazım?`:"Araya ne giriyor?","","ör. Makyaj çekmecesini boşalt");
+    if(!t||!t.trim()) return;
+    const n=newCardNear(t.trim(),k);
+    if(m==="before"){ k.needs=k.needs||[]; k.needs.push(n.id); }
+    else { par.needs=(par.needs||[]).map(v=>v===id?n.id:v); n.needs=[id]; }
+    save(); renderSteps(); toast("Eklendi");
+  });
+}
+
 /* ---------- misc ---------- */
 let toastT; function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),1600); }
 function setView(v){
   view=v; ["Board","Steps","Proj","Sum"].forEach(n=>$("#t"+n).setAttribute("aria-pressed",v===({Board:"board",Steps:"steps",Proj:"projs",Sum:"sum"})[n]));
-  const b=v==="board"; $("#wrap").style.display=b?"":"none"; $("#tray").style.display=b?"":"none"; $("#fab").style.display=b?"":"none";
+  const b=v==="board"; $("#wrap").style.display=b?"":"none"; $("#tray").style.display=b?"":"none"; $("#fab").style.display=b?"":"none"; $("#zoomctl").style.display=b?"":"none";
   $("#sum").classList.toggle("on",v==="sum"); $("#steps").classList.toggle("on",v==="steps"); $("#projs").classList.toggle("on",v==="projs"); rerender();
 }
 function shift(n){ const d=new Date(cur+"T12:00:00"); d.setDate(d.getDate()+n); cur=dkey(d); renderAll(); }
