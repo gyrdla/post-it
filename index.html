@@ -358,6 +358,66 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
 .learn{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .learn p{margin:2px 0;font-size:13.5px}
 .learn .seg button{font-size:12.5px;padding:5px 9px}
+
+/* hafta görünümü */
+.cal{flex-direction:column;padding:0!important;overflow:hidden!important}
+.cal.on{display:flex!important}
+.wbar{display:flex;align-items:center;gap:6px;padding:6px 10px;border-bottom:1px solid var(--line)}
+.wbar b{font-size:15px;white-space:nowrap}
+.wbar button{border:1px solid var(--line);background:var(--panel);border-radius:10px;min-width:34px;height:32px;padding:0 9px;font-weight:700}
+.wbar .sp{flex:1}
+.wgrid{flex:1;overflow:auto;position:relative;-webkit-overflow-scrolling:touch;touch-action:pan-x pan-y;overscroll-behavior:contain}
+.winner{position:relative}
+.whead{position:sticky;top:0;height:46px;z-index:6;background:var(--paper);border-bottom:1px solid var(--line)}
+.wh{position:absolute;top:0;height:46px;border:0;border-left:1px solid var(--line);background:none;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:2px 8px;text-align:left;overflow:hidden}
+.wh b{font-size:14.5px;white-space:nowrap}
+.wcorner{position:sticky;left:0;width:44px;height:46px;background:var(--paper);z-index:3}
+.wh small{font-size:11px;color:var(--muted);white-space:nowrap}
+.wh small i{font-style:normal;color:#D0566E;font-weight:700}
+.wh.today b{color:#D0566E}
+.wh.sel{background:var(--paper2)}
+.whours{position:sticky;left:0;width:44px;z-index:5;background:var(--paper)}
+.whours span{position:absolute;left:4px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;transform:translateY(-7px)}
+.wl{position:absolute;left:44px;right:0;border-top:1px solid var(--line);pointer-events:none}
+.wc{position:absolute;border-left:1px solid var(--line);background-image:linear-gradient(to bottom,transparent calc(50% - .5px),color-mix(in srgb,var(--line) 45%,transparent) calc(50% - .5px),color-mix(in srgb,var(--line) 45%,transparent) calc(50% + .5px),transparent calc(50% + .5px))}
+.wc.today{background-color:color-mix(in srgb,var(--flame) 7%,transparent)}
+.wb{position:absolute;overflow:hidden;border-radius:6px;padding:2px 6px;color:#2A2540;line-height:1.15;touch-action:pan-x pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;z-index:2}
+.wb b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:12px;font-weight:700;overflow:hidden;word-break:break-word}
+.wb small{display:block;font-size:10.5px;opacity:.75;white-space:nowrap}
+.wb.real{background:var(--bc);opacity:.9}
+.wb.plan{background:color-mix(in srgb,var(--bc) 72%,var(--panel));border-left:4px solid var(--bc);box-shadow:0 2px 6px -3px rgba(40,30,70,.35)}
+.wb.dn{opacity:.45}.wb.dn b{text-decoration:line-through}
+.wb.run{outline:2px solid var(--flame);z-index:3}
+.wb.fix{border-left-width:6px;border-left-style:double}
+.wb.brk{background:repeating-linear-gradient(45deg,var(--paper2) 0 6px,transparent 6px 12px);border:1px dashed var(--line);color:var(--muted);z-index:1}
+.wb.lift{outline:3px solid var(--flame);transform:scale(1.03);z-index:9}
+.wb .its{margin:2px 0 0;padding-left:15px;font-size:11px}
+.wb .its li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wb .its li.dn{text-decoration:line-through;opacity:.6}
+.wb .its em{font-style:normal;opacity:.65;margin-left:4px}
+.wb .its .more{list-style:none;margin-left:-15px;opacity:.6}
+.wnow{position:absolute;border-top:2px solid #E0566E;z-index:4;pointer-events:none}
+.wnow::before{content:"";position:absolute;left:-5px;top:-6px;width:10px;height:10px;border-radius:50%;background:#E0566E}
+.wtray{display:flex;gap:8px;align-items:stretch;overflow-x:auto;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);background:var(--panel);scrollbar-width:none;min-height:58px}
+.wtray::-webkit-scrollbar{display:none}
+.wtray .lbl{font-size:12px;color:var(--muted);align-self:center;white-space:nowrap}
+.wchip{flex:none;max-width:170px;text-align:left;border:0;border-left:5px solid var(--bc);background:var(--is);color:#2A2540;border-radius:4px;padding:5px 9px;box-shadow:0 3px 8px -5px rgba(40,30,70,.5);touch-action:pan-x;user-select:none;-webkit-user-select:none}
+.wchip b{display:block;font-family:var(--hand);font-size:15px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wchip small{font-size:10.5px;opacity:.7;white-space:nowrap}
+.wchip.over{outline:2px dashed #E0566E}
+.wspread{flex:none;border:0;border-radius:10px;background:var(--ink);color:var(--paper);font-weight:700;padding:0 12px;white-space:nowrap}
+.wghost{position:fixed;z-index:95;pointer-events:none;transform:translate(-50%,-110%);background:var(--is);color:#2A2540;border-radius:6px;padding:6px 10px;box-shadow:0 10px 24px -6px rgba(0,0,0,.45);max-width:200px}
+.wghost b{display:block;font-size:13px}
+.wghost small{font-size:12px;font-weight:700;color:#B4415A}
+.its-n{font-size:11.5px;font-weight:700;margin-top:4px;opacity:.75}
+.its-edit{display:flex;flex-direction:column;gap:5px}
+.its-edit .ie,.its-edit label{display:flex;align-items:center;gap:6px;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:6px 8px}
+.its-edit span{flex:1;font-family:var(--hand);font-size:17px}
+.its-edit em{font-style:normal;font-size:12px;color:var(--muted)}
+.its-edit .mn{width:54px;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.its-edit small{font-size:12px;color:var(--muted)}
+.its-edit button{border:0;background:none;color:var(--muted);padding:2px 4px}
+.its-edit input[type=checkbox]{width:20px;height:20px;accent-color:var(--ink)}
 </style>
 </head>
 <body>
@@ -370,7 +430,7 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
   </div>
   <div class="tabs" role="group" aria-label="Görünüm">
     <button id="tBoard" aria-pressed="true">Pano</button><button id="tCal" aria-pressed="false">Takvim</button>
-    <button id="tSteps" aria-pressed="false">Adımlar</button><button id="tProj" aria-pressed="false">Projeler</button><button id="tUfuk" aria-pressed="false">Ufuk</button><button id="tSum" aria-pressed="false">Örüntüler</button>
+    <button id="tSteps" aria-pressed="false">Adımlar</button><button id="tProj" aria-pressed="false">Projeler</button><button id="tSum" aria-pressed="false">Örüntüler</button>
   </div>
   <span class="sync" id="sync"></span>
   <button class="drv" id="drv">Drive</button>
@@ -387,7 +447,6 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
 <main class="projs" id="projs"></main>
 <main class="sum" id="sum"></main>
 <main class="cal" id="cal"></main>
-<main class="ufuk" id="ufuk"></main>
 
 <div class="zoomctl" id="zoomctl"><button id="zOut" aria-label="Uzaklaştır">−</button><span id="zLbl">100%</span><button id="zIn" aria-label="Yakınlaştır">+</button></div>
 <div class="fab" id="fab">
@@ -600,6 +659,7 @@ function cardHTML(k,now){
     <div class="kind">${k.kind==="is"?"İş":"Olay"}${k.est?` · tahmin ${k.est} dk`:""}${k.from?" · ↻ taşındı":""}${k.proj&&proj(k.proj)?`<span class="pj">${proj(k.proj).emoji||"◈"} ${esc(proj(k.proj).short||proj(k.proj).title)}</span>`:""}</div>
     <h3>${esc(k.title||"Adsız")}</h3>
     <div class="t">${k.kind==="is"?`<span>eşik <b data-t="e" data-id="${k.id}">${fmt(e)}</b></span>`:""}<span>süre <b data-t="s" data-id="${k.id}">${fmt(s)}</b></span></div>
+    ${(k.items||[]).length?`<div class="its-n">☑ ${k.items.filter(i=>i.done).length}/${k.items.length} adım</div>`:""}
     ${conds?`<div class="cs">${conds}</div>`:""}
     ${tag}
   </div>`;
@@ -685,7 +745,7 @@ function closeSheet(){
   openId=null; $("#scrim").classList.remove("open"); $("#sheet").classList.remove("open");
   rerender();
 }
-function rerender(){ if(view==="cal") renderCal(); else if(view==="ufuk") renderUfuk(); else if(view==="sum") renderSum(); else if(view==="steps") renderSteps(); else if(view==="projs") renderProjects(); else renderBoard(); }
+function rerender(){ if(view==="cal") renderCal(); else if(view==="sum") renderSum(); else if(view==="steps") renderSteps(); else if(view==="projs") renderProjects(); else renderBoard(); }
 function K(){ return day().cards.find(x=>x.id===openId); }
 function renderSheet(){
   if(openId&&String(openId).startsWith("P:")) return renderProjSheet();
@@ -707,7 +767,7 @@ function renderSheet(){
   <div class="row"><input class="in title" id="fTitle" placeholder="${isIs?"ör. Çamaşırı yıka":"ör. Telefonda kaydırdım"}" value="${esc(k.title)}"></div>
   <div class="row"><div class="seg" role="group" aria-label="Tür">
     <button data-kind="is" aria-pressed="${isIs}">İş</button><button data-kind="olay" aria-pressed="${!isIs}">Olay</button></div></div>
-  <div id="fLearnW">${learnHTML(k)}</div>
+  ${isIs?itemsEditHTML(k):""}
   ${isIs?`<div class="row"><label for="fEst">Sence ne kadar sürer? (dakika)</label><input class="in" id="fEst" type="number" inputmode="numeric" min="0" placeholder="ör. 20" value="${esc(k.est)}"></div>`:""}
   <div class="row"><div class="l">Sayaçlar</div>
     <div class="clock">
@@ -742,9 +802,8 @@ function renderSheet(){
   <button class="danger" id="fDel">Kartı sil</button>`;
 
   const sh=$("#sheet");
-  $("#sDone").onclick=closeSheet; bindLearn(k);
+  $("#sDone").onclick=closeSheet; bindItems(k);
   $("#fTitle").oninput=e=>{k.title=e.target.value; save();};
-  $("#fTitle").onchange=()=>{ const w=$("#fLearnW"); if(w){ w.innerHTML=learnHTML(k); bindLearn(k); } };
   const est=$("#fEst"); if(est) est.oninput=e=>{k.est=e.target.value; save();};
   const mE=$("#mE"); if(mE) mE.oninput=e=>{k.manualEsik=e.target.value===""?null:e.target.value; save(); tick();};
   $("#mS").oninput=e=>{k.manualSure=e.target.value===""?null:e.target.value; save(); tick();};
@@ -805,7 +864,7 @@ function tick(){
   });
 }
 setInterval(tick,1000);
-setInterval(()=>{ if(view==="cal"&&!openId&&!$("#dlg").classList.contains("open")) renderCal(); },60000);
+setInterval(()=>{ if(view==="cal"&&!openId&&!$("#dlg").classList.contains("open")&&!document.querySelector(".wghost,.lift")) renderCal(); },60000);
 
 /* ---------- summary ---------- */
 function renderSum(){
@@ -933,18 +992,23 @@ function renderSteps(){
 /* ---------- brain dump: many cards at once ---------- */
 function brainDump(){
   const d=$("#dlg"), b=$("#dbx");
-  b.innerHTML=`<p>Aklındakileri dök. Her satır bir kart olur.</p>
-    <textarea class="in" id="bdIn" placeholder="Ağda al&#10;Scoby tahtasını çek&#10;Kabloları düzenle"></textarea>
+  b.innerHTML=`<p>Aklındakileri dök. Her satır bir post-it olur.</p>
+    <p class="small">Altına “-” ile başlayan satırlar o post-it'in adımları olur. Sona dakika yazabilirsin, yazmazsan uygulama doldurur.</p>
+    <textarea class="in" id="bdIn" placeholder="Banyo düzenlemek&#10;- banyo silmek 10&#10;- süpürmek&#10;Ağda yapmak 30&#10;Sticker almak"></textarea>
     <div class="acts"><button id="dNo">Vazgeç</button><button class="ok" id="dOk">Panoya at</button></div>`;
   d.classList.add("open"); setTimeout(()=>$("#bdIn").focus(),30);
   const close=()=>{ d.classList.remove("open"); b.innerHTML=""; };
   $("#dNo").onclick=close; d.onclick=e=>{ if(e.target===d) close(); };
   $("#dOk").onclick=()=>{
-    const lines=$("#bdIn").value.split(/\n+/).map(x=>x.replace(/^[-•*\d.)\s]+/,"").trim()).filter(Boolean);
+    const raw=$("#bdIn").value.split(/\n+/).filter(x=>x.trim());
+    const allDash=raw.length&&raw.every(x=>/^\s*[-•*]/.test(x));
+    const groups=[]; raw.forEach(x=>{ const sub=!allDash&&/^\s*[-•*–]/.test(x)&&groups.length; const t=x.replace(/^[-•*–\d.)\s]+/,"").trim(); if(!t) return;
+      const pm=parseMin(t); if(sub) (groups[groups.length-1].items=groups[groups.length-1].items||[]).push({t:pm.t,min:pm.min}); else groups.push({t:pm.t,est:pm.min}); });
+    const lines=groups.map(g=>g.t);
     close(); if(!lines.length) return;
     const w=$("#wrap"), cards=day().cards, x0=w.scrollLeft+16, y0=w.scrollTop+16, cols=Math.max(1,Math.floor((w.clientWidth-16)/186));
     const spots=freeSpots(lines.length);
-    lines.forEach((t,i)=>cards.push({id:uid(),kind:"is",title:t,est:"",x:spots[i][0],y:spots[i][1],
+    groups.forEach((g,i)=>cards.push({id:uid(),kind:"is",title:g.t,est:g.est?String(g.est):"",items:g.items,x:spots[i][0],y:spots[i][1],
       rot:+(Math.random()*4-2).toFixed(1),cond:[],causes:[],needs:[],with:[],createdAt:Date.now()}));
     save(); renderBoard(); toast(lines.length+" kart eklendi");
   };
@@ -969,7 +1033,7 @@ function carryForward(){
   lo.cards.forEach(c=>{
     today.cards.push({id:map[c.id],kind:"is",title:c.title,est:c.est||"",x:c.x,y:c.y,rot:c.rot||0,
       cond:[],causes:[],needs:(c.needs||[]).filter(n=>map[n]).map(n=>map[n]),with:(c.with||[]).filter(n=>map[n]).map(n=>map[n]),
-      note:c.note||"",from:lo.key,proj:c.proj,est:c.est||"",createdAt:Date.now()});
+      note:c.note||"",from:lo.key,proj:c.proj,est:c.est||"",items:c.items?JSON.parse(JSON.stringify(c.items)):undefined,cat:c.cat,pri:c.pri,createdAt:Date.now()});
     c.carried=true;
   });
   (S.projects||[]).forEach(p=>(p.steps||[]).forEach(st=>{ if(st.card&&st.card.day===lo.key&&map[st.card.id]) st.card={day:cur,id:map[st.card.id]}; }));
@@ -1233,7 +1297,9 @@ const KW=[
   ["rutin",/çamaşır|bulaşık|sil|süpür|temizl|düzen|topla|yerleştir|kahvaltı|yemek|dolap|çöp|çarşaf|havalandır|sepet|kablo|tüy|plan|brain/]
 ];
 const STOP=new Set(["istiyorum","istiyom","lazım","lazim","gerek","gerekiyor","bir","bi","ve","için","ile","şey","bişey","yapmak","yapmam","yapayım","yapıcam","etmek","olarak","şu","bu","da","de","ki"]);
-function normT(t){ return String(t||"").toLocaleLowerCase("tr").replace(/(.)\1{2,}/g,"$1").replace(/[^a-zçğıöşü0-9 ]/g," ").split(/\s+/).filter(w=>w&&!STOP.has(w)).map(w=>w.slice(0,5)); }
+const normC=new Map();
+function normT(t){ t=String(t||""); if(normC.has(t)) return normC.get(t); const r=normT0(t); normC.set(t,r); return r; }
+function normT0(t){ return String(t||"").toLocaleLowerCase("tr").replace(/(.)\1{2,}/g,"$1").replace(/[^a-zçğıöşü0-9 ]/g," ").split(/\s+/).filter(w=>w&&!STOP.has(w)).map(w=>w.slice(0,5)); }
 function simT(a,b){ const A=new Set(normT(a)), B=new Set(normT(b)); if(!A.size||!B.size) return 0; let i=0; A.forEach(x=>{ if(B.has(x)) i++; }); return i/(A.size+B.size-i); }
 function catOf(k){
   if(k.cat) return k.cat;
@@ -1269,6 +1335,7 @@ function ratio(){
   const m=median(r); return m?Math.min(5,Math.max(1,m)):2;
 }
 function predictMin(k){
+  if((k.items||[]).length){ const r=k.items.filter(i=>!i.done).reduce((a,i)=>a+itemMin(i),0); return Math.max(5,Math.round(r/5)*5); }
   const L=learned(k); let m;
   if(L.n) m=L.dur; else if(+k.est>0) m=+k.est*ratio(); else m=CATDEF[catOf(k)]||30;
   if(k.startAt&&!k.endAt) m=Math.max(5,m-(sureMs(k,Date.now())||0)/60000);
@@ -1357,7 +1424,7 @@ function planDay(key){
 function moveCard(k,toKey,fromKey){
   fromKey=fromKey||cur; if(!S.days[toKey]) S.days[toKey]={cards:[]};
   const n={id:uid(),kind:k.kind,title:k.title,est:k.est||"",x:k.x,y:k.y,rot:k.rot||0,cond:[],causes:[],needs:[],with:[],note:k.note||"",
-    from:fromKey,proj:k.proj,cat:k.cat,pri:k.pri,createdAt:Date.now()};
+    from:fromKey,proj:k.proj,cat:k.cat,pri:k.pri,items:k.items?JSON.parse(JSON.stringify(k.items)):undefined,createdAt:Date.now()};
   S.days[toKey].cards.push(n); k.carried=true; delete k.planAt; delete k.planDur;
   (S.projects||[]).forEach(p=>allSteps(p.steps).forEach(st=>{ if(st.card&&st.card.id===k.id) st.card={day:toKey,id:n.id}; }));
   return n;
@@ -1379,205 +1446,218 @@ function spreadWeek(key){
   return moved;
 }
 
-/* ---------- Takvim view ---------- */
-const PX=1.15;
+/* ---------- Takvim: vertical week, whole day ---------- */
 function weekKeys(key){ const d=new Date(key+"T12:00:00"); const dow=(d.getDay()+6)%7; d.setDate(d.getDate()-dow); return [...Array(7)].map((_,i)=>{ const x=new Date(d); x.setDate(d.getDate()+i); return dkey(x); }); }
-function openLoad(key){ const cs=(S.days[key]?S.days[key].cards:[]).filter(c=>c.kind==="is"&&!c.carried&&!isDone(c)&&(c.title||"").trim()); return {n:cs.length,min:cs.reduce((a,c)=>a+predictMin(c),0)}; }
+let CZ=1; try{ CZ=Math.min(2.2,Math.max(0.5,+localStorage.getItem("postit-calzoom")||1)); }catch(e){}
+const COLW=()=>Math.round(Math.max(150,((document.getElementById("cal")||{}).clientWidth||390)-44)/7>150?Math.max(150,(((document.getElementById("cal")||{}).clientWidth||390)-44)/7)*CZ:150*CZ), HH=()=>Math.round(60*CZ), HDR=46, GUT=44;
+const todayKey=()=>dkey(new Date());
+function planSig(D){
+  return D.cards.filter(k=>k.kind==="is"&&!k.carried&&(k.title||"").trim()).map(k=>[k.id,isDone(k)?1:0,k.fixAt??"",k.pri?1:0,(k.needs||[]).join("."),(k.items||[]).map(i=>(i.done?1:0)+":"+(i.min||"")).join(","),k.est||"",k.startAt?1:0].join("|")).sort().join(";")+"#"+JSON.stringify(S.prefs||{});
+}
+function behind(D,key){
+  if(key!==todayKey()||!D.plan) return false; const nowM=minOf(Date.now(),key);
+  return D.cards.some(k=>k.planAt!=null&&k.fixAt==null&&!k.carried&&!isDone(k)&&!(k.startAt&&!k.endAt)&&k.planAt<nowM-10);
+}
+function autoPlan(keys){
+  let ch=false; const tk=todayKey();
+  keys.forEach(key=>{ if(key<tk) return; const D=S.days[key]; if(!D) return;
+    const open=D.cards.some(k=>k.kind==="is"&&!k.carried&&!isDone(k)&&(k.title||"").trim());
+    if(!open){ if(D.plan){ delete D.plan; ch=true; } return; }
+    const sig=planSig(D);
+    if(D.plan&&D.plan.sig===sig&&!behind(D,key)) return;
+    planDay(key); D.plan.sig=sig; ch=true; });
+  if(ch) save();
+}
+function calBlocks(wk){
+  const keys=new Set(wk), out=[];
+  const near=[...wk]; const pre=new Date(wk[0]+"T12:00:00"); pre.setDate(pre.getDate()-1); near.unshift(dkey(pre));
+  near.forEach(key=>{ const D=S.days[key]; if(!D) return;
+    D.cards.forEach(k=>{ if(k.carried) return;
+      if(k.startAt){ const s=sureMs(k,Date.now()); const d=Math.min(360,Math.max(1,(s||0)/60000)); out.push({lane:"real",key,k,ts:k.startAt,dur:d}); }
+      if(k.planAt!=null&&!(isDone(k)&&k.startAt)) out.push({lane:"plan",key,k,ts:dayMid(key)+k.planAt*60000,dur:k.planDur||predictMin(k)}); });
+    ((D.plan&&D.plan.breaks)||[]).forEach(b=>out.push({lane:"brk",key,b,ts:dayMid(key)+b.at*60000,dur:b.dur})); });
+  return out.map(x=>{ const dt=new Date(x.ts), col=wk.indexOf(dkey(dt)); if(col<0) return null;
+    const m=dt.getHours()*60+dt.getMinutes()+dt.getSeconds()/60; return Object.assign(x,{col,m,dur:Math.min(x.dur,1440-m)}); }).filter(Boolean);
+}
+function itemsHTML(k,maxLines){
+  const it=k.items||[]; if(!it.length||maxLines<1) return "";
+  return `<ol class="its">${it.slice(0,maxLines).map(i=>`<li class="${i.done?"dn":""}">${esc(i.t)}<em>${itemMin(i)}</em></li>`).join("")}${it.length>maxLines?`<li class="more">+${it.length-maxLines}</li>`:""}</ol>`;
+}
 function renderCal(){
-  const P=prefs(), D=day(), isT=cur===dkey(new Date()), nowM=minOf(Date.now(),cur);
-  const wk=weekKeys(cur), cap=P.sleep-P.wake;
-  const strip=wk.map(k=>{ const L=openLoad(k), cs=(S.days[k]?S.days[k].cards:[]).filter(c=>!c.carried&&c.kind==="is"), dn=cs.filter(isDone).length;
-    const pct=Math.min(100,L.min/cap*100), over=L.min>cap; const dd=new Date(k+"T12:00:00");
-    return `<button class="wd${k===cur?" on":""}${k===dkey(new Date())?" today":""}" data-day="${k}"><span class="wn">${GK[dd.getDay()]}</span><b>${dd.getDate()}</b>
-      <span class="wbar"><i style="height:${pct}%;background:${over?"#E07A8A":"var(--flame)"}"></i></span><small>${dn}/${cs.length}</small></button>`; }).join("");
-  const L=openLoad(cur), left=Math.max(0,P.sleep-Math.max(P.wake,isT?nowM:P.wake));
-  const plan=D.plan;
-  const planned=D.cards.filter(k=>k.planAt!=null&&!k.carried);
-  const behind=isT&&plan?planned.filter(k=>!isDone(k)&&!(k.startAt&&!k.endAt)&&k.planAt+k.planDur<nowM-10).length:0;
-  const g0=Math.floor(Math.min(P.wake,...planned.map(k=>k.planAt),...D.cards.filter(k=>k.startAt&&!k.carried).map(k=>minOf(k.startAt,cur)).filter(m=>m>0))/60)*60;
-  const g1=Math.ceil(Math.max(P.sleep,...planned.map(k=>k.planAt+k.planDur))/60)*60;
-  let hours=""; for(let m=g0;m<=g1;m+=60) hours+=`<div class="hr" style="top:${(m-g0)*PX}px"><span>${hm(m)}</span></div>`;
-  const real=D.cards.filter(k=>k.startAt&&!k.carried).map(k=>{ const a=minOf(k.startAt,cur), d=Math.max(1,(sureMs(k,Date.now())||0)/60000);
-    if(a<g0||a>g1) return ""; const c=CATS[catOf(k)].c;
-    return `<button class="blk real${d*PX<34?" sm":""}" data-blk="${k.id}" style="top:${(a-g0)*PX}px;height:${Math.max(16,d*PX)}px;background:${c}"><b>${esc(k.title||"Adsız")}</b><small>${hm(a)} · ${fmtMin(d*60000)}</small></button>`; }).join("");
-  const pl=planned.map(k=>{ const c=CATS[catOf(k)].c, dn=isDone(k), run=k.startAt&&!k.endAt;
-    return `<button class="blk plan${k.planDur*PX<36?" sm":""}${dn?" dn":""}${run?" run":""}${k.fixAt!=null?" fix":""}" data-blk="${k.id}" style="top:${(k.planAt-g0)*PX}px;height:${Math.max(18,k.planDur*PX-2)}px;--bc:${c}">
-      <b>${k.pri?"⭐ ":""}${k.fixAt!=null?"📌 ":""}${dn?"✓ ":""}${esc(k.title)}</b><small>${hm(k.planAt)}–${hm(k.planAt+k.planDur)} · ${k.planDur} dk${carryCount(k)>=3?" · ↻"+carryCount(k):""}</small></button>`; }).join("")
-    +(plan?plan.breaks.map(b=>`<div class="blk brk${b.dur*PX<34?" sm":""}" style="top:${(b.at-g0)*PX}px;height:${Math.max(16,b.dur*PX-2)}px"><b>☕ ${esc(b.label)}</b><small>${hm(b.at)} · ${b.dur} dk</small></div>`).join(""):"");
-  const over=plan?plan.overflow.map(id=>D.cards.find(k=>k.id===id)).filter(k=>k&&!k.carried&&!isDone(k)):[];
-  const overMin=over.reduce((a,k)=>a+predictMin(k),0);
-  const legend=Object.entries(CATS).map(([k,v])=>`<span><i style="background:${v.c}"></i>${v.n}</span>`).join("");
+  const wk=weekKeys(cur); autoPlan(wk);
+  const cw=COLW(), hh=HH(), tk=todayKey(), now=new Date(), nowM=now.getHours()*60+now.getMinutes();
+  const bl=calBlocks(wk);
+  // side-by-side layout for overlapping blocks (same day, same lane)
+  const minVis=16*60/hh; const groups={};
+  bl.forEach(x=>{ const g=x.col+(x.lane==="real"?"r":"p"); (groups[g]=groups[g]||[]).push(x); });
+  const hasPlan=new Set(bl.filter(x=>x.lane!=="real").map(x=>x.col));
+  Object.entries(groups).forEach(([gk,arr])=>{ const mv=gk.endsWith("r")?minVis:0; arr.sort((a,b)=>a.m-b.m); let cluster=[], end=-1;
+    const flush=()=>{ const lanes=[]; cluster.forEach(x=>{ let i=lanes.findIndex(e=>e<=x.m); if(i<0){ i=lanes.length; lanes.push(0); } lanes[i]=x.m+Math.max(x.dur,mv); x.sub=i; }); cluster.forEach(x=>x.subs=lanes.length); cluster=[]; };
+    arr.forEach(x=>{ if(x.m>=end&&cluster.length) flush(); cluster.push(x); end=Math.max(end,x.m+Math.max(x.dur,mv)); }); if(cluster.length) flush(); });
+  const head=wk.map((k,i)=>{ const dd=new Date(k+"T12:00:00"), D=S.days[k];
+    const open=D?D.cards.filter(c=>c.kind==="is"&&!c.carried&&!isDone(c)&&(c.title||"").trim()):[];
+    const done=D?D.cards.filter(c=>c.kind==="is"&&!c.carried&&isDone(c)).length:0;
+    const over=D&&D.plan?D.plan.overflow.filter(id=>open.some(c=>c.id===id)).length:0;
+    return `<button class="wh${k===tk?" today":""}${k===cur?" sel":""}" data-day="${k}" style="left:${GUT+i*cw}px;width:${cw}px"><b>${GK[dd.getDay()]} ${dd.getDate()}</b><small>${done}✓ · ${open.length} açık${over?` · <i>${over} sığmadı</i>`:""}</small></button>`; }).join("");
+  let hours="", labels=""; for(let h=0;h<=24;h++){ hours+=`<div class="wl" style="top:${HDR+h*hh}px"></div>`; if(h>0&&h<24) labels+=`<span style="top:${h*hh}px">${pad(h)}:00</span>`; }
+  const cols=wk.map((k,i)=>`<div class="wc${k===tk?" today":""}" data-col="${i}" style="left:${GUT+i*cw}px;width:${cw}px;top:${HDR}px;height:${24*hh}px;background-size:100% ${hh}px"></div>`).join("");
+  const blocks=bl.map(x=>{ const top=HDR+x.m*hh/60, h=Math.max(14,x.dur*hh/60-2), left=GUT+x.col*cw;
+    const full=x.lane==="real"&&!hasPlan.has(x.col);
+    const lw=(full?cw:x.lane==="real"?cw*0.38:cw*0.62)/(x.subs||1), lx=left+(x.lane==="real"?0:cw*0.38)+lw*(x.sub||0)+2;
+    if(x.lane==="brk") return `<div class="wb brk" style="top:${top}px;height:${h}px;left:${lx}px;width:${lw-4}px"><b>☕ ${esc(x.b.label)}</b></div>`;
+    const k=x.k, c=CATS[catOf(k)].c, real=x.lane==="real";
+    const lines=Math.floor((h-30)/15);
+    return `<div class="wb ${x.lane}${isDone(k)&&!real?" dn":""}${k.startAt&&!k.endAt?" run":""}${k.fixAt!=null?" fix":""}" data-bk="${k.id}" data-key="${x.key}" style="top:${top}px;height:${h}px;left:${lx}px;width:${lw-4}px;--bc:${c}" title="${esc(k.title||"")}">
+      <b>${k.pri?"⭐":""}${k.fixAt!=null?"📌":""}${isDone(k)&&!real?"✓ ":""}${esc(k.title||"Adsız")}</b>${h>=28?`<small>${hm(x.m)}${real?"":"–"+hm(x.m+x.dur)} · ${Math.round(x.dur)} dk</small>`:""}${real?"":itemsHTML(k,lines)}</div>`; }).join("");
+  const nowCol=wk.indexOf(tk);
+  const nowL=nowCol>=0?`<div class="wnow" style="top:${HDR+nowM*hh/60}px;left:${GUT+nowCol*cw}px;width:${cw}px"></div>`:"";
+  // unplaced post-its of this week (today onwards)
+  const loose=[]; wk.forEach(k=>{ if(k<tk) return; const D=S.days[k]; if(!D) return;
+    D.cards.forEach(c=>{ if(c.kind==="is"&&!c.carried&&!isDone(c)&&(c.title||"").trim()&&c.planAt==null) loose.push({k,c,over:!!(D.plan&&D.plan.overflow.includes(c.id))}); }); });
+  const d0=new Date(wk[0]+"T12:00:00"), d6=new Date(wk[6]+"T12:00:00");
   $("#cal").innerHTML=`
-  <section><div class="week">${strip}</div>
-    <p class="sub" style="margin-top:6px">Çubuk: o günün açık işleri, günün kaç saatini dolduruyor. Kırmızıysa sığmıyor.</p></section>
-  <section>
-    <div class="calhead"><div><h2>${isT?"Bugün":new Date(cur+"T12:00:00").toLocaleDateString("tr-TR",{weekday:"long",day:"numeric",month:"long"})}</h2>
-      <button class="framebtn" id="cFrame">🌅 ${hm(P.wake)} – ${hm(P.sleep)}${P.wakeLearned?" (öğrenilen)":""} ✎</button></div>
-      <button class="copy" id="cPlan">${plan?"Yeniden böl":"Günü böl"}</button></div>
-    <div class="fit${L.min>left?" bad":""}"><b>${L.n} açık iş ≈ ${fmtMin(L.min*60000)}</b> · ${isT?"günün kalanı":"gün"} ${fmtMin(left*60000)}
-      ${L.min>left?`<br>Bu liste bugüne sığmıyor. “Günü böl” sığanları saatlere koyar, kalanı haftaya dağıtabilirsin.`:""}</div>
-    ${behind?`<div class="fit bad">${behind} blok planın gerisinde kaldı. <button class="linkbtn" id="cRe">Şimdiden yeniden böl</button></div>`:""}
-    <div class="legend" style="margin:8px 0">${legend}</div>
-    <div class="lanes"><span>Gerçek</span><span>Plan</span></div>
-    <div class="grid" style="height:${(g1-g0)*PX+20}px">${hours}
-      <div class="lane l1">${real}</div><div class="lane l2">${pl}</div>
-      ${isT&&nowM>=g0&&nowM<=g1?`<div class="nowl" id="nowl" style="top:${(nowM-g0)*PX}px"><span>${hm(nowM)}</span></div>`:""}
-    </div>
-    ${!plan&&L.n?`<p class="sub">Henüz bölünmedi. “Günü böl”e bas: süreler senin ölçümlerinden gelir, önce-lazım sırası korunur, birlikte yapılacaklar yan yana gelir, araya mola ve yemek girer.</p>`:""}
-  </section>
-  ${over.length?`<section><h2>Bugüne sığmayanlar <small class="cnt">${over.length} iş · ${fmtMin(overMin*60000)}</small></h2>
-    <p class="sub">Bunlar kaybolmaz. Haftaya dağıt dersen önce-lazım sırasıyla, dolu olmayan günlere yerleşir.</p>
-    <button class="copy" id="cSpread">Haftaya dağıt</button>
-    <div class="steps-l" style="margin-top:10px">${over.map(k=>`<div class="st"><span>${esc(k.title)}</span><em>${predictMin(k)} dk</em><button class="take" data-tom="${k.id}">Yarına</button></div>`).join("")}</div></section>`:""}`;
-  const c=$("#cal");
-  c.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ cur=b.dataset.day; renderAll(); });
-  $("#cFrame").onclick=frameDialog;
-  $("#cPlan").onclick=()=>{ const p=planDay(cur); save(); renderCal(); toast(p.overflow.length?`${p.overflow.length} iş bugüne sığmadı`:"Gün bölündü"); };
-  const re=$("#cRe"); if(re) re.onclick=()=>{ planDay(cur); save(); renderCal(); };
-  const sp=$("#cSpread"); if(sp) sp.onclick=async()=>{ if(!(await sure("Sığmayanlar bu haftanın sonraki günlerine dağıtılsın mı?"))) return; const n=spreadWeek(cur); save(); renderCal(); toast(n+" iş haftaya dağıtıldı"); };
-  c.querySelectorAll("[data-tom]").forEach(b=>b.onclick=()=>{ const k=byId(b.dataset.tom); if(!k) return; const d=new Date(cur+"T12:00:00"); d.setDate(d.getDate()+1); moveCard(k,dkey(d)); if(D.plan) D.plan.overflow=D.plan.overflow.filter(x=>x!==k.id); save(); renderCal(); toast("Yarına atıldı"); });
-  c.querySelectorAll("[data-blk]").forEach(b=>b.onclick=()=>blockMenu(b.dataset.blk));
-  const nl=$("#nowl"); if(nl&&!renderCal.scrolled){ renderCal.scrolled=true; setTimeout(()=>{ nl.scrollIntoView({block:"center"}); },50); }
+  <div class="wbar"><button id="wPrev" aria-label="Önceki hafta">‹</button><b>${d0.getDate()} ${d0.toLocaleDateString("tr-TR",{month:"short"})} – ${d6.getDate()} ${d6.toLocaleDateString("tr-TR",{month:"short"})}</b><button id="wNext" aria-label="Sonraki hafta">›</button>
+    <button id="wToday">Bugün</button><span class="sp"></span><button id="wFrame" title="Uyanış ve yatış">🌅</button><button id="wOut" aria-label="Küçült">−</button><button id="wIn" aria-label="Büyüt">+</button></div>
+  <div class="wgrid" id="wgrid"><div class="winner" style="width:${GUT+7*cw}px;height:${HDR+24*hh+8}px"><div class="whead" style="width:${GUT+7*cw}px"><div class="wcorner"></div>${head}</div><div class="whours" style="height:${24*hh}px">${labels}</div>${cols}${hours}${blocks}${nowL}</div></div>
+  <div class="wtray" id="wtray">${loose.length?`<span class="lbl">Yerleşmemiş · sürükle bırak</span>${loose.map(x=>{ const dd=new Date(x.k+"T12:00:00");
+    return `<button class="wchip${x.over?" over":""}" data-ck="${x.c.id}" data-key="${x.k}" style="--bc:${CATS[catOf(x.c)].c}"><b>${esc(x.c.title)}</b><small>${GK[dd.getDay()]} ${dd.getDate()} · ${predictMin(x.c)} dk${x.over?" · sığmadı":""}</small></button>`; }).join("")}
+    ${loose.some(x=>x.over)?`<button class="wspread" id="wSpread">Sığmayanları haftaya dağıt</button>`:""}`:`<span class="lbl">Bu haftanın bütün işleri saatlere yerleşti.</span>`}</div>`;
+  const g=$("#wgrid");
+  if(renderCal.scroll){ g.scrollLeft=renderCal.scroll[0]; g.scrollTop=renderCal.scroll[1]; }
+  else { const sc=Math.max(0,(nowCol>=0?nowCol:0)*cw-cw*0.3); g.scrollLeft=sc; g.scrollTop=Math.max(0,HDR+(nowCol>=0?nowM:prefs().wake)*hh/60-g.clientHeight*0.35); }
+  g.onscroll=()=>{ renderCal.scroll=[g.scrollLeft,g.scrollTop]; };
+  $("#wPrev").onclick=()=>{ shift(-7); }; $("#wNext").onclick=()=>{ shift(7); };
+  $("#wToday").onclick=()=>{ cur=tk; renderCal.scroll=null; renderAll(); };
+  $("#wFrame").onclick=frameDialog;
+  $("#wIn").onclick=()=>calZoom(CZ*1.2); $("#wOut").onclick=()=>calZoom(CZ/1.2);
+  $("#cal").querySelectorAll(".wh[data-day]").forEach(b=>b.onclick=()=>{ cur=b.dataset.day; renderAll(); });
+  const sp=$("#wSpread"); if(sp) sp.onclick=()=>{ let n=0; wk.forEach(k=>{ if(k>=tk&&S.days[k]&&S.days[k].plan) n+=spreadWeek(k); }); save(); renderCal(); toast(n?n+" iş başka günlere yerleşti":"Bu haftada boş yer yok"); };
+  $("#cal").querySelectorAll(".wb[data-bk]").forEach(el=>calDrag(el,el.dataset.bk,el.dataset.key,true));
+  $("#cal").querySelectorAll(".wchip").forEach(el=>calDrag(el,el.dataset.ck,el.dataset.key,false));
+  calPinch(g);
+}
+function calZoom(z,keep){ const g=$("#wgrid"); const oz=CZ; CZ=Math.min(2.2,Math.max(0.5,z)); try{ localStorage.setItem("postit-calzoom",String(CZ)); }catch(e){}
+  if(g){ const f=CZ/oz; renderCal.scroll=[g.scrollLeft*f+(keep?keep[0]*(f-1):0),g.scrollTop*f+(keep?keep[1]*(f-1):0)]; } renderCal(); }
+function calPinch(g){
+  let d0=0,z0=1,mid=null;
+  const dist=t=>Math.hypot(t[0].clientX-t[1].clientX,t[0].clientY-t[1].clientY);
+  g.addEventListener("touchstart",e=>{ if(e.touches.length===2){ d0=dist(e.touches); z0=CZ; const r=g.getBoundingClientRect(); mid=[(e.touches[0].clientX+e.touches[1].clientX)/2-r.left,(e.touches[0].clientY+e.touches[1].clientY)/2-r.top]; e.preventDefault(); } },{passive:false});
+  g.addEventListener("touchmove",e=>{ if(e.touches.length===2&&d0){ e.preventDefault(); const z=z0*dist(e.touches)/d0; const inner=g.firstElementChild; inner.style.transformOrigin=`${g.scrollLeft+mid[0]}px ${g.scrollTop+mid[1]}px`; inner.style.transform=`scale(${z/CZ})`; g._z=z; } },{passive:false});
+  g.addEventListener("touchend",e=>{ if(d0&&e.touches.length<2){ d0=0; if(g._z) calZoom(g._z,mid); g._z=null; } });
+  g.addEventListener("wheel",e=>{ if(e.ctrlKey){ e.preventDefault(); calZoom(CZ*(e.deltaY<0?1.1:0.9)); } },{passive:false});
+}
+/* drag a block or a tray post-it onto a day+hour; tap = menu */
+function calDrag(el,id,key,isBlock){
+  el.addEventListener("pointerdown",e=>{
+    if(e.button>0) return;
+    const sx=e.clientX, sy=e.clientY; let ghost=null, armed=!isBlock, timer=null, moved=false;
+    if(isBlock) timer=setTimeout(()=>{ armed=true; el.classList.add("lift"); if(navigator.vibrate) navigator.vibrate(15); },320);
+    const g=$("#wgrid");
+    const mv=ev=>{
+      const dx=ev.clientX-sx, dy=ev.clientY-sy;
+      if(!armed){ if(Math.hypot(dx,dy)>8){ clearTimeout(timer); cleanup(); } return; }
+      if(!moved&&Math.hypot(dx,dy)>6){ moved=true; try{ el.setPointerCapture(ev.pointerId); }catch(x){}
+        ghost=el.cloneNode(true); ghost.className="wghost"; ghost.innerHTML=`<b>${esc((el.querySelector("b")||el).textContent)}</b><small></small>`; document.body.appendChild(ghost); }
+      if(moved){ ev.preventDefault(); ghost.style.left=ev.clientX+"px"; ghost.style.top=ev.clientY+"px";
+        const p=gridPos(ev.clientX,ev.clientY); ghost.querySelector("small").textContent=p?`${GK[new Date(p.key+"T12:00:00").getDay()]} ${hm(p.m)}`:"";
+        const r=g.getBoundingClientRect(); if(ev.clientY>r.bottom-30) g.scrollTop+=12; if(ev.clientY<r.top+HDR+10) g.scrollTop-=12; if(ev.clientX>r.right-20) g.scrollLeft+=12; if(ev.clientX<r.left+GUT) g.scrollLeft-=12; }
+    };
+    const cleanup=()=>{ el.removeEventListener("pointermove",mv); el.removeEventListener("pointerup",up); el.removeEventListener("pointercancel",up); el.classList.remove("lift"); if(ghost) ghost.remove(); };
+    const up=ev=>{ clearTimeout(timer); cleanup();
+      if(moved){ const p=gridPos(ev.clientX,ev.clientY); if(p) placeAt(id,key,p.key,p.m); return; }
+      if(ev.type==="pointerup"&&Math.hypot(ev.clientX-sx,ev.clientY-sy)<8){ cur=key; if(isBlock) blockMenu(id); else { renderAll(); openSheet(id); } } };
+    el.addEventListener("pointermove",mv); el.addEventListener("pointerup",up); el.addEventListener("pointercancel",up);
+  });
+  if(isBlock) el.addEventListener("contextmenu",e=>e.preventDefault());
+}
+function gridPos(x,y){
+  const g=$("#wgrid"); if(!g) return null; const r=g.getBoundingClientRect();
+  if(x<r.left||x>r.right||y<r.top||y>r.bottom) return null;
+  const ix=x-r.left+g.scrollLeft-GUT, iy=y-r.top+g.scrollTop-HDR; if(ix<0) return null;
+  const col=Math.floor(ix/COLW()); const wk=weekKeys(cur); if(col<0||col>6) return null;
+  const m=Math.max(0,Math.min(1425,Math.round(iy/HH()*60/15)*15));
+  return {key:wk[col],m};
+}
+function placeAt(id,fromKey,toKey,m){
+  const D=S.days[fromKey]; let k=D&&D.cards.find(x=>x.id===id); if(!k) return;
+  if(toKey<todayKey()){ toast("Geçmiş güne plan konmaz"); return; }
+  if(toKey!==fromKey){ k=moveCard(k,toKey,fromKey); }
+  k.fixAt=m; const T=S.days[toKey]; if(T.plan) T.plan.sig=null; if(D.plan) D.plan.sig=null;
+  save(); renderCal(); toast(`${GK[new Date(toKey+"T12:00:00").getDay()]} ${hm(m)} · sabitlendi`);
 }
 function frameDialog(){
   const P=prefs(), d=$("#dlg"), b=$("#dbx");
   b.innerHTML=`<p>Günün çerçevesi</p>
-    <div class="row"><label class="l" for="fw">Uyanış / başlangıç</label><input class="in" type="time" id="fw" value="${hm(P.wake)}"></div>
+    <div class="row"><label class="l" for="fw">Uyanış</label><input class="in" type="time" id="fw" value="${hm(P.wake)}"></div>
     <div class="row"><label class="l" for="fs">Yatış</label><input class="in" type="time" id="fs" value="${hm(P.sleep)}"></div>
-    <p class="small">Boş bırakırsan uyanış saatini panondaki ilk hareketlerinden öğrenir (şu an ${hm(learnedWake())}). Gece yarısından sonraki yatış, ertesi gün sayılır.</p>
+    <p class="small">Plan bu aralığa yerleşir. Uyanışı boş bırakırsan panondaki ilk hareketlerinden öğrenir (şu an ${hm(learnedWake())}).</p>
     <div class="acts"><button class="del" id="dDef">Öğrenilene dön</button><button id="dNo">Vazgeç</button><button class="ok" id="dOk">Kaydet</button></div>`;
   d.classList.add("open"); const close=()=>{ d.classList.remove("open"); b.innerHTML=""; };
   $("#dNo").onclick=close; d.onclick=e=>{ if(e.target===d) close(); };
-  $("#dDef").onclick=()=>{ S.prefs=S.prefs||{}; delete S.prefs.wake; close(); save(); renderCal(); };
+  $("#dDef").onclick=()=>{ S.prefs=S.prefs||{}; delete S.prefs.wake; close(); save(); rerender(); };
   $("#dOk").onclick=()=>{ const w=parseHM($("#fw").value); let s=parseHM($("#fs").value); S.prefs=S.prefs||{};
-    if(w!=null) S.prefs.wake=w; if(s!=null){ if(s<=(w??P.wake)) s+=1440; S.prefs.sleep=s; } close(); save(); renderCal(); };
+    if(w!=null) S.prefs.wake=w; if(s!=null){ if(s<=(w??P.wake)) s+=1440; S.prefs.sleep=s; } close(); save(); rerender(); };
 }
 function blockMenu(id){
   const k=byId(id); if(!k) return;
-  const d=$("#dlg"), b=$("#dbx"), run=k.startAt&&!k.endAt, L=learned(k);
+  const d=$("#dlg"), b=$("#dbx"), run=k.startAt&&!k.endAt;
   const nb=new Date(cur+"T12:00:00"); nb.setDate(nb.getDate()+1);
   b.innerHTML=`<p>${esc(k.title||"Adsız")}</p>
-    <p class="small">~${predictMin(k)} dk: ${esc(why(k))}${L.esik?` · başlaması genelde ${fmtMin(L.esik*60000)} sürüyor`:""}${carryCount(k)?` · ${carryCount(k)} kez taşındı`:""}</p>
+    <p class="small">~${predictMin(k)} dk · ${esc(why(k))}</p>
+    ${(k.items||[]).length?`<div class="its-edit">${k.items.map((it,i)=>`<label><input type="checkbox" data-it="${i}" ${it.done?"checked":""}> <span>${i+1}. ${esc(it.t)}</span><em>${itemMin(it)} dk</em></label>`).join("")}</div>`:""}
     <div class="menu">
-      ${isDone(k)?"":run?`<button data-m="end">✓ Bitirdim</button>`:`<button data-m="start">▶ Şimdi başla<small>Sayaç başlar, takvim gerçeği kaydeder</small></button>`}
-      <button data-m="pri">${k.pri?"☆ Öncelikten çıkar":"⭐ Öncelikli yap"}<small>Plan bunu öne alır</small></button>
-      <div class="fixrow"><label for="fx">📌 Saate sabitle</label><input class="in" type="time" id="fx" value="${k.fixAt!=null?hm(k.fixAt):(k.planAt!=null?hm(k.planAt):"")}"><button data-m="fix">Sabitle</button>${k.fixAt!=null?`<button data-m="unfix">Kaldır</button>`:""}</div>
-      ${isDone(k)?"":`<button data-m="tom">Yarına at<small>${nb.toLocaleDateString("tr-TR",{weekday:"long"})} gününe taşınır</small></button>`}
+      ${isDone(k)?"":run?`<button data-m="end">✓ Bitirdim</button>`:`<button data-m="start">▶ Şimdi başla<small>Gün buna göre kendiliğinden yeniden dizilir</small></button>`}
+      ${isDone(k)?"":`<button data-m="pri">${k.pri?"☆ Öncelikten çıkar":"⭐ Öncelikli yap"}</button>`}
+      ${k.fixAt!=null?`<button data-m="unfix">📌 Saat sabitlemesini kaldır<small>Uygulama yeniden kendi yerleştirir</small></button>`:""}
+      ${isDone(k)?"":`<button data-m="tom">Yarına at<small>${nb.toLocaleDateString("tr-TR",{weekday:"long"})}</small></button>`}
       <button data-m="open">Kartı aç</button></div>
+    <p class="small">Saatini değiştirmek için bloğa basılı tut ve sürükle.</p>
     <div class="acts"><button id="dNo">Kapat</button></div>`;
   d.classList.add("open"); const close=()=>{ d.classList.remove("open"); b.innerHTML=""; };
   $("#dNo").onclick=close; d.onclick=e=>{ if(e.target===d) close(); };
+  b.querySelectorAll("[data-it]").forEach(x=>x.onchange=()=>{ const it=k.items[+x.dataset.it]; it.done=x.checked; if(k.items.every(i=>i.done)&&!isDone(k)) k.doneMark=true; save(); });
   b.querySelectorAll("[data-m]").forEach(x=>x.onclick=()=>{ const m=x.dataset.m;
-    if(m==="open"){ close(); openSheet(id); return; }
+    if(m==="open"){ close(); renderAll(); openSheet(id); return; }
     if(m==="start"){ k.startAt=Date.now(); }
     if(m==="end"){ if(k.pauseAt){ k.pausedMs=(k.pausedMs||0)+(Date.now()-k.pauseAt); k.pauseAt=null; } k.endAt=Date.now(); }
     if(m==="pri") k.pri=!k.pri;
-    if(m==="fix"){ let v=parseHM($("#fx").value); if(v==null){ toast("Saat seç"); return; } if(v<prefs().wake-120) v+=1440; k.fixAt=v; }
     if(m==="unfix") k.fixAt=null;
     if(m==="tom"){ moveCard(k,dkey(nb)); }
-    close(); if(["pri","fix","unfix","end","tom"].includes(m)&&day().plan) planDay(cur); save(); renderCal(); });
+    close(); save(); rerender(); });
 }
 
-/* ---------- Ufuk view ---------- */
-function projStats(p){
-  const al=allSteps(p.steps), ok=al.filter(stepDone);
-  const times=ok.map(s=>s.doneAt||(cardOf(s)&&(cardOf(s).endAt||cardOf(s).createdAt))).filter(Boolean);
-  Object.values(S.days).forEach(v=>v.cards.forEach(c=>{ if(c.proj===p.id&&isDone(c)) times.push(c.endAt||c.createdAt||0); }));
-  const last=times.length?Math.max(...times):null;
-  const recent=times.filter(t=>t>Date.now()-28*864e5).length;
-  const remain=al.length-ok.length, pace=recent/4; // steps per week
-  const eta=remain&&pace>0?new Date(Date.now()+remain/pace*7*864e5):null;
-  return {total:al.length,done:ok.length,remain,last,idle:last?Math.floor((Date.now()-last)/864e5):null,pace,eta};
+/* ---------- steps inside a post-it ---------- */
+function itemMin(it){ if(+it.min>0) return +it.min; const L=learned({id:"_i",title:it.t}); return L.n?Math.max(5,Math.round(L.dur/5)*5):10; }
+function parseMin(t){ const m=/\s+(\d{1,3})\s*(dk|dakika|"|'|″|’’)?\s*$/i.exec(t); return m?{t:t.slice(0,m.index).trim(),min:+m[1]}:{t:t.trim(),min:null}; }
+function itemsEditHTML(k){
+  const it=k.items||[];
+  return `<div class="row"><div class="l">İçindeki adımlar (defterdeki gibi)</div>
+    ${it.length?`<div class="its-edit">${it.map((x,i)=>`<div class="ie"><input type="checkbox" data-ic="${i}" ${x.done?"checked":""} aria-label="Tamam"><span>${i+1}. ${esc(x.t)}</span><input class="mn" type="number" inputmode="numeric" min="0" data-im="${i}" value="${x.min??""}" placeholder="${itemMin(Object.assign({},x,{min:null}))}" aria-label="dakika"><small>dk</small><button data-iu="${i}" aria-label="Yukarı">↑</button><button data-id2="${i}" aria-label="Sil">✕</button></div>`).join("")}</div>
+    <p class="hint">Toplam ~${it.filter(x=>!x.done).reduce((a,x)=>a+itemMin(x),0)} dk. Boş dakikaları uygulama dolduruyor.</p>`:""}
+    <div class="addstep"><input class="in" id="fItem" placeholder="ör. Banyo silmek 10"><button id="fItemAdd">Ekle</button></div></div>`;
 }
-function renderUfuk(){
-  const wk=weekKeys(dkey(new Date())), now=Date.now();
-  const per=wk.map(k=>{ const tot={}; Object.keys(CATS).forEach(c=>tot[c]=0);
-    (S.days[k]?S.days[k].cards:[]).forEach(c=>{ if(c.carried) return; const m=measured(c); if(m) tot[catOf(c)]+=m; });
-    const moved=(S.days[k]?S.days[k].cards:[]).filter(c=>c.carried).length; return {k,tot,moved}; });
-  const max=Math.max(60,...per.map(p=>Object.values(p.tot).reduce((a,b)=>a+b,0)));
-  const sum={}; Object.keys(CATS).forEach(c=>sum[c]=per.reduce((a,p)=>a+p.tot[c],0)); const all=Object.values(sum).reduce((a,b)=>a+b,0)||1;
-  const bars=per.map(p=>{ const dd=new Date(p.k+"T12:00:00"), t=Object.values(p.tot).reduce((a,b)=>a+b,0);
-    return `<div class="ubar"><span class="ul">${GK[dd.getDay()]} ${dd.getDate()}</span><span class="ut">${Object.entries(p.tot).map(([c,v])=>v?`<i style="width:${v/max*100}%;background:${CATS[c].c}" title="${CATS[c].n}"></i>`:"").join("")}</span><small>${t?fmtMin(t*60000):"—"}${p.moved?` · ↻${p.moved}`:""}</small></div>`; }).join("");
-  const r=ratio();
-  const daysWith=Object.entries(S.days).filter(([,v])=>v.cards.some(c=>!c.carried&&measured(c))).slice(-7);
-  const avgMeasured=median(daysWith.map(([,v])=>v.cards.filter(c=>!c.carried).reduce((a,c)=>a+(measured(c)||0),0)))||0;
-  const avgOpen=median(Object.values(S.days).filter(v=>v.cards.length).slice(-7).map(v=>v.cards.filter(c=>c.kind==="is"&&(c.title||"").trim()&&!c.from).length))||0;
-  const ps=projects().slice().sort((a,b)=>({simdi:0,bekle:1,tohum:2}[a.status]-{simdi:0,bekle:1,tohum:2}[b.status]));
-  const prow=ps.map(p=>{ const s=projStats(p), pct=s.total?Math.round(s.done/s.total*100):0, n=nextStep(p);
-    const due=p.due?new Date(p.due+"T12:00:00"):null, late=due&&s.eta&&s.eta>due;
-    return `<button class="pc" data-p="${p.id}" style="--pc:${p.color}"><span class="pe">${p.emoji||"◈"}</span><span class="pb"><b>${esc(p.title)} <small class="st-${p.status}">${STATUS[p.status]}</small></b>
-      <span class="pbar"><i style="width:${pct}%;background:${p.color}"></i></span>
-      <small>${s.done}/${s.total} adım${s.idle!=null?` · son hareket ${s.idle?s.idle+" gün önce":"bugün"}`:" · hiç ilerleme yok"}${s.idle!=null&&s.idle>=7&&p.status!=="tohum"?" ⚠️":""}</small>
-      <small>${due?`hedef ${due.toLocaleDateString("tr-TR",{day:"numeric",month:"short"})}`:"hedef tarih yok"}${s.eta?` · bu hızla ${s.eta.toLocaleDateString("tr-TR",{day:"numeric",month:"short",year:s.eta.getFullYear()!==new Date().getFullYear()?"numeric":undefined})}`:s.remain?" · bu hızla bitmiyor":""}${late?" · ⚠️ yetişmiyor":""}</small>
-      ${n?`<span class="pn">▶ ${esc(n.t)}</span>`:""}</span></button>`; }).join("");
-  const m0=new Date(); m0.setDate(1);
-  const months=[...Array(12)].map((_,i)=>{ const d=new Date(m0); d.setMonth(m0.getMonth()+i); return d; });
-  const col=d=>{ const i=(d.getFullYear()-m0.getFullYear())*12+d.getMonth()-m0.getMonth(); return Math.max(0,Math.min(11,i)); };
-  const yrows=ps.filter(p=>p.status!=="tohum").map(p=>{ const s=projStats(p), due=p.due?new Date(p.due+"T12:00:00"):null, endD=s.eta||due;
-    const e=endD?col(endD):11, open=!endD;
-    return `<div class="yr"><span class="yl">${p.emoji||""} ${esc(p.short||p.title)}</span><span class="yt">
-      <i class="yb${open?" open":""}" style="left:0;width:${(e+1)/12*100}%;background:${p.color}"></i>${due?`<b class="yd" style="left:${(col(due)+.5)/12*100}%" title="hedef">◆</b>`:""}</span></div>`; }).join("");
-  const rts=routines(), todayCs=(S.days[dkey(new Date())]||{cards:[]}).cards;
-  const stuck=day().cards.filter(k=>k.kind==="is"&&!k.carried&&!isDone(k)&&carryCount(k)>=3).sort((a,b)=>carryCount(b)-carryCount(a));
-  $("#ufuk").innerHTML=`
-  <section><h2>Bu hafta nereye gitti?</h2><p class="sub">Ölçtüğün süreler, türlerine göre. ↻ o gün ertesine taşınan iş sayısı.</p>
-    <div class="legend">${Object.entries(CATS).map(([k,v])=>`<span><i style="background:${v.c}"></i>${v.n} ${Math.round(sum[k]/all*100)}%</span>`).join("")}</div>
-    <div class="ubars">${bars}</div></section>
-  <section><h2>Gerçekçilik</h2>
-    <div class="fit">İşlerin tahmininin <b>×${r.toFixed(1)}</b> katı sürüyor. Plan bunu artık hesaba katıyor.</div>
-    <div class="fit">Bir günde ortalama <b>${fmtMin(avgMeasured*60000)}</b> ölçülmüş iş var. Panoya günde yaklaşık <b>${Math.round(avgOpen)}</b> yeni iş yazıyorsun.</div></section>
-  ${stuck.length?`<section><h2>Üç kez ve daha fazla taşınanlar</h2><p class="sub">Bunlar iş değil, karar bekliyor: böl, bir saate sabitle ya da sil.</p>
-    <div class="steps-l">${stuck.map(k=>`<div class="st"><span>${esc(k.title)}</span><em>↻${carryCount(k)}</em><button class="sub" data-split="${k.id}">Böl</button><button class="take" data-fixk="${k.id}">Saate koy</button><button class="del" data-delk="${k.id}" aria-label="Sil">✕</button></div>`).join("")}</div></section>`:""}
-  <section><h2>Projeler</h2><p class="sub">İlerleme, son hareket ve bu hızla ne zaman biteceği. Hedef tarihi projeyi açıp “düzenle”den girersin.</p>
-    <div class="plist">${prow}</div></section>
-  <section><h2>Önümüzdeki 12 ay</h2><p class="sub">Çubuk, bu hızla bitiş ayına kadar uzanır. ◆ hedef tarihin. Kesik çubuk: hız ya da tarih yok.</p>
-    <div class="year"><div class="yr yh"><span class="yl"></span><span class="yt">${months.map(d=>`<span>${d.toLocaleDateString("tr-TR",{month:"short"}).slice(0,3)}</span>`).join("")}</span></div>${yrows}</div></section>
-  ${rts.length?`<section><h2>Rutinlerin</h2><p class="sub">Birden fazla gün yaptığın işler. Uygulama bunları tanıyor, süresini biliyor.</p>
-    <div class="steps-l">${rts.slice(0,14).map((x,i)=>{ const has=todayCs.some(c=>!c.carried&&simT(c.title,x.t)>=0.6);
-      return `<div class="st"><span>${esc(x.t)}</span><em>${x.days} gün${x.dur?` · ${fmtMin(x.dur*60000)}`:""}${x.hour?` · ~${hm(x.hour)}`:""}</em>${has?"<em>bugün var</em>":`<button class="take" data-rt="${i}">Bugüne</button>`}</div>`; }).join("")}</div></section>`:""}`;
-  const u=$("#ufuk");
-  u.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>openProj(b.dataset.p));
-  u.querySelectorAll("[data-rt]").forEach(b=>b.onclick=()=>{ const x=rts[+b.dataset.rt]; const tk=dkey(new Date()); const sv=cur; cur=tk; newCardNear(x.t,null); cur=sv; save(); renderUfuk(); toast("Bugüne eklendi"); });
-  u.querySelectorAll("[data-split]").forEach(b=>b.onclick=()=>openSheet(b.dataset.split));
-  u.querySelectorAll("[data-fixk]").forEach(b=>b.onclick=()=>{ setView("cal"); blockMenu(b.dataset.fixk); });
-  u.querySelectorAll("[data-delk]").forEach(b=>b.onclick=async()=>{ const k=byId(b.dataset.delk); if(!k||!(await sure(`“${k.title}” silinsin mi?`))) return;
-    const d=day(); d.cards=d.cards.filter(x=>x.id!==k.id); d.cards.forEach(x=>{x.needs=(x.needs||[]).filter(c=>c!==k.id); x.with=(x.with||[]).filter(c=>c!==k.id); x.causes=(x.causes||[]).filter(c=>c!==k.id);}); save(); renderUfuk(); });
-}
-
-/* ---------- sheet: what the app has learned about this card ---------- */
-function learnHTML(k){
-  if(k.kind!=="is"||!(k.title||"").trim()) return "";
-  const L=learned(k), sg=suggestNeeds(k), cc=carryCount(k), auto=catOf(Object.assign({},k,{cat:null}));
-  return `<div class="row learn"><div class="l">Uygulamanın bildiği</div>
-    <p>⏱ ~${predictMin(k)} dk · ${esc(why(k))}${L.esik?` · başlaman genelde ${fmtMin(L.esik*60000)}`:""}${L.hour?` · genelde ~${hm(L.hour)}`:""}</p>
-    ${cc?`<p>↻ ${cc} kez taşındı${cc>=3?" — bölmeyi ya da bir saate sabitlemeyi dene":""}</p>`:""}
-    ${sg.length?`<div class="pick"><span class="lbl">Geçen sefer bundan önce bunlar vardı — eksik olabilir:</span>${sg.map((s,i)=>`<button data-sg="${i}">＋ ${esc(s.t)}</button>`).join("")}</div>`:""}
-    <div class="seg" id="fCat" style="margin-top:8px"><button data-cat="" aria-pressed="${!k.cat}">Otomatik (${CATS[auto].n})</button>${Object.entries(CATS).map(([c,v])=>`<button data-cat="${c}" aria-pressed="${k.cat===c}" style="${k.cat===c?"":`border-left:6px solid ${v.c}`}">${v.n}</button>`).join("")}</div>
-  </div>`;
-}
-function bindLearn(k){
-  const sh=$("#sheet"), sg=suggestNeeds(k);
-  sh.querySelectorAll("[data-sg]").forEach(b=>b.onclick=()=>{ const s=sg[+b.dataset.sg]; if(!s) return;
-    let o=day().cards.find(x=>x.id!==k.id&&!x.carried&&simT(x.title,s.t)>=0.6);
-    if(o&&dependsOn(o,k.id)){ toast("Bu bağ döngü olurdu"); return; }
-    if(!o) o=newCardNear(s.t,k);
-    k.needs=k.needs||[]; if(!k.needs.includes(o.id)) k.needs.push(o.id); save(); renderSheet(); renderBoard(); toast("Eklendi"); });
-  sh.querySelectorAll("#fCat [data-cat]").forEach(b=>b.onclick=()=>{ k.cat=b.dataset.cat||null; save(); renderSheet(); });
+function bindItems(k){
+  const sh=$("#sheet"); const add=()=>{ const v=$("#fItem").value.trim(); if(!v) return; const p=parseMin(v); k.items=k.items||[]; k.items.push({t:p.t,min:p.min}); save(); renderSheet(); setTimeout(()=>{ const f=$("#fItem"); f&&f.focus(); },30); };
+  const fa=$("#fItemAdd"); if(!fa) return; fa.onclick=add; $("#fItem").onkeydown=e=>{ if(e.key==="Enter") add(); };
+  sh.querySelectorAll("[data-ic]").forEach(x=>x.onchange=()=>{ k.items[+x.dataset.ic].done=x.checked; if(k.items.every(i=>i.done)) k.doneMark=true; save(); renderSheet(); });
+  sh.querySelectorAll("[data-im]").forEach(x=>x.oninput=()=>{ k.items[+x.dataset.im].min=x.value===""?null:+x.value; save(); });
+  sh.querySelectorAll("[data-iu]").forEach(x=>x.onclick=()=>{ const i=+x.dataset.iu; if(!i) return; const a=k.items; [a[i-1],a[i]]=[a[i],a[i-1]]; save(); renderSheet(); });
+  sh.querySelectorAll("[data-id2]").forEach(x=>x.onclick=()=>{ k.items.splice(+x.dataset.id2,1); save(); renderSheet(); });
 }
 
 /* ---------- misc ---------- */
 let toastT; function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),1600); }
 function setView(v){
-  view=v; ["Board","Cal","Steps","Proj","Ufuk","Sum"].forEach(n=>$("#t"+n).setAttribute("aria-pressed",v===({Board:"board",Cal:"cal",Steps:"steps",Proj:"projs",Ufuk:"ufuk",Sum:"sum"})[n]));
+  view=v; ["Board","Cal","Steps","Proj","Sum"].forEach(n=>$("#t"+n).setAttribute("aria-pressed",v===({Board:"board",Cal:"cal",Steps:"steps",Proj:"projs",Sum:"sum"})[n]));
   const b=v==="board"; $("#wrap").style.display=b?"":"none"; $("#tray").style.display=b?"":"none"; $("#fab").style.display=b?"":"none"; $("#zoomctl").style.display=b?"":"none";
-  $("#sum").classList.toggle("on",v==="sum"); $("#steps").classList.toggle("on",v==="steps"); $("#projs").classList.toggle("on",v==="projs"); $("#cal").classList.toggle("on",v==="cal"); $("#ufuk").classList.toggle("on",v==="ufuk"); if(v==="cal") renderCal.scrolled=false; rerender();
+  $("#sum").classList.toggle("on",v==="sum"); $("#steps").classList.toggle("on",v==="steps"); $("#projs").classList.toggle("on",v==="projs"); $("#cal").classList.toggle("on",v==="cal"); if(v==="cal") renderCal.scroll=null; rerender();
 }
 function shift(n){ const d=new Date(cur+"T12:00:00"); d.setDate(d.getDate()+n); cur=dkey(d); renderAll(); }
 function renderAll(){ renderTop(); renderTray(); rerender(); carryBanner(); }
 
 $("#prev").onclick=()=>shift(-1); $("#next").onclick=()=>shift(1);
 $("#dlabel").onclick=()=>{cur=dkey(new Date()); renderAll();};
-$("#tBoard").onclick=()=>setView("board"); $("#tSteps").onclick=()=>setView("steps"); $("#tProj").onclick=()=>setView("projs"); $("#tSum").onclick=()=>setView("sum"); $("#tCal").onclick=()=>setView("cal"); $("#tUfuk").onclick=()=>setView("ufuk");
+$("#tBoard").onclick=()=>setView("board"); $("#tSteps").onclick=()=>setView("steps"); $("#tProj").onclick=()=>setView("projs"); $("#tSum").onclick=()=>setView("sum"); $("#tCal").onclick=()=>setView("cal");
 $("#addIs").onclick=()=>addCard("is"); $("#addDump").onclick=brainDump; $("#addOlay").onclick=()=>addCard("olay");
 $("#scrim").onclick=closeSheet;
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&linkFrom){ endLink(); return; } if(e.key==="Escape"&&openId&&!$("#dlg").classList.contains("open")) closeSheet(); });
