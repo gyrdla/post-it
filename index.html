@@ -283,6 +283,81 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
 .menu{display:flex;flex-direction:column;gap:6px}
 .menu button{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:10px 12px;text-align:left;font-weight:600}
 .menu button small{display:block;font-weight:400;color:var(--muted);font-size:12.5px;margin-top:2px}
+
+/* takvim + ufuk */
+.tabs{max-width:100%;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{padding:6px 10px;white-space:nowrap}
+.cal,.ufuk{flex:1;overflow:auto;padding:12px 14px 90px;display:none}
+.cal.on,.ufuk.on{display:block}
+.cal section,.ufuk section{max-width:720px;margin:0 auto 22px}
+.cal h2,.ufuk h2{font-size:18px;margin:0 0 4px}
+.cal .sub,.ufuk .sub{color:var(--muted);margin:0 0 10px;font-size:13.5px}
+.cnt{font-size:13px;color:var(--muted);font-weight:600}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.wd{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:6px 2px}
+.wd .wn{font-size:11.5px;color:var(--muted);font-weight:600}
+.wd b{font-size:17px;line-height:1}
+.wd small{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.wd .wbar{width:10px;height:34px;background:var(--paper2);border-radius:4px;display:flex;align-items:flex-end;overflow:hidden}
+.wd .wbar i{display:block;width:100%;border-radius:4px}
+.wd.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.wd.on .wn,.wd.on small{color:var(--paper);opacity:.8}
+.wd.today:not(.on){border-color:var(--flame);box-shadow:inset 0 0 0 1.5px var(--flame)}
+.calhead{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:8px}
+.framebtn{border:1px dashed var(--muted);background:none;border-radius:999px;padding:4px 10px;font-size:13px;margin-top:4px}
+.fit{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-size:14px;margin:6px 0}
+.fit.bad{border-color:#E07A8A;background:color-mix(in srgb,#E07A8A 12%,var(--panel))}
+.linkbtn{border:0;background:none;text-decoration:underline;font-weight:700;padding:0}
+.lanes{display:grid;grid-template-columns:44px 1fr 1.6fr;gap:6px;font-size:12px;color:var(--muted);font-weight:600}
+.lanes span:first-child{grid-column:2}
+.grid{position:relative;margin-top:4px}
+.grid .hr{position:absolute;left:0;right:0;border-top:1px solid var(--line)}
+.grid .hr span{position:absolute;left:0;top:-8px;font-size:11px;color:var(--muted);background:var(--paper);padding-right:4px;font-variant-numeric:tabular-nums}
+.grid .lane{position:absolute;top:0;bottom:0}
+.grid .l1{left:50px;width:calc((100% - 62px)*0.38)}
+.grid .l2{right:0;width:calc((100% - 62px)*0.62)}
+.blk{position:absolute;left:0;right:0;overflow:hidden;text-align:left;border:0;border-radius:7px;padding:3px 7px;display:flex;flex-direction:column;justify-content:flex-start;color:#2A2540;line-height:1.15}
+.blk b{font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.blk small{font-size:10.5px;opacity:.75;white-space:nowrap}
+.blk.real{opacity:.92}
+.blk.sm{flex-direction:row;align-items:center;gap:6px;padding:1px 7px}
+.blk.sm b{flex:1;min-width:0}
+.blk.sm small{display:none}
+.blk.plan{background:color-mix(in srgb,var(--bc) 70%,var(--panel));border-left:5px solid var(--bc);box-shadow:0 2px 6px -3px rgba(40,30,70,.35)}
+.blk.plan.dn{opacity:.45}
+.blk.plan.dn b{text-decoration:line-through}
+.blk.plan.run{outline:2px solid var(--flame)}
+.blk.plan.fix{border-left-style:double;border-left-width:7px}
+.blk.brk{background:repeating-linear-gradient(45deg,var(--paper2) 0 6px,transparent 6px 12px);color:var(--muted);border:1px dashed var(--line)}
+.blk.brk b{color:var(--ink);opacity:.7}
+.nowl{position:absolute;left:44px;right:0;border-top:2px solid #E0566E;z-index:3;pointer-events:none}
+.nowl span{position:absolute;left:-44px;top:-9px;font-size:11px;font-weight:700;color:#fff;background:#E0566E;border-radius:5px;padding:1px 4px}
+.fixrow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:8px 10px}
+.fixrow label{font-weight:600;flex:1 0 100%}
+.fixrow .in{flex:1;min-width:110px}
+.fixrow button{border:0;background:var(--ink);color:var(--paper);border-radius:8px;padding:8px 12px;font-weight:700}
+.ubars{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.ubar{display:grid;grid-template-columns:54px 1fr auto;gap:8px;align-items:center;font-size:12.5px}
+.ubar .ul{color:var(--muted);font-weight:600}
+.ubar .ut{display:flex;height:16px;background:var(--paper2);border-radius:4px;overflow:hidden}
+.ubar small{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.pbar{display:block;height:6px;background:var(--paper2);border-radius:3px;overflow:hidden;margin:4px 0 2px}
+.pbar i{display:block;height:100%}
+.st-simdi,.st-bekle,.st-tohum{font-size:11px;font-weight:700;padding:1px 6px;border-radius:5px;background:var(--paper2);color:var(--muted)}
+.st-simdi{background:var(--flame);color:#2A2540}
+.year{display:flex;flex-direction:column;gap:5px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px}
+.yr{display:grid;grid-template-columns:92px 1fr;gap:6px;align-items:center}
+.yl{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.yt{position:relative;height:14px;display:grid;grid-template-columns:repeat(12,1fr);background:repeating-linear-gradient(90deg,transparent 0 calc(100%/12 - 1px),var(--line) calc(100%/12 - 1px) calc(100%/12))}
+.yh .yt{height:auto;background:none}
+.yh .yt span{font-size:10px;color:var(--muted);text-align:center}
+.yb{position:absolute;top:2px;bottom:2px;border-radius:4px;opacity:.85}
+.yb.open{opacity:.35;background-image:repeating-linear-gradient(90deg,transparent 0 6px,var(--panel) 6px 9px)!important}
+.yd{position:absolute;top:-3px;transform:translateX(-50%);font-size:13px;color:var(--ink)}
+.learn{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.learn p{margin:2px 0;font-size:13.5px}
+.learn .seg button{font-size:12.5px;padding:5px 9px}
 </style>
 </head>
 <body>
@@ -294,8 +369,8 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
     <button id="next" aria-label="Sonraki gün">›</button>
   </div>
   <div class="tabs" role="group" aria-label="Görünüm">
-    <button id="tBoard" aria-pressed="true">Pano</button>
-    <button id="tSteps" aria-pressed="false">Adımlar</button><button id="tProj" aria-pressed="false">Projeler</button><button id="tSum" aria-pressed="false">Örüntüler</button>
+    <button id="tBoard" aria-pressed="true">Pano</button><button id="tCal" aria-pressed="false">Takvim</button>
+    <button id="tSteps" aria-pressed="false">Adımlar</button><button id="tProj" aria-pressed="false">Projeler</button><button id="tUfuk" aria-pressed="false">Ufuk</button><button id="tSum" aria-pressed="false">Örüntüler</button>
   </div>
   <span class="sync" id="sync"></span>
   <button class="drv" id="drv">Drive</button>
@@ -311,6 +386,8 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
 <main class="steps" id="steps"></main>
 <main class="projs" id="projs"></main>
 <main class="sum" id="sum"></main>
+<main class="cal" id="cal"></main>
+<main class="ufuk" id="ufuk"></main>
 
 <div class="zoomctl" id="zoomctl"><button id="zOut" aria-label="Uzaklaştır">−</button><span id="zLbl">100%</span><button id="zIn" aria-label="Yakınlaştır">+</button></div>
 <div class="fab" id="fab">
@@ -608,7 +685,7 @@ function closeSheet(){
   openId=null; $("#scrim").classList.remove("open"); $("#sheet").classList.remove("open");
   rerender();
 }
-function rerender(){ if(view==="sum") renderSum(); else if(view==="steps") renderSteps(); else if(view==="projs") renderProjects(); else renderBoard(); }
+function rerender(){ if(view==="cal") renderCal(); else if(view==="ufuk") renderUfuk(); else if(view==="sum") renderSum(); else if(view==="steps") renderSteps(); else if(view==="projs") renderProjects(); else renderBoard(); }
 function K(){ return day().cards.find(x=>x.id===openId); }
 function renderSheet(){
   if(openId&&String(openId).startsWith("P:")) return renderProjSheet();
@@ -630,6 +707,7 @@ function renderSheet(){
   <div class="row"><input class="in title" id="fTitle" placeholder="${isIs?"ör. Çamaşırı yıka":"ör. Telefonda kaydırdım"}" value="${esc(k.title)}"></div>
   <div class="row"><div class="seg" role="group" aria-label="Tür">
     <button data-kind="is" aria-pressed="${isIs}">İş</button><button data-kind="olay" aria-pressed="${!isIs}">Olay</button></div></div>
+  <div id="fLearnW">${learnHTML(k)}</div>
   ${isIs?`<div class="row"><label for="fEst">Sence ne kadar sürer? (dakika)</label><input class="in" id="fEst" type="number" inputmode="numeric" min="0" placeholder="ör. 20" value="${esc(k.est)}"></div>`:""}
   <div class="row"><div class="l">Sayaçlar</div>
     <div class="clock">
@@ -664,8 +742,9 @@ function renderSheet(){
   <button class="danger" id="fDel">Kartı sil</button>`;
 
   const sh=$("#sheet");
-  $("#sDone").onclick=closeSheet;
+  $("#sDone").onclick=closeSheet; bindLearn(k);
   $("#fTitle").oninput=e=>{k.title=e.target.value; save();};
+  $("#fTitle").onchange=()=>{ const w=$("#fLearnW"); if(w){ w.innerHTML=learnHTML(k); bindLearn(k); } };
   const est=$("#fEst"); if(est) est.oninput=e=>{k.est=e.target.value; save();};
   const mE=$("#mE"); if(mE) mE.oninput=e=>{k.manualEsik=e.target.value===""?null:e.target.value; save(); tick();};
   $("#mS").oninput=e=>{k.manualSure=e.target.value===""?null:e.target.value; save(); tick();};
@@ -726,6 +805,7 @@ function tick(){
   });
 }
 setInterval(tick,1000);
+setInterval(()=>{ if(view==="cal"&&!openId&&!$("#dlg").classList.contains("open")) renderCal(); },60000);
 
 /* ---------- summary ---------- */
 function renderSum(){
@@ -911,6 +991,7 @@ function carryBanner(){
 /* ---------- projects layer ---------- */
 const STATUS={simdi:"Şimdi",bekle:"Beklemede",tohum:"Tohum"};
 const GUN=["Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi"];
+const GK=["Paz","Pzt","Sal","Çar","Per","Cum","Cmt"];
 function projects(){ return S.projects||[]; }
 function proj(id){ return projects().find(p=>p.id===id); }
 function cardOf(st){ if(!st.card) return null; const d=S.days[st.card.day]; return d&&d.cards.find(x=>x.id===st.card.id)||null; }
@@ -986,6 +1067,7 @@ function renderProjSheet(){
     ${(p.links||[]).map(l=>{const o=proj(l.to); return o?`<button data-go="${o.id}"><b>${o.emoji||""} ${esc(o.title)}</b><small>${linkLabel(l.kind)}${l.note?": "+esc(l.note):""}</small></button>`:"";}).join("")}
     ${linksIn.map(({o,l})=>`<button data-go="${o.id}"><b>${o.emoji||""} ${esc(o.title)}</b><small>bunu ${linkLabel(l.kind)}${l.note?": "+esc(l.note):""}</small></button>`).join("")}
   </div></div>`:""}
+  ${p.due?`<div class="row"><div class="l">Hedef tarih</div><p class="hint" style="margin:0">${new Date(p.due+"T12:00:00").toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"})}</p></div>`:""}
   ${(p.days||[]).length?`<div class="row"><div class="l">Haftalık tema günü</div><p class="hint" style="margin:0">${p.days.map(d=>GUN[d]).join(", ")}</p></div>`:""}
   ${(p.sources||[]).length?`<div class="row"><div class="l">Kaynaklar</div><div class="src">${p.sources.map(s=>`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} ↗</a>`).join("")}</div></div>`:""}
   ${(p.ideas||[]).length?`<details class="row ideas"><summary>Fikir havuzu (${p.ideas.length})</summary><ul>${p.ideas.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`:""}
@@ -997,17 +1079,18 @@ function renderProjSheet(){
       <div class="row"><label class="l" for="eE">Simge ve ad</label><div style="display:flex;gap:6px"><input class="in" id="eE" style="width:56px;text-align:center" value="${esc(p.emoji||"")}"><input class="in" id="eT" value="${esc(p.title)}"></div></div>
       <div class="row"><label class="l" for="eS">Kısa ad (haritada)</label><input class="in" id="eS" value="${esc(p.short||"")}"></div>
       <div class="row"><label class="l" for="eD">Açıklama</label><textarea class="in" id="eD" rows="4">${esc(p.summary||"")}</textarea></div>
+      <div class="row"><label class="l" for="eDue">Hedef tarih (Ufuk'ta görünür)</label><input class="in" type="date" id="eDue" value="${esc(p.due||"")}"></div>
       <div class="acts"><button id="dNo">Vazgeç</button><button class="ok" id="dOk">Kaydet</button></div>`;
     d.classList.add("open"); const close=()=>{d.classList.remove("open"); b.innerHTML="";};
     $("#dNo").onclick=close;
-    $("#dOk").onclick=()=>{ const t=$("#eT").value.trim(); if(t) p.title=t; p.emoji=$("#eE").value.trim(); p.short=$("#eS").value.trim()||undefined; p.summary=$("#eD").value.trim(); close(); save(); renderProjSheet(); }; };
+    $("#dOk").onclick=()=>{ const t=$("#eT").value.trim(); if(t) p.title=t; p.emoji=$("#eE").value.trim(); p.short=$("#eS").value.trim()||undefined; p.summary=$("#eD").value.trim(); p.due=$("#eDue").value||undefined; close(); save(); renderProjSheet(); }; };
   sh.querySelectorAll("#pSt [data-s]").forEach(b=>b.onclick=async()=>{
     const s=b.dataset.s;
     if(s==="simdi"&&p.status!=="simdi"&&projects().filter(x=>x.status==="simdi"&&!x.always).length>=3){
       if(!(await sure("Zaten 3 proje “Şimdi”de. Yine de eklensin mi?"))) return; }
     p.status=s; save(); renderProjSheet(); });
   sh.querySelectorAll("[data-sk]").forEach(b=>b.onclick=()=>{ const s=stepAt(p,b.dataset.sk); const d=stepDone(s);
-    s.done=!d; if(d&&s.card){ const dd=S.days[s.card.day]; const c=dd&&dd.cards.find(x=>x.id===s.card.id); if(c){c.doneMark=false;c.endAt=null;} }
+    s.done=!d; if(!d) s.doneAt=Date.now(); else delete s.doneAt; if(d&&s.card){ const dd=S.days[s.card.day]; const c=dd&&dd.cards.find(x=>x.id===s.card.id); if(c){c.doneMark=false;c.endAt=null;} }
     else if(!d&&s.card){ const dd=S.days[s.card.day]; const c=dd&&dd.cards.find(x=>x.id===s.card.id); if(c) c.doneMark=true; }
     save(); renderProjSheet(); });
   sh.querySelectorAll("[data-take]").forEach(b=>b.onclick=()=>{ takeStep(p,b.dataset.take); renderProjSheet(); toast("Panoya eklendi"); });
@@ -1139,19 +1222,362 @@ function nodeMenu(id,parentId){
   });
 }
 
+/* ---------- learning from history ---------- */
+const CATS={rutin:{n:"Rutin & ev",c:"#BCD7F5"},bakim:{n:"Bakım",c:"#F5C6E0"},proje:{n:"Proje & üretim",c:"#F6D27A"},disari:{n:"Dışarı",c:"#BFE3C8"},dinlenme:{n:"Dinlenme",c:"#D8C8F2"}};
+const CATDEF={rutin:20,bakim:20,proje:45,disari:60,dinlenme:20};
+const KW=[
+  ["dinlenme",/mola|dinlen|kaydır|dizi |dizi$|izle|müzik|kahve ayıl|telefonda/],
+  ["disari",/dışarı|disari|sağlık ocağ|market|eczane|sosyalleş|alışveriş| al$|almak$|almam$|almaya/],
+  ["bakim",/cilt|ağız|diş |diş$|dişler|duş|ağda|bıyık|kese|spor|dans|mobilite|esnek|yoga|postür|su iç|manikür|saç|yüz yıka|piercing|makyaj yap|hazırlan|giyin|uyan|yataktan|uyu|banyo yap/],
+  ["proje",/içerik|edit|çekim|video|paylaş|uygulama|kod|yazı|yaz$|instagram|haber|canva|mum|proje|web|site|ootd|tasarım|resim|fotoğraf|özet|piezo|scoby|kombucha|labos/],
+  ["rutin",/çamaşır|bulaşık|sil|süpür|temizl|düzen|topla|yerleştir|kahvaltı|yemek|dolap|çöp|çarşaf|havalandır|sepet|kablo|tüy|plan|brain/]
+];
+const STOP=new Set(["istiyorum","istiyom","lazım","lazim","gerek","gerekiyor","bir","bi","ve","için","ile","şey","bişey","yapmak","yapmam","yapayım","yapıcam","etmek","olarak","şu","bu","da","de","ki"]);
+function normT(t){ return String(t||"").toLocaleLowerCase("tr").replace(/(.)\1{2,}/g,"$1").replace(/[^a-zçğıöşü0-9 ]/g," ").split(/\s+/).filter(w=>w&&!STOP.has(w)).map(w=>w.slice(0,5)); }
+function simT(a,b){ const A=new Set(normT(a)), B=new Set(normT(b)); if(!A.size||!B.size) return 0; let i=0; A.forEach(x=>{ if(B.has(x)) i++; }); return i/(A.size+B.size-i); }
+function catOf(k){
+  if(k.cat) return k.cat;
+  if(k.kind==="olay") return "dinlenme";
+  const t=" "+String(k.title||"").toLocaleLowerCase("tr").trim();
+  for(const [c,re] of KW) if(re.test(t)) return c;
+  return k.proj?"proje":"rutin";
+}
+const median=a=>{ if(!a.length) return null; const s=a.slice().sort((x,y)=>x-y), m=s.length>>1; return s.length%2?s[m]:(s[m-1]+s[m])/2; };
+let histCache=null, histAt=0;
+function history(){ // every real card across days (carried copies skipped — their continuation is counted)
+  if(histCache&&histAt===S.updatedAt) return histCache;
+  const out=[]; Object.entries(S.days).forEach(([d,v])=>(v.cards||[]).forEach(k=>{ if(!k.carried) out.push({d,k}); }));
+  histCache=out; histAt=S.updatedAt; return out;
+}
+function measured(k){ const s=sureMs(k,Date.now()); return (k.endAt||(k.manualSure!=null&&k.manualSure!==""))&&s!=null&&s>=120000&&s<=6*3600000?s/60000:null; }
+function similar(k){ return history().filter(h=>h.k.id!==k.id&&simT(h.k.title,k.title)>=0.6); }
+let learnMemo=new Map(), learnAt=-1;
+function learned(k){
+  history(); if(learnAt!==histAt){ learnMemo=new Map(); learnAt=histAt; }
+  const mk=k.id+"|"+k.title; if(learnMemo.has(mk)) return learnMemo.get(mk);
+  const r=learnedRaw(k); learnMemo.set(mk,r); return r;
+}
+function learnedRaw(k){
+  const sim=similar(k);
+  const durs=sim.map(h=>measured(h.k)).filter(x=>x!=null);
+  const es=sim.map(h=>{ const e=h.k.startAt&&h.k.intentAt?(h.k.startAt-h.k.intentAt)/60000:(h.k.manualEsik?+h.k.manualEsik:null); return e!=null&&e>=1?e:null; }).filter(x=>x!=null);
+  const hrs=sim.map(h=>h.k.startAt?minOf(h.k.startAt,h.d):null).filter(x=>x!=null&&x>0);
+  return {dur:median(durs),n:durs.length,esik:median(es),hour:median(hrs),seen:sim.length};
+}
+function ratio(){
+  const r=history().map(h=>{ const m=measured(h.k); return m&&+h.k.est>0?m/(+h.k.est):null; }).filter(x=>x!=null);
+  const m=median(r); return m?Math.min(5,Math.max(1,m)):2;
+}
+function predictMin(k){
+  const L=learned(k); let m;
+  if(L.n) m=L.dur; else if(+k.est>0) m=+k.est*ratio(); else m=CATDEF[catOf(k)]||30;
+  if(k.startAt&&!k.endAt) m=Math.max(5,m-(sureMs(k,Date.now())||0)/60000);
+  return Math.max(5,Math.round(m/5)*5);
+}
+function why(k){
+  const L=learned(k);
+  if(L.n) return `geçmişte ${L.n} kez ölçüldü, genelde ${fmtMin(L.dur*60000)}`;
+  if(+k.est>0) return `tahminin ${k.est} dk × senin oranın ${ratio().toFixed(1)}`;
+  return `${CATS[catOf(k)].n} için varsayılan`;
+}
+function suggestNeeds(k){
+  const have=(k.needs||[]).map(byId).filter(Boolean).map(x=>x.title||"");
+  const cnt={};
+  similar(k).forEach(h=>{ const cs=S.days[h.d].cards; (h.k.needs||[]).forEach(n=>{ const o=cs.find(x=>x.id===n); if(!o||!(o.title||"").trim()) return;
+    if(have.some(t=>simT(t,o.title)>=0.6)||simT(o.title,k.title)>=0.6) return;
+    const key=normT(o.title).join(" "); (cnt[key]=cnt[key]||{t:o.title,n:0}).n++; }); });
+  return Object.values(cnt).sort((a,b)=>b.n-a.n).slice(0,5);
+}
+function carryCount(k){ let n=0, d=k.from, t=k.title; const seen=new Set();
+  while(d&&!seen.has(d)){ seen.add(d); n++; const o=S.days[d]&&S.days[d].cards.find(c=>c.carried&&c.title===t); d=o&&o.from; } return n; }
+function routines(){
+  const g={};
+  history().forEach(h=>{ if(h.k.kind!=="is"||!isDone(h.k)||!(h.k.title||"").trim()) return; const key=normT(h.k.title).join(" "); if(!key) return;
+    const e=g[key]=g[key]||{t:h.k.title,days:new Set(),durs:[],hrs:[]}; e.days.add(h.d); e.t=h.k.title;
+    const m=measured(h.k); if(m) e.durs.push(m); if(h.k.startAt) e.hrs.push(minOf(h.k.startAt,h.d)); });
+  return Object.values(g).filter(e=>e.days.size>=2).map(e=>({t:e.t,days:e.days.size,dur:median(e.durs),hour:median(e.hrs)})).sort((a,b)=>b.days-a.days);
+}
+
+/* ---------- day frame ---------- */
+const dayMid=key=>new Date(key+"T00:00:00").getTime();
+const minOf=(ts,key)=>(ts-dayMid(key))/60000;
+const hm=m=>pad(Math.floor(m/60)%24)+":"+pad(Math.round(m)%60);
+const parseHM=s=>{ const m=/^(\d{1,2}):(\d{2})/.exec(s||""); return m?(+m[1])*60+(+m[2]):null; };
+function learnedWake(){
+  const w=[]; Object.entries(S.days).forEach(([d,v])=>{ const ts=(v.cards||[]).flatMap(k=>[k.intentAt,k.startAt]).filter(Boolean); if(!ts.length) return;
+    const m=minOf(Math.min(...ts),d); if(m>=300&&m<=960) w.push(m); });
+  const m=median(w); return m?Math.round(m/15)*15:660;
+}
+function prefs(){ const p=S.prefs||{}; return {wake:p.wake!=null?p.wake:learnedWake(),sleep:p.sleep!=null?p.sleep:26*60,wakeLearned:p.wake==null}; }
+
+/* ---------- planner: put the day's open work on the clock ---------- */
+function planDay(key){
+  const D=S.days[key]; if(!D) return null;
+  const P=prefs(), isT=key===dkey(new Date());
+  const nowMin=isT?Math.ceil(minOf(Date.now(),key)/5)*5:0;
+  const start=Math.max(P.wake,nowMin), end=P.sleep;
+  const cs=D.cards.filter(k=>k.kind==="is"&&!k.carried&&!isDone(k)&&(k.title||"").trim());
+  const ids=new Set(cs.map(k=>k.id)), doneIds=new Set(D.cards.filter(isDone).map(k=>k.id));
+  cs.forEach(k=>{ delete k.planAt; delete k.planDur; });
+  const busy=[], placed=new Set(), breaks=[];
+  cs.filter(k=>k.fixAt!=null).forEach(k=>{ const d=predictMin(k); k.planAt=k.fixAt; k.planDur=d; busy.push([k.fixAt,k.fixAt+d]); placed.add(k.id); });
+  const nextFree=(t,dur)=>{ let s=t, ch=true; while(ch){ ch=false; for(const [a,b] of busy){ if(s<b&&s+dur>a){ s=b; ch=true; } } } return s; };
+  const ready=k=>(k.needs||[]).every(n=>doneIds.has(n)||placed.has(n)||!ids.has(n));
+  const unl=k=>{ const seen=new Set(), st=[k.id]; while(st.length){ const id=st.pop(); cs.forEach(x=>{ if((x.needs||[]).includes(id)&&!seen.has(x.id)){ seen.add(x.id); st.push(x.id);} }); } return seen.size; };
+  const hasCard=re=>D.cards.some(k=>re.test(String(k.title||"").toLocaleLowerCase("tr")));
+  let t=start, work=0, last=null, dinner=hasCard(/yemek|akşam/), breakfast=hasCard(/kahvaltı/)||start>13*60;
+  const addBreak=(label,dur,from)=>{ const s=nextFree(from,dur); if(s+dur<=end){ breaks.push({at:s,dur,label}); busy.push([s,s+dur]); return s+dur; } return from; };
+  if(!breakfast){ t=addBreak("Kahvaltı",30,t); }
+  let pool=cs.filter(k=>!placed.has(k.id));
+  while(pool.length){
+    if(!dinner&&t>=19*60+30){ t=addBreak("Akşam yemeği",45,t); dinner=true; }
+    let cand=pool.filter(ready); if(!cand.length) cand=[pool[0]];
+    const lc=last&&catOf(last), early=t<start+60;
+    const score=k=>{ const c=catOf(k), d=predictMin(k); let s=0;
+      if(k.startAt&&!k.endAt) s+=200;
+      if(k.pri) s+=60;
+      if(last&&((last.with||[]).includes(k.id)||(k.with||[]).includes(last.id))) s+=80;
+      if(lc==="disari"&&c==="disari") s+=50;
+      if(early&&(c==="bakim"||c==="rutin")&&d<=30) s+=30;
+      if(c==="proje"){ if(!early&&work<60) s+=20; if(lc==="proje") s-=15; } else if(lc==="proje") s+=12;
+      s+=Math.min(5,unl(k))*6+Math.min(5,carryCount(k))*4-d/30;
+      return s; };
+    cand.sort((a,b)=>score(b)-score(a));
+    let pick=null, at=null;
+    for(const k of cand){ const d=predictMin(k), s=nextFree(t,d); if(s+d<=end){ pick=k; at=s; break; } }
+    if(!pick) break;
+    const d=predictMin(pick); pick.planAt=at; pick.planDur=d; busy.push([at,at+d]); placed.add(pick.id);
+    pool=pool.filter(x=>x!==pick); last=pick; t=at+d+5;
+    if(catOf(pick)!=="dinlenme") work+=d;
+    if(work>=90){ t=addBreak("Mola",15,t); work=0; }
+  }
+  D.plan={at:Date.now(),start,end,breaks,overflow:pool.map(k=>k.id)};
+  return D.plan;
+}
+function moveCard(k,toKey,fromKey){
+  fromKey=fromKey||cur; if(!S.days[toKey]) S.days[toKey]={cards:[]};
+  const n={id:uid(),kind:k.kind,title:k.title,est:k.est||"",x:k.x,y:k.y,rot:k.rot||0,cond:[],causes:[],needs:[],with:[],note:k.note||"",
+    from:fromKey,proj:k.proj,cat:k.cat,pri:k.pri,createdAt:Date.now()};
+  S.days[toKey].cards.push(n); k.carried=true; delete k.planAt; delete k.planDur;
+  (S.projects||[]).forEach(p=>allSteps(p.steps).forEach(st=>{ if(st.card&&st.card.id===k.id) st.card={day:toKey,id:n.id}; }));
+  return n;
+}
+function spreadWeek(key){
+  const D=S.days[key]; if(!D||!D.plan) return 0;
+  const P=prefs(), cap=(P.sleep-P.wake)*0.7;
+  const over=D.plan.overflow.map(id=>D.cards.find(k=>k.id===id)).filter(k=>k&&!k.carried&&!isDone(k));
+  const load={}, dayOf={}; let moved=0;
+  const dayN=i=>{ const d=new Date(key+"T12:00:00"); d.setDate(d.getDate()+i); return dkey(d); };
+  for(let i=1;i<=6;i++){ const k2=dayN(i); load[i]=(S.days[k2]?S.days[k2].cards:[]).filter(c=>c.kind==="is"&&!c.carried&&!isDone(c)).reduce((a,c)=>a+predictMin(c),0); }
+  const order=[]; const vis=new Set(); const visit=c=>{ if(vis.has(c.id)) return; vis.add(c.id); (c.needs||[]).forEach(n=>{ const o=over.find(x=>x.id===n); if(o) visit(o); }); order.push(c); }; over.forEach(visit);
+  const newIds={};
+  order.forEach(c=>{ const minI=Math.max(1,...(c.needs||[]).map(n=>dayOf[n]||1)); const m=predictMin(c);
+    for(let i=minI;i<=6;i++){ if(load[i]+m<=cap){ const n=moveCard(c,dayN(i),key); load[i]+=m; dayOf[c.id]=i; newIds[c.id]={i,id:n.id}; moved++; break; } } });
+  order.forEach(c=>{ const nn=newIds[c.id]; if(!nn) return; const n=S.days[dayN(nn.i)].cards.find(x=>x.id===nn.id);
+    n.needs=(c.needs||[]).filter(x=>newIds[x]&&newIds[x].i===nn.i).map(x=>newIds[x].id); });
+  D.plan.overflow=D.plan.overflow.filter(id=>!newIds[id]);
+  return moved;
+}
+
+/* ---------- Takvim view ---------- */
+const PX=1.15;
+function weekKeys(key){ const d=new Date(key+"T12:00:00"); const dow=(d.getDay()+6)%7; d.setDate(d.getDate()-dow); return [...Array(7)].map((_,i)=>{ const x=new Date(d); x.setDate(d.getDate()+i); return dkey(x); }); }
+function openLoad(key){ const cs=(S.days[key]?S.days[key].cards:[]).filter(c=>c.kind==="is"&&!c.carried&&!isDone(c)&&(c.title||"").trim()); return {n:cs.length,min:cs.reduce((a,c)=>a+predictMin(c),0)}; }
+function renderCal(){
+  const P=prefs(), D=day(), isT=cur===dkey(new Date()), nowM=minOf(Date.now(),cur);
+  const wk=weekKeys(cur), cap=P.sleep-P.wake;
+  const strip=wk.map(k=>{ const L=openLoad(k), cs=(S.days[k]?S.days[k].cards:[]).filter(c=>!c.carried&&c.kind==="is"), dn=cs.filter(isDone).length;
+    const pct=Math.min(100,L.min/cap*100), over=L.min>cap; const dd=new Date(k+"T12:00:00");
+    return `<button class="wd${k===cur?" on":""}${k===dkey(new Date())?" today":""}" data-day="${k}"><span class="wn">${GK[dd.getDay()]}</span><b>${dd.getDate()}</b>
+      <span class="wbar"><i style="height:${pct}%;background:${over?"#E07A8A":"var(--flame)"}"></i></span><small>${dn}/${cs.length}</small></button>`; }).join("");
+  const L=openLoad(cur), left=Math.max(0,P.sleep-Math.max(P.wake,isT?nowM:P.wake));
+  const plan=D.plan;
+  const planned=D.cards.filter(k=>k.planAt!=null&&!k.carried);
+  const behind=isT&&plan?planned.filter(k=>!isDone(k)&&!(k.startAt&&!k.endAt)&&k.planAt+k.planDur<nowM-10).length:0;
+  const g0=Math.floor(Math.min(P.wake,...planned.map(k=>k.planAt),...D.cards.filter(k=>k.startAt&&!k.carried).map(k=>minOf(k.startAt,cur)).filter(m=>m>0))/60)*60;
+  const g1=Math.ceil(Math.max(P.sleep,...planned.map(k=>k.planAt+k.planDur))/60)*60;
+  let hours=""; for(let m=g0;m<=g1;m+=60) hours+=`<div class="hr" style="top:${(m-g0)*PX}px"><span>${hm(m)}</span></div>`;
+  const real=D.cards.filter(k=>k.startAt&&!k.carried).map(k=>{ const a=minOf(k.startAt,cur), d=Math.max(1,(sureMs(k,Date.now())||0)/60000);
+    if(a<g0||a>g1) return ""; const c=CATS[catOf(k)].c;
+    return `<button class="blk real${d*PX<34?" sm":""}" data-blk="${k.id}" style="top:${(a-g0)*PX}px;height:${Math.max(16,d*PX)}px;background:${c}"><b>${esc(k.title||"Adsız")}</b><small>${hm(a)} · ${fmtMin(d*60000)}</small></button>`; }).join("");
+  const pl=planned.map(k=>{ const c=CATS[catOf(k)].c, dn=isDone(k), run=k.startAt&&!k.endAt;
+    return `<button class="blk plan${k.planDur*PX<36?" sm":""}${dn?" dn":""}${run?" run":""}${k.fixAt!=null?" fix":""}" data-blk="${k.id}" style="top:${(k.planAt-g0)*PX}px;height:${Math.max(18,k.planDur*PX-2)}px;--bc:${c}">
+      <b>${k.pri?"⭐ ":""}${k.fixAt!=null?"📌 ":""}${dn?"✓ ":""}${esc(k.title)}</b><small>${hm(k.planAt)}–${hm(k.planAt+k.planDur)} · ${k.planDur} dk${carryCount(k)>=3?" · ↻"+carryCount(k):""}</small></button>`; }).join("")
+    +(plan?plan.breaks.map(b=>`<div class="blk brk${b.dur*PX<34?" sm":""}" style="top:${(b.at-g0)*PX}px;height:${Math.max(16,b.dur*PX-2)}px"><b>☕ ${esc(b.label)}</b><small>${hm(b.at)} · ${b.dur} dk</small></div>`).join(""):"");
+  const over=plan?plan.overflow.map(id=>D.cards.find(k=>k.id===id)).filter(k=>k&&!k.carried&&!isDone(k)):[];
+  const overMin=over.reduce((a,k)=>a+predictMin(k),0);
+  const legend=Object.entries(CATS).map(([k,v])=>`<span><i style="background:${v.c}"></i>${v.n}</span>`).join("");
+  $("#cal").innerHTML=`
+  <section><div class="week">${strip}</div>
+    <p class="sub" style="margin-top:6px">Çubuk: o günün açık işleri, günün kaç saatini dolduruyor. Kırmızıysa sığmıyor.</p></section>
+  <section>
+    <div class="calhead"><div><h2>${isT?"Bugün":new Date(cur+"T12:00:00").toLocaleDateString("tr-TR",{weekday:"long",day:"numeric",month:"long"})}</h2>
+      <button class="framebtn" id="cFrame">🌅 ${hm(P.wake)} – ${hm(P.sleep)}${P.wakeLearned?" (öğrenilen)":""} ✎</button></div>
+      <button class="copy" id="cPlan">${plan?"Yeniden böl":"Günü böl"}</button></div>
+    <div class="fit${L.min>left?" bad":""}"><b>${L.n} açık iş ≈ ${fmtMin(L.min*60000)}</b> · ${isT?"günün kalanı":"gün"} ${fmtMin(left*60000)}
+      ${L.min>left?`<br>Bu liste bugüne sığmıyor. “Günü böl” sığanları saatlere koyar, kalanı haftaya dağıtabilirsin.`:""}</div>
+    ${behind?`<div class="fit bad">${behind} blok planın gerisinde kaldı. <button class="linkbtn" id="cRe">Şimdiden yeniden böl</button></div>`:""}
+    <div class="legend" style="margin:8px 0">${legend}</div>
+    <div class="lanes"><span>Gerçek</span><span>Plan</span></div>
+    <div class="grid" style="height:${(g1-g0)*PX+20}px">${hours}
+      <div class="lane l1">${real}</div><div class="lane l2">${pl}</div>
+      ${isT&&nowM>=g0&&nowM<=g1?`<div class="nowl" id="nowl" style="top:${(nowM-g0)*PX}px"><span>${hm(nowM)}</span></div>`:""}
+    </div>
+    ${!plan&&L.n?`<p class="sub">Henüz bölünmedi. “Günü böl”e bas: süreler senin ölçümlerinden gelir, önce-lazım sırası korunur, birlikte yapılacaklar yan yana gelir, araya mola ve yemek girer.</p>`:""}
+  </section>
+  ${over.length?`<section><h2>Bugüne sığmayanlar <small class="cnt">${over.length} iş · ${fmtMin(overMin*60000)}</small></h2>
+    <p class="sub">Bunlar kaybolmaz. Haftaya dağıt dersen önce-lazım sırasıyla, dolu olmayan günlere yerleşir.</p>
+    <button class="copy" id="cSpread">Haftaya dağıt</button>
+    <div class="steps-l" style="margin-top:10px">${over.map(k=>`<div class="st"><span>${esc(k.title)}</span><em>${predictMin(k)} dk</em><button class="take" data-tom="${k.id}">Yarına</button></div>`).join("")}</div></section>`:""}`;
+  const c=$("#cal");
+  c.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ cur=b.dataset.day; renderAll(); });
+  $("#cFrame").onclick=frameDialog;
+  $("#cPlan").onclick=()=>{ const p=planDay(cur); save(); renderCal(); toast(p.overflow.length?`${p.overflow.length} iş bugüne sığmadı`:"Gün bölündü"); };
+  const re=$("#cRe"); if(re) re.onclick=()=>{ planDay(cur); save(); renderCal(); };
+  const sp=$("#cSpread"); if(sp) sp.onclick=async()=>{ if(!(await sure("Sığmayanlar bu haftanın sonraki günlerine dağıtılsın mı?"))) return; const n=spreadWeek(cur); save(); renderCal(); toast(n+" iş haftaya dağıtıldı"); };
+  c.querySelectorAll("[data-tom]").forEach(b=>b.onclick=()=>{ const k=byId(b.dataset.tom); if(!k) return; const d=new Date(cur+"T12:00:00"); d.setDate(d.getDate()+1); moveCard(k,dkey(d)); if(D.plan) D.plan.overflow=D.plan.overflow.filter(x=>x!==k.id); save(); renderCal(); toast("Yarına atıldı"); });
+  c.querySelectorAll("[data-blk]").forEach(b=>b.onclick=()=>blockMenu(b.dataset.blk));
+  const nl=$("#nowl"); if(nl&&!renderCal.scrolled){ renderCal.scrolled=true; setTimeout(()=>{ nl.scrollIntoView({block:"center"}); },50); }
+}
+function frameDialog(){
+  const P=prefs(), d=$("#dlg"), b=$("#dbx");
+  b.innerHTML=`<p>Günün çerçevesi</p>
+    <div class="row"><label class="l" for="fw">Uyanış / başlangıç</label><input class="in" type="time" id="fw" value="${hm(P.wake)}"></div>
+    <div class="row"><label class="l" for="fs">Yatış</label><input class="in" type="time" id="fs" value="${hm(P.sleep)}"></div>
+    <p class="small">Boş bırakırsan uyanış saatini panondaki ilk hareketlerinden öğrenir (şu an ${hm(learnedWake())}). Gece yarısından sonraki yatış, ertesi gün sayılır.</p>
+    <div class="acts"><button class="del" id="dDef">Öğrenilene dön</button><button id="dNo">Vazgeç</button><button class="ok" id="dOk">Kaydet</button></div>`;
+  d.classList.add("open"); const close=()=>{ d.classList.remove("open"); b.innerHTML=""; };
+  $("#dNo").onclick=close; d.onclick=e=>{ if(e.target===d) close(); };
+  $("#dDef").onclick=()=>{ S.prefs=S.prefs||{}; delete S.prefs.wake; close(); save(); renderCal(); };
+  $("#dOk").onclick=()=>{ const w=parseHM($("#fw").value); let s=parseHM($("#fs").value); S.prefs=S.prefs||{};
+    if(w!=null) S.prefs.wake=w; if(s!=null){ if(s<=(w??P.wake)) s+=1440; S.prefs.sleep=s; } close(); save(); renderCal(); };
+}
+function blockMenu(id){
+  const k=byId(id); if(!k) return;
+  const d=$("#dlg"), b=$("#dbx"), run=k.startAt&&!k.endAt, L=learned(k);
+  const nb=new Date(cur+"T12:00:00"); nb.setDate(nb.getDate()+1);
+  b.innerHTML=`<p>${esc(k.title||"Adsız")}</p>
+    <p class="small">~${predictMin(k)} dk: ${esc(why(k))}${L.esik?` · başlaması genelde ${fmtMin(L.esik*60000)} sürüyor`:""}${carryCount(k)?` · ${carryCount(k)} kez taşındı`:""}</p>
+    <div class="menu">
+      ${isDone(k)?"":run?`<button data-m="end">✓ Bitirdim</button>`:`<button data-m="start">▶ Şimdi başla<small>Sayaç başlar, takvim gerçeği kaydeder</small></button>`}
+      <button data-m="pri">${k.pri?"☆ Öncelikten çıkar":"⭐ Öncelikli yap"}<small>Plan bunu öne alır</small></button>
+      <div class="fixrow"><label for="fx">📌 Saate sabitle</label><input class="in" type="time" id="fx" value="${k.fixAt!=null?hm(k.fixAt):(k.planAt!=null?hm(k.planAt):"")}"><button data-m="fix">Sabitle</button>${k.fixAt!=null?`<button data-m="unfix">Kaldır</button>`:""}</div>
+      ${isDone(k)?"":`<button data-m="tom">Yarına at<small>${nb.toLocaleDateString("tr-TR",{weekday:"long"})} gününe taşınır</small></button>`}
+      <button data-m="open">Kartı aç</button></div>
+    <div class="acts"><button id="dNo">Kapat</button></div>`;
+  d.classList.add("open"); const close=()=>{ d.classList.remove("open"); b.innerHTML=""; };
+  $("#dNo").onclick=close; d.onclick=e=>{ if(e.target===d) close(); };
+  b.querySelectorAll("[data-m]").forEach(x=>x.onclick=()=>{ const m=x.dataset.m;
+    if(m==="open"){ close(); openSheet(id); return; }
+    if(m==="start"){ k.startAt=Date.now(); }
+    if(m==="end"){ if(k.pauseAt){ k.pausedMs=(k.pausedMs||0)+(Date.now()-k.pauseAt); k.pauseAt=null; } k.endAt=Date.now(); }
+    if(m==="pri") k.pri=!k.pri;
+    if(m==="fix"){ let v=parseHM($("#fx").value); if(v==null){ toast("Saat seç"); return; } if(v<prefs().wake-120) v+=1440; k.fixAt=v; }
+    if(m==="unfix") k.fixAt=null;
+    if(m==="tom"){ moveCard(k,dkey(nb)); }
+    close(); if(["pri","fix","unfix","end","tom"].includes(m)&&day().plan) planDay(cur); save(); renderCal(); });
+}
+
+/* ---------- Ufuk view ---------- */
+function projStats(p){
+  const al=allSteps(p.steps), ok=al.filter(stepDone);
+  const times=ok.map(s=>s.doneAt||(cardOf(s)&&(cardOf(s).endAt||cardOf(s).createdAt))).filter(Boolean);
+  Object.values(S.days).forEach(v=>v.cards.forEach(c=>{ if(c.proj===p.id&&isDone(c)) times.push(c.endAt||c.createdAt||0); }));
+  const last=times.length?Math.max(...times):null;
+  const recent=times.filter(t=>t>Date.now()-28*864e5).length;
+  const remain=al.length-ok.length, pace=recent/4; // steps per week
+  const eta=remain&&pace>0?new Date(Date.now()+remain/pace*7*864e5):null;
+  return {total:al.length,done:ok.length,remain,last,idle:last?Math.floor((Date.now()-last)/864e5):null,pace,eta};
+}
+function renderUfuk(){
+  const wk=weekKeys(dkey(new Date())), now=Date.now();
+  const per=wk.map(k=>{ const tot={}; Object.keys(CATS).forEach(c=>tot[c]=0);
+    (S.days[k]?S.days[k].cards:[]).forEach(c=>{ if(c.carried) return; const m=measured(c); if(m) tot[catOf(c)]+=m; });
+    const moved=(S.days[k]?S.days[k].cards:[]).filter(c=>c.carried).length; return {k,tot,moved}; });
+  const max=Math.max(60,...per.map(p=>Object.values(p.tot).reduce((a,b)=>a+b,0)));
+  const sum={}; Object.keys(CATS).forEach(c=>sum[c]=per.reduce((a,p)=>a+p.tot[c],0)); const all=Object.values(sum).reduce((a,b)=>a+b,0)||1;
+  const bars=per.map(p=>{ const dd=new Date(p.k+"T12:00:00"), t=Object.values(p.tot).reduce((a,b)=>a+b,0);
+    return `<div class="ubar"><span class="ul">${GK[dd.getDay()]} ${dd.getDate()}</span><span class="ut">${Object.entries(p.tot).map(([c,v])=>v?`<i style="width:${v/max*100}%;background:${CATS[c].c}" title="${CATS[c].n}"></i>`:"").join("")}</span><small>${t?fmtMin(t*60000):"—"}${p.moved?` · ↻${p.moved}`:""}</small></div>`; }).join("");
+  const r=ratio();
+  const daysWith=Object.entries(S.days).filter(([,v])=>v.cards.some(c=>!c.carried&&measured(c))).slice(-7);
+  const avgMeasured=median(daysWith.map(([,v])=>v.cards.filter(c=>!c.carried).reduce((a,c)=>a+(measured(c)||0),0)))||0;
+  const avgOpen=median(Object.values(S.days).filter(v=>v.cards.length).slice(-7).map(v=>v.cards.filter(c=>c.kind==="is"&&(c.title||"").trim()&&!c.from).length))||0;
+  const ps=projects().slice().sort((a,b)=>({simdi:0,bekle:1,tohum:2}[a.status]-{simdi:0,bekle:1,tohum:2}[b.status]));
+  const prow=ps.map(p=>{ const s=projStats(p), pct=s.total?Math.round(s.done/s.total*100):0, n=nextStep(p);
+    const due=p.due?new Date(p.due+"T12:00:00"):null, late=due&&s.eta&&s.eta>due;
+    return `<button class="pc" data-p="${p.id}" style="--pc:${p.color}"><span class="pe">${p.emoji||"◈"}</span><span class="pb"><b>${esc(p.title)} <small class="st-${p.status}">${STATUS[p.status]}</small></b>
+      <span class="pbar"><i style="width:${pct}%;background:${p.color}"></i></span>
+      <small>${s.done}/${s.total} adım${s.idle!=null?` · son hareket ${s.idle?s.idle+" gün önce":"bugün"}`:" · hiç ilerleme yok"}${s.idle!=null&&s.idle>=7&&p.status!=="tohum"?" ⚠️":""}</small>
+      <small>${due?`hedef ${due.toLocaleDateString("tr-TR",{day:"numeric",month:"short"})}`:"hedef tarih yok"}${s.eta?` · bu hızla ${s.eta.toLocaleDateString("tr-TR",{day:"numeric",month:"short",year:s.eta.getFullYear()!==new Date().getFullYear()?"numeric":undefined})}`:s.remain?" · bu hızla bitmiyor":""}${late?" · ⚠️ yetişmiyor":""}</small>
+      ${n?`<span class="pn">▶ ${esc(n.t)}</span>`:""}</span></button>`; }).join("");
+  const m0=new Date(); m0.setDate(1);
+  const months=[...Array(12)].map((_,i)=>{ const d=new Date(m0); d.setMonth(m0.getMonth()+i); return d; });
+  const col=d=>{ const i=(d.getFullYear()-m0.getFullYear())*12+d.getMonth()-m0.getMonth(); return Math.max(0,Math.min(11,i)); };
+  const yrows=ps.filter(p=>p.status!=="tohum").map(p=>{ const s=projStats(p), due=p.due?new Date(p.due+"T12:00:00"):null, endD=s.eta||due;
+    const e=endD?col(endD):11, open=!endD;
+    return `<div class="yr"><span class="yl">${p.emoji||""} ${esc(p.short||p.title)}</span><span class="yt">
+      <i class="yb${open?" open":""}" style="left:0;width:${(e+1)/12*100}%;background:${p.color}"></i>${due?`<b class="yd" style="left:${(col(due)+.5)/12*100}%" title="hedef">◆</b>`:""}</span></div>`; }).join("");
+  const rts=routines(), todayCs=(S.days[dkey(new Date())]||{cards:[]}).cards;
+  const stuck=day().cards.filter(k=>k.kind==="is"&&!k.carried&&!isDone(k)&&carryCount(k)>=3).sort((a,b)=>carryCount(b)-carryCount(a));
+  $("#ufuk").innerHTML=`
+  <section><h2>Bu hafta nereye gitti?</h2><p class="sub">Ölçtüğün süreler, türlerine göre. ↻ o gün ertesine taşınan iş sayısı.</p>
+    <div class="legend">${Object.entries(CATS).map(([k,v])=>`<span><i style="background:${v.c}"></i>${v.n} ${Math.round(sum[k]/all*100)}%</span>`).join("")}</div>
+    <div class="ubars">${bars}</div></section>
+  <section><h2>Gerçekçilik</h2>
+    <div class="fit">İşlerin tahmininin <b>×${r.toFixed(1)}</b> katı sürüyor. Plan bunu artık hesaba katıyor.</div>
+    <div class="fit">Bir günde ortalama <b>${fmtMin(avgMeasured*60000)}</b> ölçülmüş iş var. Panoya günde yaklaşık <b>${Math.round(avgOpen)}</b> yeni iş yazıyorsun.</div></section>
+  ${stuck.length?`<section><h2>Üç kez ve daha fazla taşınanlar</h2><p class="sub">Bunlar iş değil, karar bekliyor: böl, bir saate sabitle ya da sil.</p>
+    <div class="steps-l">${stuck.map(k=>`<div class="st"><span>${esc(k.title)}</span><em>↻${carryCount(k)}</em><button class="sub" data-split="${k.id}">Böl</button><button class="take" data-fixk="${k.id}">Saate koy</button><button class="del" data-delk="${k.id}" aria-label="Sil">✕</button></div>`).join("")}</div></section>`:""}
+  <section><h2>Projeler</h2><p class="sub">İlerleme, son hareket ve bu hızla ne zaman biteceği. Hedef tarihi projeyi açıp “düzenle”den girersin.</p>
+    <div class="plist">${prow}</div></section>
+  <section><h2>Önümüzdeki 12 ay</h2><p class="sub">Çubuk, bu hızla bitiş ayına kadar uzanır. ◆ hedef tarihin. Kesik çubuk: hız ya da tarih yok.</p>
+    <div class="year"><div class="yr yh"><span class="yl"></span><span class="yt">${months.map(d=>`<span>${d.toLocaleDateString("tr-TR",{month:"short"}).slice(0,3)}</span>`).join("")}</span></div>${yrows}</div></section>
+  ${rts.length?`<section><h2>Rutinlerin</h2><p class="sub">Birden fazla gün yaptığın işler. Uygulama bunları tanıyor, süresini biliyor.</p>
+    <div class="steps-l">${rts.slice(0,14).map((x,i)=>{ const has=todayCs.some(c=>!c.carried&&simT(c.title,x.t)>=0.6);
+      return `<div class="st"><span>${esc(x.t)}</span><em>${x.days} gün${x.dur?` · ${fmtMin(x.dur*60000)}`:""}${x.hour?` · ~${hm(x.hour)}`:""}</em>${has?"<em>bugün var</em>":`<button class="take" data-rt="${i}">Bugüne</button>`}</div>`; }).join("")}</div></section>`:""}`;
+  const u=$("#ufuk");
+  u.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>openProj(b.dataset.p));
+  u.querySelectorAll("[data-rt]").forEach(b=>b.onclick=()=>{ const x=rts[+b.dataset.rt]; const tk=dkey(new Date()); const sv=cur; cur=tk; newCardNear(x.t,null); cur=sv; save(); renderUfuk(); toast("Bugüne eklendi"); });
+  u.querySelectorAll("[data-split]").forEach(b=>b.onclick=()=>openSheet(b.dataset.split));
+  u.querySelectorAll("[data-fixk]").forEach(b=>b.onclick=()=>{ setView("cal"); blockMenu(b.dataset.fixk); });
+  u.querySelectorAll("[data-delk]").forEach(b=>b.onclick=async()=>{ const k=byId(b.dataset.delk); if(!k||!(await sure(`“${k.title}” silinsin mi?`))) return;
+    const d=day(); d.cards=d.cards.filter(x=>x.id!==k.id); d.cards.forEach(x=>{x.needs=(x.needs||[]).filter(c=>c!==k.id); x.with=(x.with||[]).filter(c=>c!==k.id); x.causes=(x.causes||[]).filter(c=>c!==k.id);}); save(); renderUfuk(); });
+}
+
+/* ---------- sheet: what the app has learned about this card ---------- */
+function learnHTML(k){
+  if(k.kind!=="is"||!(k.title||"").trim()) return "";
+  const L=learned(k), sg=suggestNeeds(k), cc=carryCount(k), auto=catOf(Object.assign({},k,{cat:null}));
+  return `<div class="row learn"><div class="l">Uygulamanın bildiği</div>
+    <p>⏱ ~${predictMin(k)} dk · ${esc(why(k))}${L.esik?` · başlaman genelde ${fmtMin(L.esik*60000)}`:""}${L.hour?` · genelde ~${hm(L.hour)}`:""}</p>
+    ${cc?`<p>↻ ${cc} kez taşındı${cc>=3?" — bölmeyi ya da bir saate sabitlemeyi dene":""}</p>`:""}
+    ${sg.length?`<div class="pick"><span class="lbl">Geçen sefer bundan önce bunlar vardı — eksik olabilir:</span>${sg.map((s,i)=>`<button data-sg="${i}">＋ ${esc(s.t)}</button>`).join("")}</div>`:""}
+    <div class="seg" id="fCat" style="margin-top:8px"><button data-cat="" aria-pressed="${!k.cat}">Otomatik (${CATS[auto].n})</button>${Object.entries(CATS).map(([c,v])=>`<button data-cat="${c}" aria-pressed="${k.cat===c}" style="${k.cat===c?"":`border-left:6px solid ${v.c}`}">${v.n}</button>`).join("")}</div>
+  </div>`;
+}
+function bindLearn(k){
+  const sh=$("#sheet"), sg=suggestNeeds(k);
+  sh.querySelectorAll("[data-sg]").forEach(b=>b.onclick=()=>{ const s=sg[+b.dataset.sg]; if(!s) return;
+    let o=day().cards.find(x=>x.id!==k.id&&!x.carried&&simT(x.title,s.t)>=0.6);
+    if(o&&dependsOn(o,k.id)){ toast("Bu bağ döngü olurdu"); return; }
+    if(!o) o=newCardNear(s.t,k);
+    k.needs=k.needs||[]; if(!k.needs.includes(o.id)) k.needs.push(o.id); save(); renderSheet(); renderBoard(); toast("Eklendi"); });
+  sh.querySelectorAll("#fCat [data-cat]").forEach(b=>b.onclick=()=>{ k.cat=b.dataset.cat||null; save(); renderSheet(); });
+}
+
 /* ---------- misc ---------- */
 let toastT; function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("on"); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove("on"),1600); }
 function setView(v){
-  view=v; ["Board","Steps","Proj","Sum"].forEach(n=>$("#t"+n).setAttribute("aria-pressed",v===({Board:"board",Steps:"steps",Proj:"projs",Sum:"sum"})[n]));
+  view=v; ["Board","Cal","Steps","Proj","Ufuk","Sum"].forEach(n=>$("#t"+n).setAttribute("aria-pressed",v===({Board:"board",Cal:"cal",Steps:"steps",Proj:"projs",Ufuk:"ufuk",Sum:"sum"})[n]));
   const b=v==="board"; $("#wrap").style.display=b?"":"none"; $("#tray").style.display=b?"":"none"; $("#fab").style.display=b?"":"none"; $("#zoomctl").style.display=b?"":"none";
-  $("#sum").classList.toggle("on",v==="sum"); $("#steps").classList.toggle("on",v==="steps"); $("#projs").classList.toggle("on",v==="projs"); rerender();
+  $("#sum").classList.toggle("on",v==="sum"); $("#steps").classList.toggle("on",v==="steps"); $("#projs").classList.toggle("on",v==="projs"); $("#cal").classList.toggle("on",v==="cal"); $("#ufuk").classList.toggle("on",v==="ufuk"); if(v==="cal") renderCal.scrolled=false; rerender();
 }
 function shift(n){ const d=new Date(cur+"T12:00:00"); d.setDate(d.getDate()+n); cur=dkey(d); renderAll(); }
 function renderAll(){ renderTop(); renderTray(); rerender(); carryBanner(); }
 
 $("#prev").onclick=()=>shift(-1); $("#next").onclick=()=>shift(1);
 $("#dlabel").onclick=()=>{cur=dkey(new Date()); renderAll();};
-$("#tBoard").onclick=()=>setView("board"); $("#tSteps").onclick=()=>setView("steps"); $("#tProj").onclick=()=>setView("projs"); $("#tSum").onclick=()=>setView("sum");
+$("#tBoard").onclick=()=>setView("board"); $("#tSteps").onclick=()=>setView("steps"); $("#tProj").onclick=()=>setView("projs"); $("#tSum").onclick=()=>setView("sum"); $("#tCal").onclick=()=>setView("cal"); $("#tUfuk").onclick=()=>setView("ufuk");
 $("#addIs").onclick=()=>addCard("is"); $("#addDump").onclick=brainDump; $("#addOlay").onclick=()=>addCard("olay");
 $("#scrim").onclick=closeSheet;
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&linkFrom){ endLink(); return; } if(e.key==="Escape"&&openId&&!$("#dlg").classList.contains("open")) closeSheet(); });
