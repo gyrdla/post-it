@@ -467,6 +467,15 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
 .stk{position:absolute;z-index:4;font-size:14px;line-height:18px;width:18px;text-align:center;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25));cursor:default}
 .hnow{position:absolute;border-left:2px solid #E0566E;z-index:4;pointer-events:none}
 .hnow span{position:absolute;top:-1px;left:3px;font-size:10.5px;font-weight:700;color:#fff;background:#E0566E;border-radius:4px;padding:0 4px}
+
+.its-edit .ie.sim,.its-edit label.sim{margin-left:22px;border-style:dashed;background:color-mix(in srgb,var(--flame) 10%,var(--paper))}
+.hb .its li.sim{list-style:none;margin-left:-6px;opacity:.85}
+.fg{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper)}
+.fg b{display:block;margin-bottom:6px}
+.fg .seg button{font-size:13px;padding:6px 10px}
+.gaps{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:13.5px}
+.gaps .no{color:#B4415A;font-weight:700}
+.gapn{color:#B4415A;font-weight:700;margin-left:6px}
 </style>
 </head>
 <body>
@@ -817,6 +826,8 @@ function renderSheet(){
   <div class="row"><div class="seg" role="group" aria-label="Tür">
     <button data-kind="is" aria-pressed="${isIs}">İş</button><button data-kind="olay" aria-pressed="${!isIs}">Olay</button></div></div>
   ${isIs?itemsEditHTML(k):""}
+  ${isIs?gapsHTML(k):""}
+  ${isIs?projTogsHTML(k):""}
   ${isIs?`<div class="row"><label for="fEst">Sence ne kadar sürer? (dakika)</label><input class="in" id="fEst" type="number" inputmode="numeric" min="0" placeholder="ör. 20" value="${esc(k.est)}"></div>`:""}
   <div class="row"><div class="l">Sayaçlar</div>
     <div class="clock">
@@ -851,7 +862,7 @@ function renderSheet(){
   <button class="danger" id="fDel">Kartı sil</button>`;
 
   const sh=$("#sheet");
-  $("#sDone").onclick=closeSheet; bindItems(k);
+  $("#sDone").onclick=closeSheet; bindItems(k); bindSession(k);
   $("#fTitle").oninput=e=>{k.title=e.target.value; save();};
   const est=$("#fEst"); if(est) est.oninput=e=>{k.est=e.target.value; save();};
   const mE=$("#mE"); if(mE) mE.oninput=e=>{k.manualEsik=e.target.value===""?null:e.target.value; save(); tick();};
@@ -896,10 +907,10 @@ function renderSheet(){
 async function act(k,a){
   const now=Date.now();
   if(a==="intent") k.intentAt=now;
-  if(a==="start"){ k.startAt=now; }
+  if(a==="start"){ k.startAt=now; setTimeout(()=>startReminder(k),50); }
   if(a==="pause") k.pauseAt=now;
   if(a==="resume"){ k.pausedMs=(k.pausedMs||0)+(now-k.pauseAt); k.pauseAt=null; }
-  if(a==="end"){ if(k.pauseAt){k.pausedMs=(k.pausedMs||0)+(now-k.pauseAt); k.pauseAt=null;} k.endAt=now; }
+  if(a==="end"){ if(!(await finishGuard(k))){ renderSheet(); return; } if(k.pauseAt){k.pausedMs=(k.pausedMs||0)+(now-k.pauseAt); k.pauseAt=null;} k.endAt=now; save(); renderSheet(); rerender(); await followUps(k); renderSheet(); return; }
   if(a==="reset"){ if(!(await sure("Sayaçlar sıfırlansın mı?"))) return; k.intentAt=k.startAt=k.endAt=k.pauseAt=null; k.pausedMs=0; }
   save(); renderSheet(); rerender();
 }
@@ -1034,16 +1045,16 @@ function renderSteps(){
     <p>Bıyık almak → ağda lazım → ağda için dışarı çıkmak lazım → dışarı çıkmak için giyinmek lazım… Cevap “hiçbir şey, şimdi kalkıp yapabilirim” olduğunda, ilk adımı buldun.</p></div></section>`;
   $("#steps").querySelectorAll("[data-op]").forEach(b=>b.onclick=()=>openSheet(b.dataset.op));
   $("#steps").querySelectorAll("[data-mm]").forEach(b=>b.onclick=()=>nodeMenu(b.dataset.mm,b.dataset.par||null));
-  $("#steps").querySelectorAll("[data-ck]").forEach(b=>b.onclick=()=>{ const k=byId(b.dataset.ck); if(!k) return;
-    if(isDone(k)){ k.doneMark=false; k.endAt=null; k.manualSure=k.manualSure; } else k.doneMark=true; save(); renderSteps(); });
+  $("#steps").querySelectorAll("[data-ck]").forEach(b=>b.onclick=async()=>{ const k=byId(b.dataset.ck); if(!k) return;
+    if(isDone(k)){ k.doneMark=false; k.endAt=null; } else { if(!(await finishGuard(k))) return; k.doneMark=true; save(); await followUps(k); } save(); renderSteps(); });
 }
 
 /* ---------- brain dump: many cards at once ---------- */
 function brainDump(){
   const d=$("#dlg"), b=$("#dbx");
   b.innerHTML=`<p>Aklındakileri dök. Her satır bir post-it olur.</p>
-    <p class="small">Altına “-” ile başlayan satırlar o post-it'in adımları olur. Sona dakika yazabilirsin, yazmazsan uygulama doldurur.</p>
-    <textarea class="in" id="bdIn" placeholder="Banyo düzenlemek&#10;- banyo silmek 10&#10;- süpürmek&#10;Ağda yapmak 30&#10;Sticker almak"></textarea>
+    <p class="small">“-” ile başlayan satır o post-it'in adımı olur, “+” ile başlayan satır bir üstteki adımla aynı anda yapılan iş olur (ör. çekim). Sona dakika yazabilirsin.</p>
+    <textarea class="in" id="bdIn" placeholder="Kıyafet ve makyaj&#10;- kıyafet giymek 25&#10;+ giyerken video çek&#10;- makyaj 40&#10;+ makyaj yaparken video çek&#10;Sticker almak"></textarea>
     <div class="acts"><button id="dNo">Vazgeç</button><button class="ok" id="dOk">Panoya at</button></div>`;
   d.classList.add("open"); setTimeout(()=>$("#bdIn").focus(),30);
   const close=()=>{ d.classList.remove("open"); b.innerHTML=""; };
@@ -1051,8 +1062,8 @@ function brainDump(){
   $("#dOk").onclick=()=>{
     const raw=$("#bdIn").value.split(/\n+/).filter(x=>x.trim());
     const allDash=raw.length&&raw.every(x=>/^\s*[-•*]/.test(x));
-    const groups=[]; raw.forEach(x=>{ const sub=!allDash&&/^\s*[-•*–]/.test(x)&&groups.length; const t=x.replace(/^[-•*–\d.)\s]+/,"").trim(); if(!t) return;
-      const pm=parseMin(t); if(sub) (groups[groups.length-1].items=groups[groups.length-1].items||[]).push({t:pm.t,min:pm.min}); else groups.push({t:pm.t,est:pm.min}); });
+    const groups=[]; raw.forEach(x=>{ const sim=/^\s*\+/.test(x)&&groups.length; const sub=sim||(!allDash&&/^\s*[-•*–]/.test(x)&&groups.length); const t=x.replace(/^[-•*–+\d.)\s]+/,"").trim(); if(!t) return;
+      const pm=parseMin(t); if(sub) (groups[groups.length-1].items=groups[groups.length-1].items||[]).push(sim?{t:pm.t,sim:true}:{t:pm.t,min:pm.min}); else groups.push({t:pm.t,est:pm.min}); });
     const lines=groups.map(g=>g.t);
     close(); if(!lines.length) return;
     const w=$("#wrap"), cards=day().cards, x0=w.scrollLeft+16, y0=w.scrollTop+16, cols=Math.max(1,Math.floor((w.clientWidth-16)/186));
@@ -1082,7 +1093,7 @@ function carryForward(){
   lo.cards.forEach(c=>{
     today.cards.push({id:map[c.id],kind:"is",title:c.title,est:c.est||"",x:c.x,y:c.y,rot:c.rot||0,
       cond:[],causes:[],needs:(c.needs||[]).filter(n=>map[n]).map(n=>map[n]),with:(c.with||[]).filter(n=>map[n]).map(n=>map[n]),
-      note:c.note||"",from:lo.key,proj:c.proj,est:c.est||"",items:c.items?JSON.parse(JSON.stringify(c.items)):undefined,cat:c.cat,pri:c.pri,createdAt:Date.now()});
+      note:c.note||"",from:lo.key,proj:c.proj,est:c.est||"",items:c.items?JSON.parse(JSON.stringify(c.items)):undefined,cat:c.cat,pri:c.pri,alsoProj:c.alsoProj,doneDef:c.doneDef,createdAt:Date.now()});
     c.carried=true;
   });
   (S.projects||[]).forEach(p=>(p.steps||[]).forEach(st=>{ if(st.card&&st.card.day===lo.key&&map[st.card.id]) st.card={day:cur,id:map[st.card.id]}; }));
@@ -1161,7 +1172,7 @@ function openProj(id){ openId="P:"+id; renderProjSheet(); $("#scrim").classList.
 function renderProjSheet(){
   const p=proj(openId.slice(2)); if(!p){ closeSheet(); return; }
   const linksIn=projects().filter(o=>o.id!==p.id&&(o.links||[]).some(l=>l.to===p.id)&&!(p.links||[]).some(l=>l.to===o.id)).map(o=>({o,l:o.links.find(l=>l.to===p.id)}));
-  const onBoard=Object.entries(S.days).flatMap(([d,v])=>v.cards.filter(c=>c.proj===p.id).map(c=>({d,c})));
+  const onBoard=Object.entries(S.days).flatMap(([d,v])=>v.cards.filter(c=>!c.carried&&(c.proj===p.id||(c.alsoProj||[]).includes(p.id))).map(c=>({d,c})));
   $("#sheet").innerHTML=`
   <div class="closebar"><h2>${p.emoji||"◈"} ${esc(p.title)}</h2><button class="done" id="sDone">Tamam</button></div>
   <button class="ghostbtn" id="pEdit" style="margin-top:4px">✎ Adı ve açıklamayı düzenle</button>
@@ -1448,6 +1459,8 @@ function planDay(key){
     const score=k=>{ const c=catOf(k), d=predictMin(k); let s=0;
       if(k.startAt&&!k.endAt) s+=200;
       if(k.pri) s+=60;
+      const pj=k.proj&&proj(k.proj); const main=k.pri||(pj&&pj.status==="simdi")||isContent(k);
+      if(main&&c==="proje"&&t>=start+30) s+=70;
       if(last&&((last.with||[]).includes(k.id)||(k.with||[]).includes(last.id))) s+=80;
       if(lc==="disari"&&c==="disari") s+=50;
       if(early&&(c==="bakim"||c==="rutin")&&d<=30) s+=30;
@@ -1469,7 +1482,7 @@ function planDay(key){
 function moveCard(k,toKey,fromKey){
   fromKey=fromKey||cur; if(!S.days[toKey]) S.days[toKey]={cards:[]};
   const n={id:uid(),kind:k.kind,title:k.title,est:k.est||"",x:k.x,y:k.y,rot:k.rot||0,cond:[],causes:[],needs:[],with:[],note:k.note||"",
-    from:fromKey,proj:k.proj,cat:k.cat,pri:k.pri,items:k.items?JSON.parse(JSON.stringify(k.items)):undefined,createdAt:Date.now()};
+    from:fromKey,proj:k.proj,cat:k.cat,pri:k.pri,items:k.items?JSON.parse(JSON.stringify(k.items)):undefined,alsoProj:k.alsoProj,doneDef:k.doneDef,followed:k.followed,createdAt:Date.now()};
   S.days[toKey].cards.push(n); k.carried=true; delete k.planAt; delete k.planDur;
   (S.projects||[]).forEach(p=>allSteps(p.steps).forEach(st=>{ if(st.card&&st.card.id===k.id) st.card={day:toKey,id:n.id}; }));
   return n;
@@ -1539,7 +1552,7 @@ function olayEmoji(t){ t=String(t||"").toLocaleLowerCase("tr");
   return /telefon|kaydır|instagram|tiktok/.test(t)?"📱":/müzik|şarkı/.test(t)?"🎵":/dizi|film|izle/.test(t)?"📺":/ara|araştır|bak/.test(t)?"🔎":/uyu|uyku/.test(t)?"😴":"◆"; }
 function itemsHTML(k,maxLines){
   const it=k.items||[]; if(!it.length||maxLines<1) return "";
-  return `<ol class="its">${it.slice(0,maxLines).map(i=>`<li class="${i.done?"dn":""}">${esc(i.t)}<em>${itemMin(i)}</em></li>`).join("")}${it.length>maxLines?`<li class="more">+${it.length-maxLines}</li>`:""}</ol>`;
+  return `<ol class="its">${it.slice(0,maxLines).map(i=>`<li class="${i.done?"dn":""}${i.sim?" sim":""}">${i.sim?"🎥 ":""}${esc(i.t)}${i.sim?"":`<em>${itemMin(i)}</em>`}</li>`).join("")}${it.length>maxLines?`<li class="more">+${it.length-maxLines}</li>`:""}</ol>`;
 }
 function renderCal(){
   const wk=weekKeys(cur); autoPlan(wk);
@@ -1568,7 +1581,7 @@ function renderCal(){
     const k=x.k, c=CATS[catOf(k)].c, real=x.lane==="real";
     const lines=Math.floor((sh-34)/14);
     return `<div class="hb ${x.lane}${w<110?" nar":""}${isDone(k)&&!real?" dn":""}${k.startAt&&!k.endAt?" run":""}${k.fixAt!=null?" fix":""}" data-bk="${k.id}" data-key="${x.key}" title="${esc(k.title||"")}" style="left:${left}px;width:${w}px;top:${top}px;height:${sh-2}px;--bc:${c}">
-      ${w>=26?`<b>${k.pri?"⭐":""}${k.fixAt!=null?"📌":""}${esc(k.title||"Adsız")}</b>${sh>=34&&w>=60?`<small>${hm(x.m)}${real?"":"–"+hm(x.m+x.dur)} · ${Math.round(x.dur)} dk</small>`:""}${real?"":itemsHTML(k,lines)}`:""}</div>`; }).join("");
+      ${w>=26?`<b>${!real&&gaps(k)&&gaps(k).some(g=>!g[1])?"⚠":""}${k.pri?"⭐":""}${k.fixAt!=null?"📌":""}${esc(k.title||"Adsız")}</b>${sh>=34&&w>=60?`<small>${hm(x.m)}${real?"":"–"+hm(x.m+x.dur)} · ${Math.round(x.dur)} dk</small>`:""}${real?"":itemsHTML(k,lines)}`:""}</div>`; }).join("");
   const stick=st.map(s=>`<span class="stk" title="${esc(s.t)}" style="left:${GUT+s.m*hw/60-9}px;top:${HDR+s.row*rh+stripTop}px">${s.e}</span>`).join("");
   const nowRow=wk.indexOf(tk);
   const nowL=nowRow>=0?`<div class="hnow" style="left:${GUT+nowM*hw/60}px;top:${HDR+nowRow*rh}px;height:${rh}px"><span>${hm(nowM)}</span></div>`:"";
@@ -1667,7 +1680,7 @@ function blockMenu(id){
   const nb=new Date(cur+"T12:00:00"); nb.setDate(nb.getDate()+1);
   b.innerHTML=`<p>${esc(k.title||"Adsız")}</p>
     <p class="small">~${predictMin(k)} dk · ${esc(why(k))}</p>
-    ${(k.items||[]).length?`<div class="its-edit">${k.items.map((it,i)=>`<label><input type="checkbox" data-it="${i}" ${it.done?"checked":""}> <span>${i+1}. ${esc(it.t)}</span><em>${itemMin(it)} dk</em></label>`).join("")}</div>`:""}
+    ${(k.items||[]).length?`<div class="its-edit">${k.items.map((it,i)=>`<label class="${it.sim?"sim":""}"><input type="checkbox" data-it="${i}" ${it.done?"checked":""}> <span>${it.sim?"🎥 ":""}${esc(it.t)}</span><em>${it.sim?"aynı anda":itemMin(it)+" dk"}</em></label>`).join("")}</div>`:""}
     <div class="menu">
       ${isDone(k)?"":run?`<button data-m="end">✓ Bitirdim</button>`:`<button data-m="start">▶ Şimdi başla<small>Gün buna göre kendiliğinden yeniden dizilir</small></button>`}
       ${isDone(k)?"":`<button data-m="pri">${k.pri?"☆ Öncelikten çıkar":"⭐ Öncelikli yap"}</button>`}
@@ -1678,11 +1691,11 @@ function blockMenu(id){
     <div class="acts"><button id="dNo">Kapat</button></div>`;
   d.classList.add("open"); const close=()=>{ d.classList.remove("open"); b.innerHTML=""; };
   $("#dNo").onclick=close; d.onclick=e=>{ if(e.target===d) close(); };
-  b.querySelectorAll("[data-it]").forEach(x=>x.onchange=()=>{ const it=k.items[+x.dataset.it]; it.done=x.checked; if(k.items.every(i=>i.done)&&!isDone(k)) k.doneMark=true; save(); });
-  b.querySelectorAll("[data-m]").forEach(x=>x.onclick=()=>{ const m=x.dataset.m;
+  b.querySelectorAll("[data-it]").forEach(x=>x.onchange=async()=>{ const it=k.items[+x.dataset.it]; it.done=x.checked; if(k.items.every(i=>i.done)&&!isDone(k)){ k.doneMark=true; save(); close(); await followUps(k); rerender(); } save(); });
+  b.querySelectorAll("[data-m]").forEach(x=>x.onclick=async()=>{ const m=x.dataset.m;
     if(m==="open"){ close(); renderAll(); openSheet(id); return; }
-    if(m==="start"){ k.startAt=Date.now(); }
-    if(m==="end"){ if(k.pauseAt){ k.pausedMs=(k.pausedMs||0)+(Date.now()-k.pauseAt); k.pauseAt=null; } k.endAt=Date.now(); }
+    if(m==="start"){ k.startAt=Date.now(); close(); save(); rerender(); startReminder(k); return; }
+    if(m==="end"){ close(); if(!(await finishGuard(k))) return; if(k.pauseAt){ k.pausedMs=(k.pausedMs||0)+(Date.now()-k.pauseAt); k.pauseAt=null; } k.endAt=Date.now(); save(); rerender(); await followUps(k); rerender(); return; }
     if(m==="pri") k.pri=!k.pri;
     if(m==="unfix") k.fixAt=null;
     if(m==="tom"){ moveCard(k,dkey(nb)); }
@@ -1690,22 +1703,93 @@ function blockMenu(id){
 }
 
 /* ---------- steps inside a post-it ---------- */
-function itemMin(it){ if(+it.min>0) return +it.min; const L=learned({id:"_i",title:it.t}); return L.n?Math.max(5,Math.round(L.dur/5)*5):10; }
+function itemMin(it){ if(it.sim) return 0; if(+it.min>0) return +it.min; const L=learned({id:"_i",title:it.t}); return L.n?Math.max(5,Math.round(L.dur/5)*5):10; }
 function parseMin(t){ const m=/\s+(\d{1,3})\s*(dk|dakika|"|'|″|’’)?\s*$/i.exec(t); return m?{t:t.slice(0,m.index).trim(),min:+m[1]}:{t:t.trim(),min:null}; }
 function itemsEditHTML(k){
   const it=k.items||[];
   return `<div class="row"><div class="l">İçindeki adımlar (defterdeki gibi)</div>
-    ${it.length?`<div class="its-edit">${it.map((x,i)=>`<div class="ie"><input type="checkbox" data-ic="${i}" ${x.done?"checked":""} aria-label="Tamam"><span>${i+1}. ${esc(x.t)}</span><input class="mn" type="number" inputmode="numeric" min="0" data-im="${i}" value="${x.min??""}" placeholder="${itemMin(Object.assign({},x,{min:null}))}" aria-label="dakika"><small>dk</small><button data-iu="${i}" aria-label="Yukarı">↑</button><button data-id2="${i}" aria-label="Sil">✕</button></div>`).join("")}</div>
+    ${it.length?`<div class="its-edit">${(()=>{ let n=0; return it.map((x,i)=>{ if(!x.sim) n++; return `<div class="ie${x.sim?" sim":""}"><input type="checkbox" data-ic="${i}" ${x.done?"checked":""} aria-label="Tamam"><span>${x.sim?"🎥 ":n+". "}${esc(x.t)}${x.skipped?" <small>(yapılmadı)</small>":""}</span>${x.sim?`<small>aynı anda</small>`:`<input class="mn" type="number" inputmode="numeric" min="0" data-im="${i}" value="${x.min??""}" placeholder="${itemMin(Object.assign({},x,{min:null}))}" aria-label="dakika"><small>dk</small>`}<button data-isim="${i}" title="Aynı anda / ayrı adım" aria-label="Aynı anda yap">${x.sim?"↤":"⇉"}</button><button data-iu="${i}" aria-label="Yukarı">↑</button><button data-id2="${i}" aria-label="Sil">✕</button></div>`; }).join(""); })()}</div>
     <p class="hint">Toplam ~${it.filter(x=>!x.done).reduce((a,x)=>a+itemMin(x),0)} dk. Boş dakikaları uygulama dolduruyor.</p>`:""}
-    <div class="addstep"><input class="in" id="fItem" placeholder="ör. Banyo silmek 10"><button id="fItemAdd">Ekle</button></div></div>`;
+    <div class="addstep"><input class="in" id="fItem" placeholder="ör. Makyaj 40  ·  + makyaj yaparken video çek"><button id="fItemAdd">Ekle</button></div></div>`;
 }
 function bindItems(k){
-  const sh=$("#sheet"); const add=()=>{ const v=$("#fItem").value.trim(); if(!v) return; const p=parseMin(v); k.items=k.items||[]; k.items.push({t:p.t,min:p.min}); save(); renderSheet(); setTimeout(()=>{ const f=$("#fItem"); f&&f.focus(); },30); };
+  const sh=$("#sheet"); const add=()=>{ let v=$("#fItem").value.trim(); if(!v) return; const sim=/^\+/.test(v); v=v.replace(/^[+\-\s]+/,""); const p=parseMin(v); k.items=k.items||[]; k.items.push(sim?{t:p.t,sim:true}:{t:p.t,min:p.min}); save(); renderSheet(); setTimeout(()=>{ const f=$("#fItem"); f&&f.focus(); },30); };
   const fa=$("#fItemAdd"); if(!fa) return; fa.onclick=add; $("#fItem").onkeydown=e=>{ if(e.key==="Enter") add(); };
-  sh.querySelectorAll("[data-ic]").forEach(x=>x.onchange=()=>{ k.items[+x.dataset.ic].done=x.checked; if(k.items.every(i=>i.done)) k.doneMark=true; save(); renderSheet(); });
+  sh.querySelectorAll("[data-ic]").forEach(x=>x.onchange=async()=>{ k.items[+x.dataset.ic].done=x.checked; if(k.items.every(i=>i.done)&&!isDone(k)){ k.doneMark=true; save(); await followUps(k); } save(); renderSheet(); });
+  sh.querySelectorAll("[data-isim]").forEach(x=>x.onclick=()=>{ const it=k.items[+x.dataset.isim]; it.sim=!it.sim; save(); renderSheet(); });
   sh.querySelectorAll("[data-im]").forEach(x=>x.oninput=()=>{ k.items[+x.dataset.im].min=x.value===""?null:+x.value; save(); });
   sh.querySelectorAll("[data-iu]").forEach(x=>x.onclick=()=>{ const i=+x.dataset.iu; if(!i) return; const a=k.items; [a[i-1],a[i]]=[a[i],a[i-1]]; save(); renderSheet(); });
   sh.querySelectorAll("[data-id2]").forEach(x=>x.onclick=()=>{ k.items.splice(+x.dataset.id2,1); save(); renderSheet(); });
+}
+
+/* ---------- sessions: steps done "at the same time", guards, follow-ups, gap check ---------- */
+const SHOOT=/çek|video|çekim|reels|tiktok|fotoğraf|foto /i;
+function simItems(k){ return (k.items||[]).filter(i=>i.sim); }
+function isContent(k){ return k.kind==="is"&&(k.proj==="icerik"||(k.alsoProj||[]).includes("icerik")||/içerik|video|reels|tiktok|instagram|çekim|gyrdla|gyrdlab|post/i.test(k.title||"")||simItems(k).some(i=>SHOOT.test(i.t))); }
+function startReminder(k){
+  const s=simItems(k).filter(i=>!i.done); if(!s.length) return;
+  dialog({msg:"Bu oturumda aynı anda yapılacaklar: "+s.map(i=>"🎥 "+i.t).join(" · ")+(s.some(i=>SHOOT.test(i.t))?" — telefonu ve açıyı şimdi kur.":""),okText:"Tamam"});
+}
+function finishGuard(k){
+  const miss=simItems(k).filter(i=>!i.done);
+  if(!miss.length) return Promise.resolve(true);
+  return new Promise(res=>{
+    const d=$("#dlg"), b=$("#dbx"); const ch=miss.map(()=>"done");
+    b.innerHTML=`<p>Bitirmeden önce: bunlar işaretli değil</p>
+      <div class="menu">${miss.map((it,i)=>`<div class="fg"><b>🎥 ${esc(it.t)}</b><div class="seg" data-fg="${i}"><button data-v="done" aria-pressed="true">Yaptım</button><button data-v="skip" aria-pressed="false">Bu sefer yok</button><button data-v="later" aria-pressed="false">Sonraya ekle</button></div></div>`).join("")}</div>
+      <div class="acts"><button id="dNo">Vazgeç</button><button class="ok" id="dOk">Bitir</button></div>`;
+    d.classList.add("open"); const close=v=>{ d.classList.remove("open"); b.innerHTML=""; res(v); };
+    b.querySelectorAll("[data-fg]").forEach(g=>g.querySelectorAll("[data-v]").forEach(x=>x.onclick=()=>{ ch[+g.dataset.fg]=x.dataset.v; g.querySelectorAll("[data-v]").forEach(y=>y.setAttribute("aria-pressed",y===x)); }));
+    $("#dNo").onclick=()=>close(false);
+    $("#dOk").onclick=()=>{ miss.forEach((it,i)=>{ it.done=true; if(ch[i]!=="done") it.skipped=true;
+        if(ch[i]==="later"){ const nd=new Date(cur+"T12:00:00"); nd.setDate(nd.getDate()+1); const key=dkey(nd); if(!S.days[key]) S.days[key]={cards:[]};
+          S.days[key].cards.push({id:uid(),kind:"is",title:it.t,est:"",x:k.x,y:k.y,rot:0,cond:[],causes:[],needs:[],with:[],proj:k.proj,from:cur,createdAt:Date.now()}); } });
+      save(); close(true); };
+  });
+}
+function hasFollow(k,re){ return !!k.followed||(k.items||[]).some(i=>re.test(i.t)); }
+async function followUps(k,force){
+  if(k.followed) return;
+  const shot=simItems(k).some(i=>SHOOT.test(i.t)&&!i.skipped)||SHOOT.test(k.title||"");
+  if(!force&&(!shot||!isDone(k))) return;
+  if(!force&&!(await dialog({msg:`Çekimlerin devamı oluşturulsun mu? Yarın: “Edit: ${k.title}” · Ertesi gün: “Paylaş ve arşivle: ${k.title}”. Takvim saatlerini kendisi bulur.`,okText:"Oluştur"}))) return;
+  const mk=(off,title,est)=>{ const nd=new Date(cur+"T12:00:00"); nd.setDate(nd.getDate()+off); const key=dkey(nd); if(!S.days[key]) S.days[key]={cards:[]};
+    S.days[key].cards.push({id:uid(),kind:"is",title,est:String(est),x:k.x,y:k.y,rot:0,cond:[],causes:[],needs:[],with:[],proj:"icerik",items:title.startsWith("Paylaş")?[{t:"Hangi hesap ve format",min:5},{t:"Açıklama ve etiket",min:10},{t:"Paylaş",min:5},{t:"Google Photos tarihli albüme taşı",min:5}]:undefined,src:k.id,createdAt:Date.now()}); };
+  mk(1,"Edit: "+k.title,45); mk(2,"Paylaş ve arşivle: "+k.title,25);
+  k.followed=true; save(); toast("Edit ve paylaşım takvime eklendi");
+}
+function gaps(k){
+  if(!isContent(k)) return null;
+  const its=k.items||[];
+  return [
+    ["Hazırlık", (k.needs||[]).length>0||its.some(i=>/hazırla|kur|ayarla|şarj|ışık/i.test(i.t))],
+    ["Çekimin yeri (aynı anda ya da ayrı adım)", SHOOT.test(k.title||"")||its.some(i=>SHOOT.test(i.t))],
+    ["Edit", hasFollow(k,/edit|düzenle|kurgu/i)||/^edit/i.test(k.title||"")],
+    ["Paylaşım ya da arşiv", hasFollow(k,/paylaş|arşiv|yayınla/i)||/^paylaş/i.test(k.title||"")],
+    ["Takvimde yeri", isDone(k)||k.planAt!=null||k.fixAt!=null],
+    ["Bitiş ölçütü", !!(k.doneDef||"").trim()]
+  ];
+}
+function gapsHTML(k){
+  const g=gaps(k); if(!g) return "";
+  const miss=g.filter(x=>!x[1]).length;
+  return `<div class="row"><div class="l">Eksik kontrolü ${miss?`<span class="gapn">${miss} eksik</span>`:"✓"}</div>
+    <div class="gaps">${g.map(([t,ok])=>`<div class="${ok?"ok":"no"}">${ok?"✓":"⚠"} ${t}</div>`).join("")}</div>
+    ${!hasFollow(k,/edit|düzenle/i)?`<button class="ghostbtn" id="gFollow">＋ Edit ve paylaşımı şimdi takvime ekle</button>`:""}
+    <label class="l" for="fDef" style="margin-top:8px;display:block">Ne olunca bitmiş sayılır?</label>
+    <input class="in" id="fDef" placeholder="ör. 3 kısa video telefonda, ışık iyi" value="${esc(k.doneDef||"")}"></div>`;
+}
+function projTogsHTML(k){
+  if(k.kind!=="is"||!projects().length) return "";
+  const set=[k.proj,...(k.alsoProj||[])].filter(Boolean);
+  return `<div class="row"><div class="l">Bu oturum hangi projeleri ilerletir?</div><div class="togs" id="fProj">${projects().map(p=>`<button data-pj="${p.id}" aria-pressed="${set.includes(p.id)}">${p.emoji||""} ${esc(p.short||p.title)}</button>`).join("")}</div></div>`;
+}
+function bindSession(k){
+  const sh=$("#sheet");
+  sh.querySelectorAll("#fProj [data-pj]").forEach(b=>b.onclick=()=>{ let set=[k.proj,...(k.alsoProj||[])].filter(Boolean); const id=b.dataset.pj;
+    set=set.includes(id)?set.filter(x=>x!==id):[...set,id]; k.proj=set[0]; k.alsoProj=set.slice(1); if(!k.proj) delete k.proj; save(); renderSheet(); });
+  const gf=$("#gFollow"); if(gf) gf.onclick=async()=>{ await followUps(k,true); renderSheet(); };
+  const fd=$("#fDef"); if(fd) fd.oninput=e=>{ k.doneDef=e.target.value; save(); };
 }
 
 /* ---------- misc ---------- */
