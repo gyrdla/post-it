@@ -2,7 +2,18 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" id="vp" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<script>
+(function(){ // iPad/tablet: same app, drawn ~1.3x larger
+  function fit(){ try{
+    const coarse=matchMedia("(pointer:coarse)").matches, sw=Math.min(screen.width,screen.height), sh=Math.max(screen.width,screen.height);
+    const vp=document.getElementById("vp"); if(!vp) return;
+    if(coarse&&sw>=700){ const land=matchMedia("(orientation: landscape)").matches; const w=Math.round((land?sh:sw)/1.3);
+      vp.setAttribute("content","width="+w+", user-scalable=no, viewport-fit=cover"); document.documentElement.classList.add("tablet"); }
+  }catch(e){} }
+  fit(); addEventListener("orientationchange",()=>setTimeout(fit,150)); addEventListener("resize",()=>setTimeout(fit,150));
+})();
+</script>
 <title>Post-it</title>
 <meta name="theme-color" content="#2A2540">
 <link rel="manifest" href="manifest.json">
@@ -418,6 +429,44 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%}
 .its-edit small{font-size:12px;color:var(--muted)}
 .its-edit button{border:0;background:none;color:var(--muted);padding:2px 4px}
 .its-edit input[type=checkbox]{width:20px;height:20px;accent-color:var(--ink)}
+
+/* yatay takvim */
+.hhead{position:sticky;top:0;height:30px;z-index:6;background:var(--paper);border-bottom:1px solid var(--line)}
+.hhead span{position:absolute;top:0;height:30px;line-height:30px;padding-left:5px;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;border-left:1px solid var(--line)}
+.wcorner2{position:sticky;left:0;width:66px;height:30px;background:var(--paper);z-index:3}
+.hdays{position:sticky;left:0;width:66px;z-index:5;background:var(--paper);border-right:1px solid var(--line)}
+.wd2{position:absolute;left:0;width:66px;border:0;border-bottom:1px solid var(--line);background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:2px}
+.wd2 .dn2{font-size:12px;color:var(--muted);font-weight:700}
+.wd2 b{font-size:22px;line-height:1}
+.wd2 small{font-size:10.5px;color:var(--muted);white-space:nowrap}
+.wd2 small.ov{color:#D0566E;font-weight:700}
+.wd2.today .dn2,.wd2.today b{color:#D0566E}
+.wd2.sel{background:var(--paper2)}
+.wr{position:absolute;border-bottom:1px solid var(--line);background-image:linear-gradient(to right,var(--line) 1px,transparent 1px)}
+.wr.alt{background-color:color-mix(in srgb,var(--paper2) 45%,transparent)}
+.wr.today{background-color:color-mix(in srgb,var(--flame) 8%,transparent)}
+.hb{position:absolute;overflow:hidden;border-radius:5px;padding:3px 6px;color:#2A2540;line-height:1.15;touch-action:pan-x pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer;z-index:2}
+.hb b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:12px;font-weight:700;word-break:break-word}
+.hb small{display:block;font-size:10.5px;opacity:.75;white-space:nowrap;overflow:hidden}
+.hb.real{background:var(--bc);opacity:.85;padding:2px 5px}
+.hb.real b{-webkit-line-clamp:1;font-weight:600;font-size:11.5px}
+.hb.plan{background:var(--is);border-top:5px solid var(--bc);box-shadow:0 3px 8px -4px rgba(40,30,70,.45);border-radius:3px}
+.hb.plan b{font-family:var(--hand);font-size:15px;font-weight:700;line-height:1.05}
+.hb.plan.nar b{font-family:var(--ui);font-size:11.5px;-webkit-line-clamp:5;line-height:1.15;word-break:break-word;hyphens:auto}
+.hb.dn{opacity:.45}.hb.dn b{text-decoration:line-through}
+.hb.run{outline:2px solid var(--flame);z-index:3}
+.hb.fix{border-top-style:double;border-top-width:7px}
+.hb.brk{background:repeating-linear-gradient(45deg,var(--paper2) 0 6px,transparent 6px 12px);border:1px dashed var(--line);color:var(--muted);z-index:1}
+.hb.brk b{font-size:11px;font-weight:600}
+.hb.lift{outline:3px solid var(--flame);transform:scale(1.04);z-index:9}
+.hb .its{margin:2px 0 0;padding-left:15px;font-size:11px}
+.hb .its li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb .its li.dn{text-decoration:line-through;opacity:.6}
+.hb .its em{font-style:normal;opacity:.6;margin-left:4px}
+.hb .its .more{list-style:none;margin-left:-15px;opacity:.6}
+.stk{position:absolute;z-index:4;font-size:14px;line-height:18px;width:18px;text-align:center;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25));cursor:default}
+.hnow{position:absolute;border-left:2px solid #E0566E;z-index:4;pointer-events:none}
+.hnow span{position:absolute;top:-1px;left:3px;font-size:10.5px;font-weight:700;color:#fff;background:#E0566E;border-radius:4px;padding:0 4px}
 </style>
 </head>
 <body>
@@ -1085,10 +1134,6 @@ function renderProjects(){
       ${(p.links||[]).length?`<span class="pl">${p.links.slice(0,3).map(l=>{const o=proj(l.to);return o?`${o.emoji||""} ${esc(o.title)}`:""}).filter(Boolean).join(" · ")}</span>`:""}</span>
       ${al.length?`<span class="pk">${ok}/${al.length}</span>`:""}</button>`; };
   $("#projs").innerHTML=`
-  <section><h2>${GUN[wd]} teması</h2>
-    ${th?`<p class="sub">${esc(th.items.join(" · "))}</p>`:'<p class="sub">Bu gün için tema yok.</p>'}
-    ${todays.length?`<div class="plist">${todays.map(card).join("")}</div>`:""}
-  </section>
   <section><h2>Bağlantı haritası</h2><p class="sub">Bir projeye dokun. Çizgiler projelerin birbirini nasıl beslediğini gösterir.</p>
     <div class="mapwrap">${mapSVG()}</div></section>
   ${["simdi","bekle","tohum"].map(s=>groups[s]&&groups[s].length?`<section><h2>${STATUS[s]} <small class="cnt">${groups[s].length}</small></h2>
@@ -1132,7 +1177,7 @@ function renderProjSheet(){
     ${linksIn.map(({o,l})=>`<button data-go="${o.id}"><b>${o.emoji||""} ${esc(o.title)}</b><small>bunu ${linkLabel(l.kind)}${l.note?": "+esc(l.note):""}</small></button>`).join("")}
   </div></div>`:""}
   ${p.due?`<div class="row"><div class="l">Hedef tarih</div><p class="hint" style="margin:0">${new Date(p.due+"T12:00:00").toLocaleDateString("tr-TR",{day:"numeric",month:"long",year:"numeric"})}</p></div>`:""}
-  ${(p.days||[]).length?`<div class="row"><div class="l">Haftalık tema günü</div><p class="hint" style="margin:0">${p.days.map(d=>GUN[d]).join(", ")}</p></div>`:""}
+
   ${(p.sources||[]).length?`<div class="row"><div class="l">Kaynaklar</div><div class="src">${p.sources.map(s=>`<a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} ↗</a>`).join("")}</div></div>`:""}
   ${(p.ideas||[]).length?`<details class="row ideas"><summary>Fikir havuzu (${p.ideas.length})</summary><ul>${p.ideas.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></details>`:""}
   ${onBoard.length?`<div class="row"><div class="l">Panodaki kartları</div><p class="hint" style="margin:0">${onBoard.map(({d,c})=>`${isDone(c)?"✓ ":""}${esc(c.title||"Adsız")} <small>(${d.slice(5)})</small>`).join("<br>")}</p></div>`:""}`;
@@ -1448,8 +1493,8 @@ function spreadWeek(key){
 
 /* ---------- Takvim: vertical week, whole day ---------- */
 function weekKeys(key){ const d=new Date(key+"T12:00:00"); const dow=(d.getDay()+6)%7; d.setDate(d.getDate()-dow); return [...Array(7)].map((_,i)=>{ const x=new Date(d); x.setDate(d.getDate()+i); return dkey(x); }); }
-let CZ=1; try{ CZ=Math.min(2.2,Math.max(0.5,+localStorage.getItem("postit-calzoom")||1)); }catch(e){}
-const COLW=()=>Math.round(Math.max(150,((document.getElementById("cal")||{}).clientWidth||390)-44)/7>150?Math.max(150,(((document.getElementById("cal")||{}).clientWidth||390)-44)/7)*CZ:150*CZ), HH=()=>Math.round(60*CZ), HDR=46, GUT=44;
+let CZ=1; try{ CZ=Math.min(2.2,Math.max(0.4,+localStorage.getItem("postit-hzoom")||1)); }catch(e){}
+const HW=()=>Math.round(160*CZ), RH=()=>Math.round(150*Math.min(1.5,Math.max(0.8,CZ))), HDR=30, GUT=66;
 const todayKey=()=>dkey(new Date());
 function planSig(D){
   return D.cards.filter(k=>k.kind==="is"&&!k.carried&&(k.title||"").trim()).map(k=>[k.id,isDone(k)?1:0,k.fixAt??"",k.pri?1:0,(k.needs||[]).join("."),(k.items||[]).map(i=>(i.done?1:0)+":"+(i.min||"")).join(","),k.est||"",k.startAt?1:0].join("|")).sort().join(";")+"#"+JSON.stringify(S.prefs||{});
@@ -1469,74 +1514,92 @@ function autoPlan(keys){
   if(ch) save();
 }
 function calBlocks(wk){
-  const keys=new Set(wk), out=[];
+  const out=[];
   const near=[...wk]; const pre=new Date(wk[0]+"T12:00:00"); pre.setDate(pre.getDate()-1); near.unshift(dkey(pre));
   near.forEach(key=>{ const D=S.days[key]; if(!D) return;
     D.cards.forEach(k=>{ if(k.carried) return;
       if(k.startAt){ const s=sureMs(k,Date.now()); const d=Math.min(360,Math.max(1,(s||0)/60000)); out.push({lane:"real",key,k,ts:k.startAt,dur:d}); }
       if(k.planAt!=null&&!(isDone(k)&&k.startAt)) out.push({lane:"plan",key,k,ts:dayMid(key)+k.planAt*60000,dur:k.planDur||predictMin(k)}); });
     ((D.plan&&D.plan.breaks)||[]).forEach(b=>out.push({lane:"brk",key,b,ts:dayMid(key)+b.at*60000,dur:b.dur})); });
-  return out.map(x=>{ const dt=new Date(x.ts), col=wk.indexOf(dkey(dt)); if(col<0) return null;
-    const m=dt.getHours()*60+dt.getMinutes()+dt.getSeconds()/60; return Object.assign(x,{col,m,dur:Math.min(x.dur,1440-m)}); }).filter(Boolean);
+  return out.map(x=>{ const dt=new Date(x.ts), row=wk.indexOf(dkey(dt)); if(row<0) return null;
+    const m=dt.getHours()*60+dt.getMinutes()+dt.getSeconds()/60; return Object.assign(x,{row,m,dur:Math.min(x.dur,1440-m)}); }).filter(Boolean);
 }
+function calStickers(wk){ // conditions and events as stickers at the moment they happened
+  const out=[];
+  wk.forEach((key,row)=>{ const D=S.days[key]; if(!D) return;
+    D.cards.forEach(k=>{ if(k.carried) return; const ts=k.startAt||k.intentAt; if(!ts) return; const dt=new Date(ts); if(dkey(dt)!==key) return;
+      const m=dt.getHours()*60+dt.getMinutes();
+      (k.cond||[]).map(cond).filter(Boolean).forEach(c=>out.push({row,m,e:condEmoji(c.name),t:c.name+" · "+(k.title||"")}));
+      if(k.kind==="olay") out.push({row,m,e:olayEmoji(k.title),t:k.title||"Olay"}); }); });
+  return out;
+}
+function condEmoji(n){ n=String(n||"").toLocaleLowerCase("tr");
+  return /kahve/.test(n)?"☕":/yemek|yedim|kahvalt/.test(n)?"🍽":/vitamin|ilaç/.test(n)?"💊":/telefon|kaydır/.test(n)?"📱":/uyku|mahmur|uyu/.test(n)?"😴":/yorgun/.test(n)?"🥱":/regl|sancı|ağrı/.test(n)?"🌙":/büyük/.test(n)?"🏔":/su/.test(n)?"💧":"•"; }
+function olayEmoji(t){ t=String(t||"").toLocaleLowerCase("tr");
+  return /telefon|kaydır|instagram|tiktok/.test(t)?"📱":/müzik|şarkı/.test(t)?"🎵":/dizi|film|izle/.test(t)?"📺":/ara|araştır|bak/.test(t)?"🔎":/uyu|uyku/.test(t)?"😴":"◆"; }
 function itemsHTML(k,maxLines){
   const it=k.items||[]; if(!it.length||maxLines<1) return "";
   return `<ol class="its">${it.slice(0,maxLines).map(i=>`<li class="${i.done?"dn":""}">${esc(i.t)}<em>${itemMin(i)}</em></li>`).join("")}${it.length>maxLines?`<li class="more">+${it.length-maxLines}</li>`:""}</ol>`;
 }
 function renderCal(){
   const wk=weekKeys(cur); autoPlan(wk);
-  const cw=COLW(), hh=HH(), tk=todayKey(), now=new Date(), nowM=now.getHours()*60+now.getMinutes();
-  const bl=calBlocks(wk);
-  // side-by-side layout for overlapping blocks (same day, same lane)
-  const minVis=16*60/hh; const groups={};
-  bl.forEach(x=>{ const g=x.col+(x.lane==="real"?"r":"p"); (groups[g]=groups[g]||[]).push(x); });
-  const hasPlan=new Set(bl.filter(x=>x.lane!=="real").map(x=>x.col));
-  Object.entries(groups).forEach(([gk,arr])=>{ const mv=gk.endsWith("r")?minVis:0; arr.sort((a,b)=>a.m-b.m); let cluster=[], end=-1;
-    const flush=()=>{ const lanes=[]; cluster.forEach(x=>{ let i=lanes.findIndex(e=>e<=x.m); if(i<0){ i=lanes.length; lanes.push(0); } lanes[i]=x.m+Math.max(x.dur,mv); x.sub=i; }); cluster.forEach(x=>x.subs=lanes.length); cluster=[]; };
-    arr.forEach(x=>{ if(x.m>=end&&cluster.length) flush(); cluster.push(x); end=Math.max(end,x.m+Math.max(x.dur,mv)); }); if(cluster.length) flush(); });
-  const head=wk.map((k,i)=>{ const dd=new Date(k+"T12:00:00"), D=S.days[k];
+  const hw=HW(), rh=RH(), tk=todayKey(), now=new Date(), nowM=now.getHours()*60+now.getMinutes();
+  const stripTop=4, stripH=20, realTop=stripTop+stripH+2, realH=Math.round((rh-realTop-6)*0.32), planTop=realTop+realH+3, planH=rh-planTop-5;
+  const bl=calBlocks(wk), st=calStickers(wk);
+  // stack overlapping blocks within the same day and lane
+  const minVis=22*60/hw, groups={};
+  bl.forEach(x=>{ const g=x.row+(x.lane==="real"?"r":"p"); (groups[g]=groups[g]||[]).push(x); });
+  Object.entries(groups).forEach(([gk,arr])=>{ const mv=gk.endsWith("r")?minVis:0; arr.sort((a,b)=>a.m-b.m); let cl=[], end=-1;
+    const flush=()=>{ const lanes=[]; cl.forEach(x=>{ let i=lanes.findIndex(e=>e<=x.m); if(i<0){ i=lanes.length; lanes.push(0); } lanes[i]=x.m+Math.max(x.dur,mv); x.sub=i; }); cl.forEach(x=>x.subs=lanes.length); cl=[]; };
+    arr.forEach(x=>{ if(x.m>=end&&cl.length) flush(); cl.push(x); end=Math.max(end,x.m+Math.max(x.dur,mv)); }); if(cl.length) flush(); });
+  const hasPlan=new Set(bl.filter(x=>x.lane!=="real").map(x=>x.row));
+  const days=wk.map((k,i)=>{ const dd=new Date(k+"T12:00:00"), D=S.days[k];
     const open=D?D.cards.filter(c=>c.kind==="is"&&!c.carried&&!isDone(c)&&(c.title||"").trim()):[];
     const done=D?D.cards.filter(c=>c.kind==="is"&&!c.carried&&isDone(c)).length:0;
     const over=D&&D.plan?D.plan.overflow.filter(id=>open.some(c=>c.id===id)).length:0;
-    return `<button class="wh${k===tk?" today":""}${k===cur?" sel":""}" data-day="${k}" style="left:${GUT+i*cw}px;width:${cw}px"><b>${GK[dd.getDay()]} ${dd.getDate()}</b><small>${done}✓ · ${open.length} açık${over?` · <i>${over} sığmadı</i>`:""}</small></button>`; }).join("");
-  let hours="", labels=""; for(let h=0;h<=24;h++){ hours+=`<div class="wl" style="top:${HDR+h*hh}px"></div>`; if(h>0&&h<24) labels+=`<span style="top:${h*hh}px">${pad(h)}:00</span>`; }
-  const cols=wk.map((k,i)=>`<div class="wc${k===tk?" today":""}" data-col="${i}" style="left:${GUT+i*cw}px;width:${cw}px;top:${HDR}px;height:${24*hh}px;background-size:100% ${hh}px"></div>`).join("");
-  const blocks=bl.map(x=>{ const top=HDR+x.m*hh/60, h=Math.max(14,x.dur*hh/60-2), left=GUT+x.col*cw;
-    const full=x.lane==="real"&&!hasPlan.has(x.col);
-    const lw=(full?cw:x.lane==="real"?cw*0.38:cw*0.62)/(x.subs||1), lx=left+(x.lane==="real"?0:cw*0.38)+lw*(x.sub||0)+2;
-    if(x.lane==="brk") return `<div class="wb brk" style="top:${top}px;height:${h}px;left:${lx}px;width:${lw-4}px"><b>☕ ${esc(x.b.label)}</b></div>`;
+    return `<button class="wd2${k===tk?" today":""}${k===cur?" sel":""}" data-day="${k}" style="top:${i*rh}px;height:${rh}px"><span class="dn2">${GK[dd.getDay()]}</span><b>${dd.getDate()}</b><small>${done}✓</small><small>${open.length} açık</small>${over?`<small class="ov">${over} sığmadı</small>`:""}</button>`; }).join("");
+  let hours=""; for(let h=0;h<24;h++) hours+=`<span style="left:${GUT+h*hw}px;width:${hw}px">${pad(h)}:00</span>`;
+  const rows=wk.map((k,i)=>`<div class="wr${k===tk?" today":""}${i%2?" alt":""}" style="left:${GUT}px;top:${HDR+i*rh}px;width:${24*hw}px;height:${rh}px;background-size:${hw}px 100%"></div>`).join("");
+  const blocks=bl.map(x=>{ const left=GUT+x.m*hw/60, w=Math.max(x.lane==="real"?6:22,x.dur*hw/60-2);
+    const full=x.lane==="real"&&!hasPlan.has(x.row);
+    const lt=x.lane==="real"?realTop:planTop, lh=x.lane==="real"?(full?rh-realTop-6:realH):planH;
+    const sh=lh/(x.subs||1), top=HDR+x.row*rh+lt+sh*(x.sub||0);
+    if(x.lane==="brk") return `<div class="hb brk" style="left:${left}px;width:${w}px;top:${top}px;height:${sh-2}px"><b>☕ ${esc(x.b.label)}</b></div>`;
     const k=x.k, c=CATS[catOf(k)].c, real=x.lane==="real";
-    const lines=Math.floor((h-30)/15);
-    return `<div class="wb ${x.lane}${isDone(k)&&!real?" dn":""}${k.startAt&&!k.endAt?" run":""}${k.fixAt!=null?" fix":""}" data-bk="${k.id}" data-key="${x.key}" style="top:${top}px;height:${h}px;left:${lx}px;width:${lw-4}px;--bc:${c}" title="${esc(k.title||"")}">
-      <b>${k.pri?"⭐":""}${k.fixAt!=null?"📌":""}${isDone(k)&&!real?"✓ ":""}${esc(k.title||"Adsız")}</b>${h>=28?`<small>${hm(x.m)}${real?"":"–"+hm(x.m+x.dur)} · ${Math.round(x.dur)} dk</small>`:""}${real?"":itemsHTML(k,lines)}</div>`; }).join("");
-  const nowCol=wk.indexOf(tk);
-  const nowL=nowCol>=0?`<div class="wnow" style="top:${HDR+nowM*hh/60}px;left:${GUT+nowCol*cw}px;width:${cw}px"></div>`:"";
-  // unplaced post-its of this week (today onwards)
+    const lines=Math.floor((sh-34)/14);
+    return `<div class="hb ${x.lane}${w<110?" nar":""}${isDone(k)&&!real?" dn":""}${k.startAt&&!k.endAt?" run":""}${k.fixAt!=null?" fix":""}" data-bk="${k.id}" data-key="${x.key}" title="${esc(k.title||"")}" style="left:${left}px;width:${w}px;top:${top}px;height:${sh-2}px;--bc:${c}">
+      ${w>=26?`<b>${k.pri?"⭐":""}${k.fixAt!=null?"📌":""}${esc(k.title||"Adsız")}</b>${sh>=34&&w>=60?`<small>${hm(x.m)}${real?"":"–"+hm(x.m+x.dur)} · ${Math.round(x.dur)} dk</small>`:""}${real?"":itemsHTML(k,lines)}`:""}</div>`; }).join("");
+  const stick=st.map(s=>`<span class="stk" title="${esc(s.t)}" style="left:${GUT+s.m*hw/60-9}px;top:${HDR+s.row*rh+stripTop}px">${s.e}</span>`).join("");
+  const nowRow=wk.indexOf(tk);
+  const nowL=nowRow>=0?`<div class="hnow" style="left:${GUT+nowM*hw/60}px;top:${HDR+nowRow*rh}px;height:${rh}px"><span>${hm(nowM)}</span></div>`:"";
   const loose=[]; wk.forEach(k=>{ if(k<tk) return; const D=S.days[k]; if(!D) return;
     D.cards.forEach(c=>{ if(c.kind==="is"&&!c.carried&&!isDone(c)&&(c.title||"").trim()&&c.planAt==null) loose.push({k,c,over:!!(D.plan&&D.plan.overflow.includes(c.id))}); }); });
   const d0=new Date(wk[0]+"T12:00:00"), d6=new Date(wk[6]+"T12:00:00");
   $("#cal").innerHTML=`
   <div class="wbar"><button id="wPrev" aria-label="Önceki hafta">‹</button><b>${d0.getDate()} ${d0.toLocaleDateString("tr-TR",{month:"short"})} – ${d6.getDate()} ${d6.toLocaleDateString("tr-TR",{month:"short"})}</b><button id="wNext" aria-label="Sonraki hafta">›</button>
     <button id="wToday">Bugün</button><span class="sp"></span><button id="wFrame" title="Uyanış ve yatış">🌅</button><button id="wOut" aria-label="Küçült">−</button><button id="wIn" aria-label="Büyüt">+</button></div>
-  <div class="wgrid" id="wgrid"><div class="winner" style="width:${GUT+7*cw}px;height:${HDR+24*hh+8}px"><div class="whead" style="width:${GUT+7*cw}px"><div class="wcorner"></div>${head}</div><div class="whours" style="height:${24*hh}px">${labels}</div>${cols}${hours}${blocks}${nowL}</div></div>
+  <div class="wgrid" id="wgrid"><div class="winner" style="width:${GUT+24*hw}px;height:${HDR+7*rh+6}px">
+    <div class="hhead" style="width:${GUT+24*hw}px"><div class="wcorner2"></div>${hours}</div>
+    <div class="hdays" style="height:${7*rh}px">${days}</div>
+    ${rows}${blocks}${stick}${nowL}</div></div>
   <div class="wtray" id="wtray">${loose.length?`<span class="lbl">Yerleşmemiş · sürükle bırak</span>${loose.map(x=>{ const dd=new Date(x.k+"T12:00:00");
     return `<button class="wchip${x.over?" over":""}" data-ck="${x.c.id}" data-key="${x.k}" style="--bc:${CATS[catOf(x.c)].c}"><b>${esc(x.c.title)}</b><small>${GK[dd.getDay()]} ${dd.getDate()} · ${predictMin(x.c)} dk${x.over?" · sığmadı":""}</small></button>`; }).join("")}
     ${loose.some(x=>x.over)?`<button class="wspread" id="wSpread">Sığmayanları haftaya dağıt</button>`:""}`:`<span class="lbl">Bu haftanın bütün işleri saatlere yerleşti.</span>`}</div>`;
   const g=$("#wgrid");
   if(renderCal.scroll){ g.scrollLeft=renderCal.scroll[0]; g.scrollTop=renderCal.scroll[1]; }
-  else { const sc=Math.max(0,(nowCol>=0?nowCol:0)*cw-cw*0.3); g.scrollLeft=sc; g.scrollTop=Math.max(0,HDR+(nowCol>=0?nowM:prefs().wake)*hh/60-g.clientHeight*0.35); }
+  else { const m=nowRow>=0?nowM:prefs().wake; g.scrollLeft=Math.max(0,m*hw/60-hw*1.5); g.scrollTop=Math.max(0,(nowRow>=0?nowRow:0)*rh-rh*0.5); }
   g.onscroll=()=>{ renderCal.scroll=[g.scrollLeft,g.scrollTop]; };
   $("#wPrev").onclick=()=>{ shift(-7); }; $("#wNext").onclick=()=>{ shift(7); };
   $("#wToday").onclick=()=>{ cur=tk; renderCal.scroll=null; renderAll(); };
   $("#wFrame").onclick=frameDialog;
   $("#wIn").onclick=()=>calZoom(CZ*1.2); $("#wOut").onclick=()=>calZoom(CZ/1.2);
-  $("#cal").querySelectorAll(".wh[data-day]").forEach(b=>b.onclick=()=>{ cur=b.dataset.day; renderAll(); });
+  $("#cal").querySelectorAll(".wd2[data-day]").forEach(b=>b.onclick=()=>{ cur=b.dataset.day; renderAll(); });
   const sp=$("#wSpread"); if(sp) sp.onclick=()=>{ let n=0; wk.forEach(k=>{ if(k>=tk&&S.days[k]&&S.days[k].plan) n+=spreadWeek(k); }); save(); renderCal(); toast(n?n+" iş başka günlere yerleşti":"Bu haftada boş yer yok"); };
-  $("#cal").querySelectorAll(".wb[data-bk]").forEach(el=>calDrag(el,el.dataset.bk,el.dataset.key,true));
+  $("#cal").querySelectorAll(".hb[data-bk]").forEach(el=>calDrag(el,el.dataset.bk,el.dataset.key,true));
   $("#cal").querySelectorAll(".wchip").forEach(el=>calDrag(el,el.dataset.ck,el.dataset.key,false));
   calPinch(g);
 }
-function calZoom(z,keep){ const g=$("#wgrid"); const oz=CZ; CZ=Math.min(2.2,Math.max(0.5,z)); try{ localStorage.setItem("postit-calzoom",String(CZ)); }catch(e){}
+function calZoom(z,keep){ const g=$("#wgrid"); const oz=CZ; CZ=Math.min(2.2,Math.max(0.4,z)); try{ localStorage.setItem("postit-hzoom",String(CZ)); }catch(e){}
   if(g){ const f=CZ/oz; renderCal.scroll=[g.scrollLeft*f+(keep?keep[0]*(f-1):0),g.scrollTop*f+(keep?keep[1]*(f-1):0)]; } renderCal(); }
 function calPinch(g){
   let d0=0,z0=1,mid=null;
@@ -1573,10 +1636,10 @@ function calDrag(el,id,key,isBlock){
 function gridPos(x,y){
   const g=$("#wgrid"); if(!g) return null; const r=g.getBoundingClientRect();
   if(x<r.left||x>r.right||y<r.top||y>r.bottom) return null;
-  const ix=x-r.left+g.scrollLeft-GUT, iy=y-r.top+g.scrollTop-HDR; if(ix<0) return null;
-  const col=Math.floor(ix/COLW()); const wk=weekKeys(cur); if(col<0||col>6) return null;
-  const m=Math.max(0,Math.min(1425,Math.round(iy/HH()*60/15)*15));
-  return {key:wk[col],m};
+  const ix=x-r.left+g.scrollLeft-GUT, iy=y-r.top+g.scrollTop-HDR; if(ix<0||iy<0) return null;
+  const row=Math.floor(iy/RH()); const wk=weekKeys(cur); if(row<0||row>6) return null;
+  const m=Math.max(0,Math.min(1425,Math.round(ix/HW()*60/15)*15));
+  return {key:wk[row],m};
 }
 function placeAt(id,fromKey,toKey,m){
   const D=S.days[fromKey]; let k=D&&D.cards.find(x=>x.id===id); if(!k) return;
